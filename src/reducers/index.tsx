@@ -1,26 +1,32 @@
 import React, { useReducer } from "react";
 import postReducer from "./post-reducer";
-import { InitialStateType, PostState } from "./types";
+import { InitialStateType } from "./types";
 import { PostsActionTypes, PostsObjectActionTypes, PostsFunctionActionTypes } from "../actions/postsList/types";
 
 const initialState: InitialStateType = {
   postsList: { posts: [], loading: false, error: null },
 };
 
-const AppContext = React.createContext<{
-  state: InitialStateType;
-  dispatch: React.Dispatch<PostsActionTypes>;
-}>({
-  state: initialState,
-  dispatch: () => null,
-});
+interface MainReducerInterface {
+  (pervState: InitialStateType, action: PostsObjectActionTypes):InitialStateType
+}
 
-const mainReducer = ({ postsList }: InitialStateType, action: PostsObjectActionTypes) => ({
+interface EnhancedStoreInterface<S, A> {
+  (reducer: MainReducerInterface, state: S): [S, React.Dispatch<A>]
+}
+
+type AppContextType = {
+  state: InitialStateType,
+  dispatch: React.Dispatch<PostsActionTypes>
+}
+
+const AppContext = React.createContext<AppContextType>({ state: initialState, dispatch: () => null, });
+
+const mainReducer:MainReducerInterface = ({ postsList }, action) => ({
   postsList: postReducer(postsList, action),
 });
 
-const useEnhancedReducer = (
-  reducerFn: (state: InitialStateType, action: PostsObjectActionTypes) => { postsList: PostState }, initialState: InitialStateType): [InitialStateType, React.Dispatch<PostsActionTypes>] => {
+const useEnhancedReducer:EnhancedStoreInterface<InitialStateType, PostsActionTypes> = ( reducerFn, initialState ) => {
   const [state, originalDispatch] = useReducer(reducerFn, initialState);
 
   const dispatch = (action: PostsObjectActionTypes | PostsFunctionActionTypes) => {

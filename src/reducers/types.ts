@@ -1,7 +1,7 @@
 import PostModel from "../types/PostModel";
 
 export type InitialStateType = {
-    postsList: PostState;
+    postsList: PostState
 };
 
 export type PostState = {
