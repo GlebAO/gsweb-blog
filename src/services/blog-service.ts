@@ -1,28 +1,22 @@
-export default class BlogService {
+import { BlogServiceInterface } from "./types";
 
-  data = [
-    {
-      id: 1,
-      title: 'Production-Ready Microservices',
-      content: 'Susan J. Fowler'
-    },
-    {
-      id: 2,
-      title: 'Release It!',
-      content: 'Michael T. Nygard'
+export default class BlogService implements BlogServiceInterface {
+
+  _apiBase = 'http://192.168.20.160:3000/';
+
+  protected getResource = async (url:string) => {
+    const res = await fetch(`${this._apiBase}${url}`);
+
+    if (!res.ok) {
+      throw new Error(`Could not fetch ${url}` +
+        `, received ${res.status}`)
     }
-  ];
+    return await res.json();
+  };
 
-  getPosts() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (Math.random() > 0.75) {
-          reject(new Error('Something bad happened'));
-        } else {
-          resolve(this.data);
-        }
-      }, 700);
-    });
+  getPosts = async() => {
+    const res = await this.getResource(`/posts/`);
+    return res.posts;
   }
 
   test() {

@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { Spinner } from "../components/view";
 import routes from "../routes";
 
@@ -22,6 +22,7 @@ const ContentContainer = () => {
               )
             );
           })}
+          <Redirect from="/" to="/404" />
         </Switch>
       </Suspense>
     </main>
