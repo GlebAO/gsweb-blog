@@ -43,7 +43,7 @@ const useEnhancedReducer: EnhancedStoreInterface<
         action(originalDispatch, () => stateRef.current);
       }
       if (typeof action === "object") {
-        //originalDispatch(action);
+        originalDispatch(action);
       }
     },
     []

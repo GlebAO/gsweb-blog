@@ -1,5 +1,6 @@
 import React from "react";
 import PostModel from "../../types/PostModel";
+import PostListItem from "../post-list-item";
 
 import "./posts-list.scss";
 
@@ -14,7 +15,11 @@ const PostsList: React.FC<PostsListProps> = ({ posts }) => {
         <div className="card-body">
           <ul>
             {posts.map((item) => {
-              return <li key={item.id}>{item.title}</li>;
+              return (
+                <li key={item.id}>
+                  <PostListItem post={item} />
+                </li>
+              );
             })}
           </ul>
         </div>
