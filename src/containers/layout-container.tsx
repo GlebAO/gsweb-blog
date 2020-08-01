@@ -6,7 +6,9 @@ const LayoutContainer = () => {
     <div className="app">
       <HeaderContainer />
       <div className="body">
-        <ContentContainer />
+        <div className="container">
+          <ContentContainer />
+        </div>
       </div>
       <FooterContainer />
     </div>

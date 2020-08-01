@@ -1,7 +1,8 @@
 import { PostState } from "./types";
-import { PostsObjectActionTypes, FETCH_POSTS_FAILURE, FETCH_POSTS_REQUEST, FETCH_POSTS_SUCCESS } from "../actions/postsList/types";
+import { PostsObjectActionTypes, FETCH_POSTS_FAILURE, FETCH_POSTS_REQUEST, FETCH_POSTS_SUCCESS} from "../actions/postsList/types";
 
 const postReducer = (state: PostState, action: PostsObjectActionTypes) => {
+  //console.log('postReducer', state, 'action', action.type )
   switch (action.type) {
     case FETCH_POSTS_REQUEST:
       return {

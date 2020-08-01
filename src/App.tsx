@@ -1,8 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Spinner } from "./components/view";
+import { Spinner } from "./components/brand-logo";
 import { AppProvider } from "./reducers";
-import DummyService from "./services/dummy-blog-service";
+//import DummyBlogService from "./services/dummy-blog-service";
+import BlogService from "./services/blog-service";
 import BlogServiceContext from "./components/blog-service-context";
 
 import "./scss/style.scss";
@@ -15,7 +16,7 @@ const LayoutContainer = React.lazy(() =>
 //Pages
 const Page404 = React.lazy(() => import("./components/pages/404"));
 
-const blogService = new DummyService();
+const blogService = new BlogService();
 
 function App() {
   return (

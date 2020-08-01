@@ -2,11 +2,11 @@ import PostModel from "../types/PostModel";
 import { BlogServiceInterface } from "./types"
 
 
-export default class DummyService implements BlogServiceInterface {
+export default class DummyBlogService implements BlogServiceInterface {
 
     _posts: PostModel[] = [
-        { id: 1, title: 'Dummy first post', content: 'We open a blog first time' },
-        { id: 2, title: 'Dummy second post', content: 'My second post is better than first' }
+        { id: 1, title: 'Dummy first post', slug: 'slug1', content: 'We open a blog first time' },
+        { id: 2, title: 'Dummy second post', slug: 'slug2', content: 'My second post is better than first' }
     ]
 
     getPosts() {

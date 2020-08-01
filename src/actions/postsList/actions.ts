@@ -1,4 +1,4 @@
-import { PostsObjectActionTypes, FETCH_POSTS_FAILURE, FETCH_POSTS_REQUEST, FETCH_POSTS_SUCCESS } from "./types";
+import { PostsObjectActionTypes, FETCH_POSTS_FAILURE, FETCH_POSTS_REQUEST, FETCH_POSTS_SUCCESS} from "./types";
 import PostModel from "../../types/PostModel";
 import { InitialStateType } from "../../reducers/types";
 import { BlogServiceInterface } from "../../services/types";
@@ -30,4 +30,15 @@ const fetchPosts = (service: BlogServiceInterface) => (dispatch: React.Dispatch<
         .catch((err) => dispatch(postsError(err)));
 }
 
-export { fetchPosts }
+
+const fetchPostBySlug = (slug:string, service: BlogServiceInterface) => (dispatch: React.Dispatch<PostsObjectActionTypes>, getState: () => InitialStateType):void => {
+    const state = getState();
+    const postBySlug = state.postsList.posts.find( post => post.slug === slug);
+    if( postBySlug ) {
+        console.log( postBySlug )
+    } else {
+        console.log('need to go to server')
+    }
+}
+
+export { fetchPosts, fetchPostBySlug }

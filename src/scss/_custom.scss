@@ -1,1 +1,11 @@
 //Custom styles
+html,
+body,
+#root,
+.app {
+  height: 100%;
+  display: flex;
+  display: -ms-flexbox !important;
+  flex-direction: column;
+  -ms-flex-direction: column !important;
+}

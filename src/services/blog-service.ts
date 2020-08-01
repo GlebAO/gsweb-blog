@@ -2,7 +2,7 @@ import { BlogServiceInterface } from "./types";
 
 export default class BlogService implements BlogServiceInterface {
 
-  _apiBase = 'http://192.168.20.160:3000/';
+  _apiBase = 'http://192.168.20.160:3005';
 
   protected getResource = async (url:string) => {
     const res = await fetch(`${this._apiBase}${url}`);

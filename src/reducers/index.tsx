@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback, useRef } from "react";
+import React, { useReducer } from "react";
 import postReducer from "./post-reducer";
 import {
   InitialStateType,
@@ -24,37 +24,31 @@ const AppContext = React.createContext<AppContextType>({
 const mainReducer: MainReducerInterface = (state, action) => {
   const { postsList } = state;
 
-  console.log("Action:", action, "prevState", state);
-
   return { postsList: postReducer(postsList, action) };
 };
 
 const useEnhancedReducer: EnhancedStoreInterface<
   InitialStateType,
   PostsActionTypes
-> = (reducerFn, initialState) => {
-  const [state, originalDispatch] = useReducer(reducerFn, initialState);
+> = (reducerFn, currentState) => {
+  const [state, originalDispatch] = useReducer(reducerFn, currentState);
 
-  const stateRef = useRef(state);
-
-  const dispatch = useCallback(
-    (action: PostsObjectActionTypes | PostsFunctionActionTypes) => {
-      if (typeof action === "function") {
-        action(originalDispatch, () => stateRef.current);
-      }
-      if (typeof action === "object") {
-        originalDispatch(action);
-      }
-    },
-    []
-  );
+  const dispatch = (
+    action: PostsObjectActionTypes | PostsFunctionActionTypes
+  ) => {
+    if (typeof action === "function") {
+      action(originalDispatch, () => state);
+    }
+    if (typeof action === "object") {
+      originalDispatch(action);
+    }
+  };
 
   return [state, dispatch];
 };
 
 const AppProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useEnhancedReducer(mainReducer, initialState);
-
   return (
     <AppContext.Provider value={{ state, dispatch }}>
       {children}

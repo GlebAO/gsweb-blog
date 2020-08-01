@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { Spinner } from "../components/view";
+import { Spinner } from "../components/brand-logo";
 import routes from "../routes";
 
 const ContentContainer = () => {
@@ -15,8 +15,8 @@ const ContentContainer = () => {
                   key={idx}
                   path={route.path}
                   exact={route.exact}
-                  render={() => (
-                      <route.component />
+                  render={props => (
+                      <route.component {...props}/>
                   )}
                 />
               )
