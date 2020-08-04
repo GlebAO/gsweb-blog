@@ -1,35 +1,46 @@
 import React, { useContext, useEffect, useCallback } from "react";
-import { RouteComponentProps } from "react-router";
-import { PostPage } from "../components/pages";
 
 import { AppContext } from "../reducers";
 import BlogServiceContext from "../components/blog-service-context";
-import { fetchPostBySlug } from "../actions/postsList/actions";
+import { fetchPostBySlug } from "../actions/postContent/actions";
 
-interface MatchParams {
+import Spinner from "../components/common/spinner";
+import ErrorIndicator from "../components/common/error-indicator";
+import PostView from "../components/post/post-view";
+
+interface PostContainerProps {
   slug: string;
 }
 
-//interface PostContainerProps extends RouteComponentProps<{slug: string}> {
-
-//}
-
-const PostContainer: React.FC<RouteComponentProps<MatchParams>> = ({
-  match,
-}) => {
-  const { dispatch } = useContext(AppContext);
+const PostContainer: React.FC<PostContainerProps> = ({ slug }) => {
+  const { state, dispatch } = useContext(AppContext);
   const blogService = useContext(BlogServiceContext);
+
   const stableDispatch = useCallback(dispatch, []);
 
-  const { slug } = match.params;
-
   useEffect(() => {
-    if( blogService ) {
+    if (blogService) {
       stableDispatch(fetchPostBySlug(slug, blogService));
     }
   }, [slug, stableDispatch, blogService]);
 
-  return <PostPage />;
+  const {
+    postContent: { postData, loading, error },
+  } = state;
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    return <ErrorIndicator />;
+  }
+
+  if (postData) {
+    return <PostView post={postData} />;
+  }
+
+  return <div>Не удалось загрузить запись</div>;
 };
 
 export default PostContainer;

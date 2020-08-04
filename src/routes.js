@@ -1,11 +1,11 @@
 import React from 'react';
 
-const PostsListContainer = React.lazy(() => import('./containers/posts-list-container'));
-const PostContainer = React.lazy(() => import('./containers/post-container'));
+const PostsPage = React.lazy(() => import('./components/pages/posts-page'));
+const PostPage = React.lazy(() => import('./components/pages/post-page'));
 
 const routes = [
-    { path: '/', exact: true, name: 'Home', component: PostsListContainer },
-    { path: '/post/:slug', exact: true, name: 'Post page', component: PostContainer },
+    { path: '/', exact: true, name: 'Home', component: PostsPage },
+    { path: '/post/:slug', exact: true, name: 'Post page', component: PostPage },
 ]
 
 export default routes;

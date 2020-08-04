@@ -1,9 +1,6 @@
 import PostModel from "../types/PostModel";
-import { PostsActionTypes, PostsObjectActionTypes } from "../actions/postsList/types";
-
-export type InitialStateType = {
-    postsList: PostState
-};
+import { PostsObjectActionTypes, PostsActionTypes } from "../actions/postsList/types";
+import { PostContentObjectActionTypes, PostsContentActionTypes } from "../actions/postContent/types";
 
 export type PostState = {
     posts: PostModel[],
@@ -11,8 +8,23 @@ export type PostState = {
     error: null | Error
 }
 
+export type PostContentState = {
+    postData: null | PostModel,
+    loading: boolean,
+    error: null | Error
+}
+
+export type InitialStateType = {
+    postsList: PostState
+    postContent: PostContentState
+};
+
+export type AppActionsTypes = PostsActionTypes | PostsContentActionTypes;
+
+export type AppObjectActionsTypes = PostsObjectActionTypes | PostContentObjectActionTypes;
+
 export interface MainReducerInterface {
-    (pervState: InitialStateType, action: PostsObjectActionTypes): InitialStateType
+    (pervState: InitialStateType, action: AppObjectActionsTypes): InitialStateType
 }
 
 export interface EnhancedStoreInterface<S, A> {
@@ -21,5 +33,5 @@ export interface EnhancedStoreInterface<S, A> {
 
 export type AppContextType = {
     state: InitialStateType,
-    dispatch: React.Dispatch<PostsActionTypes>
+    dispatch: React.Dispatch<AppActionsTypes>
 }

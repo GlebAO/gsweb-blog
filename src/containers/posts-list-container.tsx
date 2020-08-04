@@ -3,13 +3,12 @@ import { AppContext } from "../reducers";
 import { fetchPosts } from "../actions/postsList/actions";
 import { Spinner } from "../components/brand-logo";
 
-import { PostsPage } from "../components/pages";
+import PostsList from "../components/post/posts-list";
 import BlogServiceContext from "../components/blog-service-context";
 
 const PostsListContainer = () => {
   const { state, dispatch } = useContext(AppContext);
   const blogService = useContext(BlogServiceContext);
-
   const stableDispatch = useCallback(dispatch, []);
 
   useEffect(() => {
@@ -17,12 +16,6 @@ const PostsListContainer = () => {
       stableDispatch(fetchPosts(blogService));
     }
   }, [stableDispatch, blogService]);
-
-  const handleClick = () => {
-    if (blogService) {
-      dispatch(fetchPosts(blogService));
-    }
-  }
 
   const {
     postsList: { posts, loading, error },
@@ -36,14 +29,7 @@ const PostsListContainer = () => {
     return <Spinner />;
   }
 
-  return (
-    <div>
-      <PostsPage posts={posts} />
-      <button onClick={handleClick}>test</button>
-    </div>
-  );
-  
-  
+  return <PostsList posts={posts} />;
 };
 
 export default PostsListContainer;

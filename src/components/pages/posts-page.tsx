@@ -1,12 +1,11 @@
 import React from "react";
-import PostsList from "../post/posts-list";
-import PostModel from "../../types/PostModel";
+import { PostsListContainer } from "../../containers";
 
-const PostsPage: React.FC<{ posts: PostModel[] }> = ({ posts }) => {
+const PostsPage = () => {
   return (
     <div className="posts-page row">
       <div className="col-md-9">
-        <PostsList posts={posts} />
+        <PostsListContainer />
       </div>
       <div className="col-md-3"></div>
     </div>

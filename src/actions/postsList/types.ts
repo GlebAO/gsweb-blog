@@ -22,3 +22,4 @@ export type PostsObjectActionTypes = PostsRequestedAction | PostsLoadedAction | 
 export type PostsFunctionActionTypes = (dispatch: React.Dispatch<PostsObjectActionTypes>, getState: () => InitialStateType) => void;
 
 export type PostsActionTypes = PostsObjectActionTypes | PostsFunctionActionTypes;
+

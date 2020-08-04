@@ -5,15 +5,14 @@ import {
   MainReducerInterface,
   EnhancedStoreInterface,
   AppContextType,
+  AppActionsTypes
 } from "./types";
-import {
-  PostsActionTypes,
-  PostsObjectActionTypes,
-  PostsFunctionActionTypes,
-} from "../actions/postsList/types";
+
+import postContentReducer from "./post-content-reducer";
 
 const initialState: InitialStateType = {
   postsList: { posts: [], loading: false, error: null },
+  postContent: {postData: null, loading: false, error: null }
 };
 
 const AppContext = React.createContext<AppContextType>({
@@ -22,19 +21,22 @@ const AppContext = React.createContext<AppContextType>({
 });
 
 const mainReducer: MainReducerInterface = (state, action) => {
-  const { postsList } = state;
+  const { postsList, postContent } = state;
 
-  return { postsList: postReducer(postsList, action) };
+  return { 
+    postsList: postReducer(postsList, action),
+    postContent: postContentReducer(postContent, action) 
+  };
 };
 
 const useEnhancedReducer: EnhancedStoreInterface<
   InitialStateType,
-  PostsActionTypes
+  AppActionsTypes
 > = (reducerFn, currentState) => {
   const [state, originalDispatch] = useReducer(reducerFn, currentState);
 
   const dispatch = (
-    action: PostsObjectActionTypes | PostsFunctionActionTypes
+    action: AppActionsTypes
   ) => {
     if (typeof action === "function") {
       action(originalDispatch, () => state);

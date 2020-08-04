@@ -24,21 +24,18 @@ const postsError = (error: Error): PostsObjectActionTypes => {
 };
 
 const fetchPosts = (service: BlogServiceInterface) => (dispatch: React.Dispatch<PostsObjectActionTypes>, getState: () => InitialStateType): void => {
-    dispatch(postsRequested());
-    service.getPosts()
-        .then((data) => dispatch(postsLoaded(data)))
-        .catch((err) => dispatch(postsError(err)));
-}
-
-
-const fetchPostBySlug = (slug:string, service: BlogServiceInterface) => (dispatch: React.Dispatch<PostsObjectActionTypes>, getState: () => InitialStateType):void => {
     const state = getState();
-    const postBySlug = state.postsList.posts.find( post => post.slug === slug);
-    if( postBySlug ) {
-        console.log( postBySlug )
-    } else {
-        console.log('need to go to server')
+    const posts = state.postsList.posts;
+    if(posts.length > 0) {
+        dispatch(postsLoaded(posts))
+    }else{
+        dispatch(postsRequested());
+        service.getPosts()
+            .then((data) => dispatch(postsLoaded(data)))
+            .catch((err) => dispatch(postsError(err)));
     }
+   
 }
 
-export { fetchPosts, fetchPostBySlug }
+
+export { fetchPosts }
