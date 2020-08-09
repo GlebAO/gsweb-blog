@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BlogServiceInterface } from "../../services/types"
+import { BlogServiceInterface } from "../services/types"
 
 const BlogServiceContext = React.createContext<BlogServiceInterface | null>(null);
 

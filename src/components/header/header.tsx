@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { BrandLogo } from "../../brand-logo";
+import { BrandLogo } from "../common/brand-logo";
 
 import "./header.scss";
 
@@ -12,7 +12,14 @@ const Header = () => {
           <Link to="/" className="nvbar-brand">
             <BrandLogo />
           </Link>
-          <div className="navbar-right"></div>
+          <div className="navbar-right">
+            <Link to="/login" className="btn btn-link">
+              Войти
+            </Link>
+            <Link to="/signup" className="btn btn-outline-primary">
+              Зарегистрироваться
+            </Link>
+          </div>
         </div>
       </nav>
     </header>

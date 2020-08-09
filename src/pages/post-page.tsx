@@ -1,6 +1,6 @@
 import React from "react";
 import { RouteComponentProps } from "react-router";
-import PostContainer from "../../containers/post-container";
+import PostContainer from "../containers/post-container";
 
 interface MatchParams {
   slug: string;

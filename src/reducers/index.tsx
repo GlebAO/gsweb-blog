@@ -1,18 +1,42 @@
 import React, { useReducer } from "react";
 import postReducer from "./post-reducer";
+import authReducer from "./auth-reducer";
 import {
   InitialStateType,
   MainReducerInterface,
   EnhancedStoreInterface,
   AppContextType,
-  AppActionsTypes
+  AppActionsTypes,
 } from "./types";
+import { UserInfoType } from "../types/UserModel";
 
 import postContentReducer from "./post-content-reducer";
 
+const getAuthenticated = () => {
+  const auth = localStorage.getItem("authenticated");
+  return auth ? true : false;
+}
+
+const getUserInfo = (): UserInfoType | {} => {
+  const userInfo = localStorage.getItem("userInfo");
+  return userInfo ? JSON.parse(userInfo) : {};
+};
+
+const getExpiresAt = () => {
+  const expiresAt = localStorage.getItem("expiresAt");
+  return expiresAt ? parseInt(expiresAt) : null;
+};
+
 const initialState: InitialStateType = {
+  auth: {
+    requested: false,
+    message: '',
+    authenticated: getAuthenticated(),
+    userInfo: getUserInfo(),
+    expiresAt: getExpiresAt(),
+  },
   postsList: { posts: [], loading: false, error: null },
-  postContent: {postData: null, loading: false, error: null }
+  postContent: { postData: null, loading: false, error: null },
 };
 
 const AppContext = React.createContext<AppContextType>({
@@ -21,11 +45,12 @@ const AppContext = React.createContext<AppContextType>({
 });
 
 const mainReducer: MainReducerInterface = (state, action) => {
-  const { postsList, postContent } = state;
+  const { postsList, postContent, auth } = state;
 
-  return { 
+  return {
+    auth: authReducer(auth, action),
     postsList: postReducer(postsList, action),
-    postContent: postContentReducer(postContent, action) 
+    postContent: postContentReducer(postContent, action),
   };
 };
 
@@ -35,9 +60,7 @@ const useEnhancedReducer: EnhancedStoreInterface<
 > = (reducerFn, currentState) => {
   const [state, originalDispatch] = useReducer(reducerFn, currentState);
 
-  const dispatch = (
-    action: AppActionsTypes
-  ) => {
+  const dispatch = (action: AppActionsTypes) => {
     if (typeof action === "function") {
       action(originalDispatch, () => state);
     }

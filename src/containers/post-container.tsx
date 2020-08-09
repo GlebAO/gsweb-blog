@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useCallback } from "react";
 
 import { AppContext } from "../reducers";
-import BlogServiceContext from "../components/blog-service-context";
+import { BlogServiceContext } from "../context";
 import { fetchPostBySlug } from "../actions/postContent/actions";
 
 import Spinner from "../components/common/spinner";

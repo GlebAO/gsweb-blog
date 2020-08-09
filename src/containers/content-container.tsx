@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { Spinner } from "../components/brand-logo";
+import { Spinner } from "../components/common/brand-logo";
 import routes from "../routes";
 
 const ContentContainer = () => {

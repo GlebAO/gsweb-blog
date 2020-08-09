@@ -1,4 +1,4 @@
 import BrandLogo from './brand-logo';
-import Spinner from "../common/spinner";
+import Spinner from "../spinner";
 
 export { BrandLogo, Spinner }

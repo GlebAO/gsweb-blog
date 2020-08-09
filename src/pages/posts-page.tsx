@@ -1,5 +1,5 @@
 import React from "react";
-import { PostsListContainer } from "../../containers";
+import { PostsListContainer } from "../containers";
 
 const PostsPage = () => {
   return (

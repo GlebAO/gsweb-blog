@@ -1,7 +1,7 @@
 import React from 'react';
 
-const PostsPage = React.lazy(() => import('./components/pages/posts-page'));
-const PostPage = React.lazy(() => import('./components/pages/post-page'));
+const PostsPage = React.lazy(() => import('./pages/posts-page'));
+const PostPage = React.lazy(() => import('./pages/post-page'));
 
 const routes = [
     { path: '/', exact: true, name: 'Home', component: PostsPage },
