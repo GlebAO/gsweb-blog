@@ -1,5 +1,6 @@
 import PostModel from "../types/PostModel";
 import { SignupFormValues } from "../pages/signup";
+import { LoginFormValues } from "../pages/login";
 
 export interface BlogServiceInterface {
     getPosts(): Promise<PostModel[]>,
@@ -9,4 +10,5 @@ export interface BlogServiceInterface {
 
 export interface AuthServiceInterface {
     signup(credentials: SignupFormValues): Promise<any>
+    login(credentials: LoginFormValues): Promise<any>
 }

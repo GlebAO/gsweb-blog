@@ -2,12 +2,15 @@ import {
   FETCH_AUTH_REQUEST,
   FETCH_AUTH_SUCCESS,
   FETCH_AUTH_FAILURE,
+  AUTH_LOGOUT,
+  SET_REDIRECT,
   AuthObjectActionTypes,
 } from "./types";
 import { authPayloadInterface } from "./types";
 import { AuthServiceInterface } from "../../services/types";
 import { InitialStateType } from "../../reducers/types";
 import { SignupFormValues } from "../../pages/signup";
+import { LoginFormValues } from "../../pages/login";
 
 const AuthRequested = (): AuthObjectActionTypes => {
   return {
@@ -15,38 +18,77 @@ const AuthRequested = (): AuthObjectActionTypes => {
   };
 };
 
+const setRedirect = (): AuthObjectActionTypes => {
+  return {
+    type: SET_REDIRECT
+  }
+}
+
 const AuthLoaded = (data: authPayloadInterface): AuthObjectActionTypes => {
+  const { userInfo, expiresAt } = data;
+  localStorage.setItem("authenticated", "true");
+  localStorage.setItem("userInfo", JSON.stringify(userInfo));
+  localStorage.setItem("expiresAt", expiresAt.toString());
   return {
     type: FETCH_AUTH_SUCCESS,
     payload: data,
   };
 };
 
-const AuthError = (error:Error): AuthObjectActionTypes => {
+const AuthError = (error: Error): AuthObjectActionTypes => {
   return {
     type: FETCH_AUTH_FAILURE,
     payload: error,
   };
 };
 
+export const logout = (): AuthObjectActionTypes => {
+  localStorage.removeItem("authenticated");
+  localStorage.removeItem("userInfo");
+  localStorage.removeItem("expiresAt");
+  return {
+    type: AUTH_LOGOUT
+  }
+}
+
+export const login = (service: AuthServiceInterface,
+  credentials: LoginFormValues) => (
+    dispatch: React.Dispatch<AuthObjectActionTypes>,
+    getState: () => InitialStateType
+  ): void => {
+    dispatch(AuthRequested());
+    service
+    .login(credentials)
+    .then((data) => {
+      dispatch(AuthLoaded(data));
+      setTimeout(() => {
+        dispatch(setRedirect());
+      }, 700);
+    })
+    .catch((err) => {
+      const { error } = err.response.data;
+      dispatch(AuthError(error));
+    });
+  }
+
 export const authenticate = (
   service: AuthServiceInterface,
-  credentials: SignupFormValues,
-  cb: ()=>void
+  credentials: SignupFormValues
 ) => (
   dispatch: React.Dispatch<AuthObjectActionTypes>,
   getState: () => InitialStateType
 ): void => {
   dispatch(AuthRequested());
-  service.signup(credentials)
-        .then((data) => {
-            dispatch(AuthLoaded(data))
-            setTimeout(() => {
-                cb();
-            }, 700);
-        })
-        .catch((err) => {
-            const { error } = err.response.data;
-            dispatch(AuthError(error))
-        });
+  service
+    .signup(credentials)
+    .then((data) => {
+      dispatch(AuthLoaded(data));
+      setTimeout(() => {
+        dispatch(setRedirect());
+      }, 700);
+    })
+    .catch((err) => {
+      const { error } = err.response.data;
+      dispatch(AuthError(error));
+    });
 };

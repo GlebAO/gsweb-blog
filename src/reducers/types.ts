@@ -28,6 +28,7 @@ export type AuthState = {
   authenticated: boolean;
   userInfo: UserInfoType | {};
   expiresAt: number | null;
+  setRedirect: boolean
 };
 
 export type InitialStateType = {
@@ -60,4 +61,6 @@ export interface EnhancedStoreInterface<S, A> {
 export type AppContextType = {
   state: InitialStateType;
   dispatch: React.Dispatch<AppActionsTypes>;
+  isAuthenticated: () => boolean;
+  getUserInfo: () => UserInfoType;
 };

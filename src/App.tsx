@@ -17,6 +17,7 @@ const LayoutContainer = React.lazy(() =>
 //Pages
 const Page404 = React.lazy(() => import("./pages/404"));
 const Signup = React.lazy(() => import("./pages/signup"));
+const Login = React.lazy(() => import("./pages/login"));
 
 const blogService = new BlogService();
 const authService = new AuthService();
@@ -31,6 +32,7 @@ function App() {
               <Switch>
                 <Route exact path="/404" render={() => <Page404 />} />
                 <Route exact path="/signup" render={() => <Signup />} />
+                <Route exact path="/login" render={() => <Login />} />
                 <Route path="/" render={() => <LayoutContainer />} />
               </Switch>
             </React.Suspense>

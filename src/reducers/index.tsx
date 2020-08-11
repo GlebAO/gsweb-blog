@@ -15,7 +15,7 @@ import postContentReducer from "./post-content-reducer";
 const getAuthenticated = () => {
   const auth = localStorage.getItem("authenticated");
   return auth ? true : false;
-}
+};
 
 const getUserInfo = (): UserInfoType | {} => {
   const userInfo = localStorage.getItem("userInfo");
@@ -30,10 +30,11 @@ const getExpiresAt = () => {
 const initialState: InitialStateType = {
   auth: {
     requested: false,
-    message: '',
+    message: "",
     authenticated: getAuthenticated(),
     userInfo: getUserInfo(),
     expiresAt: getExpiresAt(),
+    setRedirect: getAuthenticated(),
   },
   postsList: { posts: [], loading: false, error: null },
   postContent: { postData: null, loading: false, error: null },
@@ -42,6 +43,8 @@ const initialState: InitialStateType = {
 const AppContext = React.createContext<AppContextType>({
   state: initialState,
   dispatch: () => null,
+  isAuthenticated: () => false,
+  getUserInfo: () => ({name:"", email: "", role: ""}),
 });
 
 const mainReducer: MainReducerInterface = (state, action) => {
@@ -74,8 +77,34 @@ const useEnhancedReducer: EnhancedStoreInterface<
 
 const AppProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useEnhancedReducer(mainReducer, initialState);
+
+  //AUTH HELPERS
+  const { auth } = state;
+  const isAuthenticated = () => {
+    if (!auth.authenticated || !auth.expiresAt) {
+      return false;
+    }
+    return new Date().getTime() / 1000 < auth.expiresAt;
+  };
+  const getUserInfo = () => {
+    const { userInfo } = auth;
+    const data = { name: "", email: "", role: "" };
+    if ("name" in userInfo) {
+      data.name = userInfo.name;
+    }
+    if ("email" in userInfo) {
+      data.email = userInfo.email;
+    }
+    if ("role" in userInfo) {
+      data.role = userInfo.role;
+    }
+    return data;
+  };
+
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
+    <AppContext.Provider
+      value={{ state, dispatch, isAuthenticated, getUserInfo }}
+    >
       {children}
     </AppContext.Provider>
   );

@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { BrandLogo } from "../common/brand-logo";
+import { AppContext } from "../../reducers";
+import AvatarDropdown from "../common/avatar-dropdown";
 
 import "./header.scss";
 
 const Header = () => {
+  const appContext = useContext(AppContext);
   return (
     <header className="header mb-2">
       <nav className="navbar bg-white navbar-expand-lg shadow-sm">
@@ -13,12 +16,18 @@ const Header = () => {
             <BrandLogo />
           </Link>
           <div className="navbar-right">
-            <Link to="/login" className="btn btn-link">
-              Войти
-            </Link>
-            <Link to="/signup" className="btn btn-outline-primary">
-              Зарегистрироваться
-            </Link>
+            {appContext.isAuthenticated() ? (
+              <AvatarDropdown />
+            ) : (
+              <div>
+                <Link to="/login" className="btn btn-link">
+                  Войти
+                </Link>
+                <Link to="/signup" className="btn btn-outline-primary">
+                  Зарегистрироваться
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </nav>

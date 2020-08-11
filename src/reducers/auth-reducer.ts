@@ -2,14 +2,21 @@ import { AuthState, AppObjectActionsTypes } from "./types";
 import {
   FETCH_AUTH_REQUEST,
   FETCH_AUTH_SUCCESS,
-  FETCH_AUTH_FAILURE
+  FETCH_AUTH_FAILURE,
+  SET_REDIRECT,
+  AUTH_LOGOUT,
 } from "../actions/auth/types";
 
 const authReducer = (
   state: AuthState,
   action: AppObjectActionsTypes
-):AuthState => {
+): AuthState => {
   switch (action.type) {
+    case SET_REDIRECT:
+      return {
+        ...state,
+        setRedirect: true
+      }
     case FETCH_AUTH_REQUEST:
       return {
         requested: true,
@@ -17,14 +24,17 @@ const authReducer = (
         authenticated: false,
         userInfo: {},
         expiresAt: null,
+        setRedirect: false
       };
     case FETCH_AUTH_SUCCESS:
+      const { message, userInfo, expiresAt } = action.payload;
       return {
         requested: false,
-        message: action.payload.message,
+        message: message,
         authenticated: true,
-        userInfo: action.payload.userInfo,
-        expiresAt: action.payload.expiresAt,
+        userInfo: userInfo,
+        expiresAt: expiresAt,
+        setRedirect: false
       };
     case FETCH_AUTH_FAILURE:
       return {
@@ -33,6 +43,16 @@ const authReducer = (
         authenticated: false,
         userInfo: {},
         expiresAt: null,
+        setRedirect: false
+      };
+    case AUTH_LOGOUT:
+      return {
+        requested: false,
+        message: "",
+        authenticated: false,
+        userInfo: {},
+        expiresAt: null,
+        setRedirect: false
       };
     default:
       return state;
