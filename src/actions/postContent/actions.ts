@@ -8,6 +8,7 @@ import PostModel from "../../types/PostModel";
 import { InitialStateType } from "../../reducers/types";
 import { BlogServiceInterface } from "../../services/types";
 
+
 const postContentRequested = (): PostContentObjectActionTypes => {
   return {
     type: FETCH_POST_CONTENT_REQUEST,

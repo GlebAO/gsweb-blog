@@ -1,5 +1,5 @@
 import React from "react";
-import Footer from "../components/common/footer";
+import Footer from "../components/footer";
 
 const FooterComponent = () => {
   return <Footer />;
