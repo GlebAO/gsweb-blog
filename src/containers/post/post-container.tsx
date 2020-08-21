@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useCallback } from "react";
+import React, { useContext, useLayoutEffect, useCallback } from "react";
 
-import { AppContext } from "../reducers";
-import { BlogServiceContext } from "../context";
-import { fetchPostBySlug } from "../actions/postContent/actions";
+import { AppContext } from "../../reducers";
+import { BlogServiceContext } from "../../context";
+import { fetchPostBySlug } from "../../actions/postContent/actions";
 
-import Spinner from "../components/common/spinner";
-import ErrorIndicator from "../components/common/error-indicator";
-import PostView from "../components/post/post-view";
+import { Spinner } from "../../components/common/spinner";
+import PostView from "../../components/post/post-view";
+import { Redirect } from "react-router-dom";
 
 interface PostContainerProps {
   slug: string;
@@ -18,7 +18,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ slug }) => {
 
   const stableDispatch = useCallback(dispatch, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (blogService) {
       stableDispatch(fetchPostBySlug(slug, blogService));
     }
@@ -33,7 +33,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ slug }) => {
   }
 
   if (error) {
-    return <ErrorIndicator />;
+    return <Redirect to="/404" />;
   }
 
   if (postData) {

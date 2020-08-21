@@ -1,7 +1,8 @@
 import Page404 from "./404";
-import PostsPage from "./posts-page";
-import PostPage from "./post-page";
-import Signup from "./signup";
-import Login from "./login";
+import PostsPage from "./post/posts-page";
+import PostPage from "./post/post-page";
+import Signup from "./auth/signup";
+import Login from "./auth/login";
+import EditPostPage from "./post/edit-post-page";
 
-export { Page404, PostsPage, PostPage, Signup, Login };
+export { Page404, PostsPage, PostPage, Signup, Login, EditPostPage };

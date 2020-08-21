@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Spinner } from "./components/common/brand-logo";
+import { Spinner } from "./components/common/spinner";
 import { AppProvider } from "./reducers";
 //import DummyBlogService from "./services/dummy-blog-service";
 import BlogService from "./services/blog-service";
@@ -16,8 +16,8 @@ const LayoutContainer = React.lazy(() =>
 
 //Pages
 const Page404 = React.lazy(() => import("./pages/404"));
-const Signup = React.lazy(() => import("./pages/signup"));
-const Login = React.lazy(() => import("./pages/login"));
+const Signup = React.lazy(() => import("./pages/auth/signup"));
+const Login = React.lazy(() => import("./pages/auth/login"));
 
 const blogService = new BlogService();
 const authService = new AuthService();

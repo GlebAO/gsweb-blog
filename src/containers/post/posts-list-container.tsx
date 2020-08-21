@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useCallback } from "react";
-import { AppContext } from "../reducers";
-import { fetchPosts } from "../actions/postsList/actions";
-import { Spinner } from "../components/common/brand-logo";
+import { AppContext } from "../../reducers";
+import { fetchPosts } from "../../actions/postsList/actions";
+import { Spinner } from "../../components/common/spinner";
 
-import PostsList from "../components/post/posts-list";
-import { BlogServiceContext } from "../context";
+import PostsList from "../../components/post/posts-list";
+import { BlogServiceContext } from "../../context";
 
 const PostsListContainer = () => {
   const { state, dispatch } = useContext(AppContext);

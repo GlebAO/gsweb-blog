@@ -1,6 +1,6 @@
 import { publicFetch } from "./fetch";
-import { SignupFormValues } from "../pages/signup";
-import { LoginFormValues } from "../pages/login";
+import { SignupFormValues } from "../pages/auth/signup";
+import { LoginFormValues } from "../pages/auth/login";
 
 export default class AuthService {
   signup = async (credentials: SignupFormValues) => {

@@ -9,8 +9,9 @@ import {
 import { authPayloadInterface } from "./types";
 import { AuthServiceInterface } from "../../services/types";
 import { InitialStateType } from "../../reducers/types";
-import { SignupFormValues } from "../../pages/signup";
-import { LoginFormValues } from "../../pages/login";
+import { SignupFormValues } from "../../pages/auth/signup";
+import { LoginFormValues } from "../../pages/auth/login";
+import { getErrorObject } from "../../utils/error-utils";
 
 const AuthRequested = (): AuthObjectActionTypes => {
   return {
@@ -66,8 +67,7 @@ export const login = (service: AuthServiceInterface,
       }, 700);
     })
     .catch((err) => {
-      const { error } = err.response.data;
-      dispatch(AuthError(error));
+        dispatch(AuthError(getErrorObject(err)));   
     });
   }
 
@@ -88,7 +88,6 @@ export const authenticate = (
       }, 700);
     })
     .catch((err) => {
-      const { error } = err.response.data;
-      dispatch(AuthError(error));
+      dispatch(AuthError(typeof err.response.data === "object" ? err.response.data.error : err)); 
     });
 };

@@ -1,6 +1,9 @@
 import { BlogServiceInterface } from "./types";
+import { authFetch } from "./fetch";
+import { PostFormValues } from "../components/post/post-form/post-form"
 
 export default class BlogService implements BlogServiceInterface {
+
   _apiBase = process.env.REACT_APP_API_URL;
 
   protected getResource = async (url: string) => {
@@ -40,6 +43,16 @@ export default class BlogService implements BlogServiceInterface {
 
     return jsonData;
   };
+
+  createPost = async (values: PostFormValues) => {
+    const res = await authFetch.post('/posts', values);
+    return res.data
+  }
+
+  updatePost = async (postId:number , values: PostFormValues) => {
+    const res = await authFetch.patch(`/posts/${postId}`, values);
+    return res.data
+  }
 
   test() {
     console.log("testing...");

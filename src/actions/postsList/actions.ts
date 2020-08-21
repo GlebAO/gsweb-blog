@@ -1,4 +1,4 @@
-import { PostsObjectActionTypes, FETCH_POSTS_FAILURE, FETCH_POSTS_REQUEST, FETCH_POSTS_SUCCESS} from "./types";
+import { PostsObjectActionTypes, FETCH_POSTS_FAILURE, FETCH_POSTS_REQUEST, FETCH_POSTS_SUCCESS } from "./types";
 import PostModel from "../../types/PostModel";
 import { InitialStateType } from "../../reducers/types";
 import { BlogServiceInterface } from "../../services/types";
@@ -26,15 +26,14 @@ const postsError = (error: Error): PostsObjectActionTypes => {
 const fetchPosts = (service: BlogServiceInterface) => (dispatch: React.Dispatch<PostsObjectActionTypes>, getState: () => InitialStateType): void => {
     const state = getState();
     const posts = state.postsList.posts;
-    if(posts.length > 0) {
+    if (posts.length > 0) {
         dispatch(postsLoaded(posts))
-    }else{
+    } else {
         dispatch(postsRequested());
         service.getPosts()
             .then((data) => dispatch(postsLoaded(data)))
             .catch((err) => dispatch(postsError(err)));
     }
-   
 }
 
 

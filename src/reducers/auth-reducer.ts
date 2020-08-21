@@ -15,6 +15,7 @@ const authReducer = (
     case SET_REDIRECT:
       return {
         ...state,
+        message: "",
         setRedirect: true
       }
     case FETCH_AUTH_REQUEST:

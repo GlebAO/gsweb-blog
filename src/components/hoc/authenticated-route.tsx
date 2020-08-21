@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import { Route, Redirect } from "react-router-dom";
-import { AppContext } from "../../reducers/index";
+import React from "react";
+import { Route, Redirect, useLocation } from "react-router-dom";
+import { useAppContext } from "../../reducers/index";
 
 interface AuthRouteProps {
   exact?: boolean;
@@ -9,12 +9,14 @@ interface AuthRouteProps {
 }
 
 const AuthenticatedRoute = ({ component: Component, ...rest }: AuthRouteProps) => {
-  const appContext = useContext(AppContext);
+  const appContext = useAppContext();
+  const { pathname, search } = useLocation();
+
   return (
     <Route
       {...rest}
       render={(props) =>
-        appContext.isAuthenticated() ? <Component {...props}/> : <Redirect to="/" />
+        appContext.isAuthenticated() ? <Component {...props}/> : <Redirect to={`/login?redirect=${pathname}${search}`} />
       }
     />
   );

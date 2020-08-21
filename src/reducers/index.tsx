@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import postReducer from "./post-reducer";
 import authReducer from "./auth-reducer";
 import {
@@ -11,6 +11,7 @@ import {
 import { UserInfoType } from "../types/UserModel";
 
 import postContentReducer from "./post-content-reducer";
+import postFormReducer from "./post-form-reducer";
 
 const getAuthenticated = () => {
   const auth = localStorage.getItem("authenticated");
@@ -36,6 +37,7 @@ const initialState: InitialStateType = {
     expiresAt: getExpiresAt(),
     setRedirect: getAuthenticated(),
   },
+  postForm: { postData: null, loading: false, error: null },
   postsList: { posts: [], loading: false, error: null },
   postContent: { postData: null, loading: false, error: null },
 };
@@ -44,16 +46,19 @@ const AppContext = React.createContext<AppContextType>({
   state: initialState,
   dispatch: () => null,
   isAuthenticated: () => false,
-  getUserInfo: () => ({name:"", email: "", role: ""}),
+  isAdmin: () => false,
+  canEdit: () => false,
+  getUserInfo: () => ({ sub: null, name: "", email: "", role: "" }),
 });
 
 const mainReducer: MainReducerInterface = (state, action) => {
-  const { postsList, postContent, auth } = state;
+  const { postsList, postContent, auth, postForm } = state;
 
   return {
     auth: authReducer(auth, action),
     postsList: postReducer(postsList, action),
     postContent: postContentReducer(postContent, action),
+    postForm: postFormReducer(postForm, action),
   };
 };
 
@@ -88,7 +93,15 @@ const AppProvider: React.FC = ({ children }) => {
   };
   const getUserInfo = () => {
     const { userInfo } = auth;
-    const data = { name: "", email: "", role: "" };
+    const data: UserInfoType = {
+      sub: null,
+      name: "",
+      email: "",
+      role: "guest",
+    };
+    if ("sub" in userInfo) {
+      data.sub = userInfo.sub;
+    }
     if ("name" in userInfo) {
       data.name = userInfo.name;
     }
@@ -101,13 +114,43 @@ const AppProvider: React.FC = ({ children }) => {
     return data;
   };
 
+  const isAdmin = () => {
+    const userInfo = getUserInfo();
+    return userInfo.role === "admin";
+  };
+
+  const isRedactor = () => {
+    const userInfo = getUserInfo();
+    return userInfo.role === "redactor";
+  };
+
+  const canEdit = (userId: number) => {
+    const userInfo = getUserInfo();
+    return (
+      isAuthenticated() &&
+      (isRedactor() || isAdmin()) &&
+      userId === userInfo.sub
+    );
+  };
+
   return (
     <AppContext.Provider
-      value={{ state, dispatch, isAuthenticated, getUserInfo }}
+      value={{
+        state,
+        dispatch,
+        isAuthenticated,
+        getUserInfo,
+        isAdmin,
+        canEdit,
+      }}
     >
       {children}
     </AppContext.Provider>
   );
 };
 
-export { AppContext, AppProvider };
+const useAppContext = () => {
+  return useContext(AppContext);
+}
+
+export { AppContext, AppProvider, useAppContext };

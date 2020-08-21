@@ -3,4 +3,7 @@ export default interface PostModel {
     title: string,
     slug: string,
     content: string
+    userId: number
+    createdAt: string
+    updatedAt: string
 }
