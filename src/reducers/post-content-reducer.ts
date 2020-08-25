@@ -4,11 +4,12 @@ import {
   FETCH_POST_CONTENT_REQUEST,
   FETCH_POST_CONTENT_FAILURE,
 } from "../actions/postContent/types";
+import { FETCH_POST_FORM_SUCCESS } from "../actions/postForm/types";
 
 const postContentReducer = (
   state: PostContentState,
   action: AppObjectActionsTypes
-):PostContentState => {
+): PostContentState => {
   switch (action.type) {
     case FETCH_POST_CONTENT_REQUEST:
       return {
@@ -27,6 +28,13 @@ const postContentReducer = (
         postData: null,
         loading: false,
         error: action.payload,
+      };
+    //update posts content, when new post created or updated
+    case FETCH_POST_FORM_SUCCESS:
+      return {
+        postData: null,
+        loading: false,
+        error: null,
       };
     default:
       return state;

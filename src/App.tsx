@@ -6,6 +6,7 @@ import { AppProvider } from "./reducers";
 import BlogService from "./services/blog-service";
 import AuthService from "./services/auth-service";
 import { BlogServiceContext, AuthServiceContext } from "./context";
+import ErrorBoundary from "./components/common/error-boundary";
 
 import "./scss/style.scss";
 
@@ -26,18 +27,20 @@ function App() {
   return (
     <AuthServiceContext.Provider value={authService}>
       <BlogServiceContext.Provider value={blogService}>
-        <AppProvider>
-          <Router>
-            <React.Suspense fallback={<Spinner />}>
-              <Switch>
-                <Route exact path="/404" render={() => <Page404 />} />
-                <Route exact path="/signup" render={() => <Signup />} />
-                <Route exact path="/login" render={() => <Login />} />
-                <Route path="/" render={() => <LayoutContainer />} />
-              </Switch>
-            </React.Suspense>
-          </Router>
-        </AppProvider>
+        <ErrorBoundary>
+          <AppProvider>
+            <Router>
+              <React.Suspense fallback={<Spinner />}>
+                <Switch>
+                  <Route exact path="/404" render={() => <Page404 />} />
+                  <Route exact path="/signup" render={() => <Signup />} />
+                  <Route exact path="/login" render={() => <Login />} />
+                  <Route path="/" render={() => <LayoutContainer />} />
+                </Switch>
+              </React.Suspense>
+            </Router>
+          </AppProvider>
+        </ErrorBoundary>
       </BlogServiceContext.Provider>
     </AuthServiceContext.Provider>
   );

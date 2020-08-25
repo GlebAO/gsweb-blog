@@ -1,6 +1,6 @@
 import React, { useContext, useCallback, useEffect } from "react";
 import PostForm from "../../components/post/post-form";
-import { AppContext } from "../../reducers";
+import { useAppContext } from "../../reducers";
 import { BlogServiceContext } from "../../context";
 import { fetchPostBySlug } from "../../actions/postContent/actions";
 import { Spinner } from "../../components/common/spinner";
@@ -11,7 +11,7 @@ interface EditPostContainerProps {
 }
 
 const EditPostContainer:React.FC<EditPostContainerProps> = ({ slug }) => {
-  const { state, dispatch } = useContext(AppContext);
+  const { state, dispatch } = useAppContext();
   const blogService = useContext(BlogServiceContext);
 
   const stableDispatch = useCallback(dispatch, []);

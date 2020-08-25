@@ -58,7 +58,7 @@ const mainReducer: MainReducerInterface = (state, action) => {
     auth: authReducer(auth, action),
     postsList: postReducer(postsList, action),
     postContent: postContentReducer(postContent, action),
-    postForm: postFormReducer(postForm, action),
+    postForm: postFormReducer( postForm, action)
   };
 };
 
