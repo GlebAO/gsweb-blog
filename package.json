@@ -6,7 +6,10 @@
     "type": "git",
     "url": "https://github.com/GlebAO/gsweb-blog"
   },
-  "keywords": ["typescript", "blog app"],
+  "keywords": [
+    "typescript",
+    "blog app"
+  ],
   "author": "Gleb Averyanov",
   "license": "MIT",
   "dependencies": {

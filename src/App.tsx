@@ -14,6 +14,9 @@ import "./scss/style.scss";
 const LayoutContainer = React.lazy(() =>
   import("./containers/layout-container")
 );
+const BackendLayoutContainer = React.lazy(() =>
+  import("./containers/backend-layout-container")
+);
 
 //Pages
 const Page404 = React.lazy(() => import("./pages/404"));
@@ -35,6 +38,7 @@ function App() {
                   <Route exact path="/404" render={() => <Page404 />} />
                   <Route exact path="/signup" render={() => <Signup />} />
                   <Route exact path="/login" render={() => <Login />} />
+                  <Route path="/backend" render={() => <BackendLayoutContainer />} />
                   <Route path="/" render={() => <LayoutContainer />} />
                 </Switch>
               </React.Suspense>

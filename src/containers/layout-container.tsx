@@ -7,7 +7,9 @@ const LayoutContainer = () => {
       <HeaderContainer />
       <div className="body">
         <div className="container">
-          <ContentContainer />
+          <main>
+            <ContentContainer />
+          </main>
         </div>
       </div>
       <FooterContainer />

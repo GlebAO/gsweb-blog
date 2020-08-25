@@ -3,9 +3,7 @@ import Routes from "../routes";
 
 const ContentContainer = () => {
   return (
-    <main>
       <Routes />
-    </main>
   );
 };
 

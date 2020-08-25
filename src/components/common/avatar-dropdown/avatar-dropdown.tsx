@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 interface dropDownItemProps {
   title: string;
   path: string;
-  onClick: () => void
+  onClick?: () => void
 }
 
 interface dropdownContentProps {
@@ -23,7 +23,7 @@ const DropdownItem: React.FC<{ item: dropDownItemProps }> = ({ item }) => (
 );
 
 const DropdownContent: React.FC<dropdownContentProps> = ({ dropdownItems }) => {
-  const { dispatch } = useContext(AppContext);
+  const { dispatch, isAdmin } = useContext(AppContext);
   return (
     <ul className="dropdown-menu dropdown-menu-right show">
       {dropdownItems.map((item, i) => {
@@ -33,6 +33,7 @@ const DropdownContent: React.FC<dropdownContentProps> = ({ dropdownItems }) => {
           </li>
         );
       })}
+      {isAdmin() && <DropdownItem item={{title: "Backend", path: "/backend"}} /> }
       <li><hr className="dropdown-divider"></hr></li>
       <li>
         <button
