@@ -2,7 +2,6 @@ import React, { Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Spinner } from "./components/common/spinner";
 import { AuthenticatedRoute, AdminRoute } from "./components/route-with-roles";
-import { useAppContext } from "./reducers/index";
 
 const PostsPage = React.lazy(() => import("./pages/post/posts-page"));
 const PostPage = React.lazy(() => import("./pages/post/post-page"));
@@ -23,7 +22,6 @@ const UsersManagement = React.lazy(() =>
 );
 
 const Routes = () => {
-  const { isAdmin } = useAppContext();
   return (
     <Suspense fallback={<Spinner />}>
       <Switch>
@@ -42,17 +40,12 @@ const Routes = () => {
           component={EditPostPage}
         />
         <Route path="/post/:slug" exact component={PostPage} />
-
-        <AuthenticatedRoute
-          path="/backend"
-          exact
-          component={isAdmin() ? Dashboard : ProfileManagement}
-        />
         <AuthenticatedRoute
           path="/backend/profile"
           exact
           component={ProfileManagement}
         />
+        <AdminRoute path="/backend" exact component={Dashboard} />
         <AdminRoute path="/backend/posts" exact component={PostsManagement} />
         <AdminRoute path="/backend/users" exact component={UsersManagement} />
 

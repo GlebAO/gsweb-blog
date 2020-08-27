@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
+import UserContainer from "../../containers/user/user-container";
 
 const UsersManagement = () => {
     return (
         <div>
-            Users manage
+            <h1>Управление пользователями</h1>
+            <UserContainer />
         </div>
     )
 }

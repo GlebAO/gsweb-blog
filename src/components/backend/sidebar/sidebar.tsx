@@ -7,9 +7,11 @@ import {
   faListAlt,
   faUsersCog,
   faChartArea,
+  faExternalLinkSquareAlt,
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import BrandLogoWhite from "../../common/brand-logo-white";
 
 import "./sidebar.scss";
 
@@ -22,16 +24,16 @@ type NavItemType = {
 
 const navItems: NavItemType[] = [
   {
-    label: "Профиль",
-    path: "/backend/profile",
-    icon: faUserAlt,
-    allowedRoles: ["admin", "guest", "redactor"],
-  },
-  {
     label: "Dashboard",
     path: "/backend",
     icon: faChartArea,
     allowedRoles: ["admin"],
+  },
+  {
+    label: "Личные данные",
+    path: "/backend/profile",
+    icon: faUserAlt,
+    allowedRoles: ["admin", "guest", "redactor"],
   },
   {
     label: "Пользователи",
@@ -45,22 +47,28 @@ const navItems: NavItemType[] = [
     icon: faListAlt,
     allowedRoles: ["admin"],
   },
+  {
+    label: "На сайт",
+    path: "/",
+    icon: faExternalLinkSquareAlt,
+    allowedRoles: ["admin", "guest", "redactor"],
+  },
 ];
 
 const NavItem: React.FC<{ navItem: NavItemType }> = ({ navItem }) => {
   const location = useLocation();
-  const isCurrentRoute = location.pathname === `/${navItem.path}`;
+  const isCurrentRoute = location.pathname === `${navItem.path}`;
   const classes = classNames({
     "nav-link": true,
     active: isCurrentRoute,
   });
   return (
     <Link to={navItem.path} className={classes}>
-      <span className="flex items-center">
-        <span className="mr-1">
+      <span className="nav-link-content flex items-center">
+        <span className="nav-link-icon">
           <FontAwesomeIcon icon={navItem.icon} className="feather" />
         </span>
-        <span>{navItem.label}</span>
+        <span className="nav-link-label">{navItem.label}</span>
       </span>
     </Link>
   );
@@ -71,24 +79,32 @@ const NavItemContainer: React.FC<{ key: number }> = ({ children }) => (
 );
 
 const Sidebar = () => {
-  const { getUserInfo } = useAppContext();
+  const { state, getUserInfo } = useAppContext();
   const { role } = getUserInfo();
+  const { backend: {sidebarOpened} } = state;
+
+  const classes = classNames({
+    "sidebar bg-light": true,
+    opened: sidebarOpened,
+  });
 
   return (
-    <nav
-      id="sidebarMenu"
-      className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
-    >
-      <div className="position-sticky pt-3">
-        <ul className="nav flex-column">
-          {navItems.map((navItem, i) => (
-            <NavItemContainer key={i}>
-              {navItem.allowedRoles.includes(role) && (
-                <NavItem navItem={navItem} />
-              )}
-            </NavItemContainer>
-          ))}
-        </ul>
+    <nav id="sidebarMenu" className={classes}>
+      <div className="position-sticky">
+        <Link className="brand-logo d-block bg-dark pb-2 pt-1 px-2 shadow-sm" to="/backend">
+          <BrandLogoWhite width="80" height="35" />
+        </Link>
+        <div className="pt-2">
+          <ul className="nav flex-column">
+            {navItems.map((navItem, i) => (
+              <NavItemContainer key={i}>
+                {navItem.allowedRoles.includes(role) && (
+                  <NavItem navItem={navItem} />
+                )}
+              </NavItemContainer>
+            ))}
+          </ul>
+        </div>
       </div>
     </nav>
   );

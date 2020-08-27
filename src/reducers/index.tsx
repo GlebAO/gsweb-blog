@@ -8,17 +8,18 @@ import {
   AppContextType,
   AppActionsTypes,
 } from "./types";
-import { UserInfoType } from "../types/UserModel";
+import UserModel from "../types/UserModel";
 
 import postContentReducer from "./post-content-reducer";
 import postFormReducer from "./post-form-reducer";
+import backendReducer from "./backend-reducer";
 
 const getAuthenticated = () => {
   const auth = localStorage.getItem("authenticated");
   return auth ? true : false;
 };
 
-const getUserInfo = (): UserInfoType | {} => {
+const getUserInfo = (): UserModel | {} => {
   const userInfo = localStorage.getItem("userInfo");
   return userInfo ? JSON.parse(userInfo) : {};
 };
@@ -40,6 +41,7 @@ const initialState: InitialStateType = {
   postForm: { postData: null, loading: false, error: null },
   postsList: { posts: [], loading: false, error: null },
   postContent: { postData: null, loading: false, error: null },
+  backend: { sidebarOpened: true },
 };
 
 const AppContext = React.createContext<AppContextType>({
@@ -52,13 +54,13 @@ const AppContext = React.createContext<AppContextType>({
 });
 
 const mainReducer: MainReducerInterface = (state, action) => {
-  const { postsList, postContent, auth, postForm } = state;
-
+  const { postsList, postContent, auth, postForm, backend } = state;
   return {
     auth: authReducer(auth, action),
     postsList: postReducer(postsList, action),
     postContent: postContentReducer(postContent, action),
-    postForm: postFormReducer( postForm, action)
+    postForm: postFormReducer(postForm, action),
+    backend: backendReducer(backend, action)
   };
 };
 
@@ -93,12 +95,14 @@ const AppProvider: React.FC = ({ children }) => {
   };
   const getUserInfo = () => {
     const { userInfo } = auth;
-    const data: UserInfoType = {
+
+    const data: UserModel = {
       sub: null,
       name: "",
       email: "",
       role: "guest",
     };
+
     if ("sub" in userInfo) {
       data.sub = userInfo.sub;
     }
@@ -111,6 +115,7 @@ const AppProvider: React.FC = ({ children }) => {
     if ("role" in userInfo) {
       data.role = userInfo.role;
     }
+
     return data;
   };
 
@@ -151,6 +156,6 @@ const AppProvider: React.FC = ({ children }) => {
 
 const useAppContext = () => {
   return useContext(AppContext);
-}
+};
 
 export { AppContext, AppProvider, useAppContext };

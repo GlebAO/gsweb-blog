@@ -2,6 +2,7 @@ import React, { useContext, useState, useRef, useLayoutEffect } from "react";
 import { AppContext } from "../../../reducers";
 import { logout } from "../../../actions/auth/actions";
 import { Link } from "react-router-dom";
+import classNames from "classnames";
 
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,7 +24,7 @@ const DropdownItem: React.FC<{ item: dropDownItemProps }> = ({ item }) => (
 );
 
 const DropdownContent: React.FC<dropdownContentProps> = ({ dropdownItems }) => {
-  const { dispatch, isAdmin } = useContext(AppContext);
+  const { dispatch } = useContext(AppContext);
   return (
     <ul className="dropdown-menu dropdown-menu-right show">
       {dropdownItems.map((item, i) => {
@@ -33,7 +34,6 @@ const DropdownContent: React.FC<dropdownContentProps> = ({ dropdownItems }) => {
           </li>
         );
       })}
-      {isAdmin() && <DropdownItem item={{title: "Backend", path: "/backend"}} /> }
       <li><hr className="dropdown-divider"></hr></li>
       <li>
         <button
@@ -49,7 +49,7 @@ const DropdownContent: React.FC<dropdownContentProps> = ({ dropdownItems }) => {
   );
 };
 
-const AvatarDropdown = () => {
+const AvatarDropdown:React.FC<{theme?: "dark" | "light"}> = ({theme = "light"}) => {
   const node = useRef<HTMLDivElement>(null);
   const { getUserInfo } = useContext(AppContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -59,7 +59,7 @@ const AvatarDropdown = () => {
   const dropdownItems = [
     {
       title: "Профиль",
-      path: "/profile",
+      path: "/backend",
       onClick: () => setDropdownOpen(false)
     },
   ];
@@ -80,11 +80,17 @@ const AvatarDropdown = () => {
     };
   }, []);
 
+  const classes = classNames({
+    "btn  d-flex align-items-center dropdown-toggle": true,
+    "btn-outline-primary": theme === "light",
+    "btn-outline-light": theme === "dark"
+  });
+
   return (
     <div ref={node} className="dropdown">
       <button
         type="button"
-        className="btn btn-outline-primary d-flex align-items-center dropdown-toggle"
+        className={classes}
         onClick={() => setDropdownOpen(!dropdownOpen)}
       >
         <span>{name}</span>

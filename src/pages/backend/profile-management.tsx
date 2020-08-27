@@ -5,7 +5,7 @@ const ProfileManagement = () => {
     const { getUserInfo } = useAppContext();
     const { name, email, role } = getUserInfo();
     return (
-        <div>
+        <div className="profile-management">
             <h1>Профиль</h1>
             <ul className="list-unstyled mb-3">
                 <li>

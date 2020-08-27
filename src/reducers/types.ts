@@ -1,4 +1,5 @@
 import PostModel from "../types/PostModel";
+import UserModel from "../types/UserModel"
 import {
   PostsObjectActionTypes,
   PostsActionTypes,
@@ -12,7 +13,7 @@ import {
   PostsFormActionTypes,
 } from "../actions/postForm/types";
 import { AuthObjectActionTypes, AuthActionTypes } from "../actions/auth/types";
-import { UserInfoType } from "../types/UserModel";
+import { BackendObjectActionTypes } from "../actions/backend/types"
 
 export type PostState = {
   posts: PostModel[];
@@ -36,29 +37,38 @@ export type AuthState = {
   requested: boolean;
   message: string;
   authenticated: boolean;
-  userInfo: UserInfoType | {};
+  userInfo: UserModel | {};
   expiresAt: number | null;
   setRedirect: boolean
 };
+
+export type BackendState = {
+  sidebarOpened: boolean
+}
 
 export type InitialStateType = {
   auth: AuthState;
   postsList: PostState;
   postContent: PostContentState;
   postForm: PostFormState;
+  backend: BackendState;
+  usersList?: { users: UserModel[] }
 };
 
 export type AppActionsTypes =
   | PostsFormActionTypes
   | PostsActionTypes
   | PostsContentActionTypes
-  | AuthActionTypes;
+  | AuthActionTypes
+  | BackendObjectActionTypes;
 
 export type AppObjectActionsTypes =
   | PostFormObjectActionTypes
   | PostsObjectActionTypes
   | PostContentObjectActionTypes
-  | AuthObjectActionTypes;
+  | AuthObjectActionTypes
+  | BackendObjectActionTypes
+
 
 export interface MainReducerInterface {
   (
@@ -75,7 +85,7 @@ export type AppContextType = {
   state: InitialStateType;
   dispatch: React.Dispatch<AppActionsTypes>;
   isAuthenticated: () => boolean;
-  getUserInfo: () => UserInfoType;
+  getUserInfo: () => UserModel;
   isAdmin: () => boolean;
-  canEdit: (userId:number) => boolean;
+  canEdit: (userId: number) => boolean;
 };

@@ -1,4 +1,4 @@
-import { UserInfoType } from "../../types/UserModel";
+import UserModel from "../../types/UserModel";
 import { InitialStateType } from "../../reducers/types";
 
 export const FETCH_AUTH_REQUEST = "FETCH_AUTH_REQUEST";
@@ -9,7 +9,7 @@ export const SET_REDIRECT = "SET_REDIRECT";
 
 export interface authPayloadInterface {
   message: string;
-  userInfo: UserInfoType;
+  userInfo: UserModel;
   expiresAt: number;
 }
 interface SetRedirectAction {

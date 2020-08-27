@@ -1,21 +1,27 @@
 import React from "react";
-import { ContentContainer, FooterContainer } from ".";
+import { ContentContainer } from ".";
 import BackendHeader from "../components/backend/header";
 import Sidebar from "../components/backend/sidebar";
+
+import "./backend-layout-container.scss";
 
 const BackendLayoutContainer = () => {
   return (
     <div className="app">
-      <BackendHeader />
-      <div className="container-fluid">
-        <div className="row">
-          <Sidebar />
-          <main className="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-md-3">
-            <ContentContainer />
-          </main>
-        </div>
+      <div className="d-flex flex-row">
+        <Sidebar />
+        <main className="c-wrapper">
+          <BackendHeader />
+          <div className="c-body">
+            <main className="c-main">
+            <div className="container-fluid">
+              <ContentContainer />
+            </div>
+            </main>
+          </div>
+        </main>
       </div>
-      <FooterContainer />
+      
     </div>
   );
 };

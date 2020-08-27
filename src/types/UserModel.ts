@@ -1,4 +1,4 @@
-export type UserInfoType = {
+export default interface UserInfoType {
     sub: number | null,
     name: string,
     email: string,

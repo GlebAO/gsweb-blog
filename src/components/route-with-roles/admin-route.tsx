@@ -21,7 +21,7 @@ const AdminRoute: React.FC<AdminRouteProps> = ({
         appContext.isAdmin() ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/" />
+          <Redirect to="/backend/profile" />
         )
       }
     />
