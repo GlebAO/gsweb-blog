@@ -8,18 +8,19 @@ import {
   AppContextType,
   AppActionsTypes,
 } from "./types";
-import UserModel from "../types/UserModel";
+import { UserInfoType, UserRole } from "../types/UserModel";
 
 import postContentReducer from "./post-content-reducer";
 import postFormReducer from "./post-form-reducer";
 import backendReducer from "./backend-reducer";
+import usersReducer from "./users-reducer";
 
 const getAuthenticated = () => {
   const auth = localStorage.getItem("authenticated");
   return auth ? true : false;
 };
 
-const getUserInfo = (): UserModel | {} => {
+const getUserInfo = (): UserInfoType | {} => {
   const userInfo = localStorage.getItem("userInfo");
   return userInfo ? JSON.parse(userInfo) : {};
 };
@@ -50,18 +51,26 @@ const AppContext = React.createContext<AppContextType>({
   isAuthenticated: () => false,
   isAdmin: () => false,
   canEdit: () => false,
-  getUserInfo: () => ({ sub: null, name: "", email: "", role: "" }),
+  getUserInfo: () => ({ sub: null, name: "", email: "", role: UserRole.GUEST }),
 });
 
 const mainReducer: MainReducerInterface = (state, action) => {
-  const { postsList, postContent, auth, postForm, backend } = state;
-  return {
+  const { postsList, postContent, auth, postForm, backend, usersList } = state;
+
+  const newState = {
     auth: authReducer(auth, action),
     postsList: postReducer(postsList, action),
     postContent: postContentReducer(postContent, action),
     postForm: postFormReducer(postForm, action),
-    backend: backendReducer(backend, action)
+    backend: backendReducer(backend, action),
   };
+
+  const usersListState = usersReducer(usersList, action);
+  if (usersListState) {
+    Object.assign(newState, { usersList: usersListState });
+  }
+
+  return newState;
 };
 
 const useEnhancedReducer: EnhancedStoreInterface<
@@ -96,11 +105,11 @@ const AppProvider: React.FC = ({ children }) => {
   const getUserInfo = () => {
     const { userInfo } = auth;
 
-    const data: UserModel = {
+    const data: UserInfoType = {
       sub: null,
       name: "",
       email: "",
-      role: "guest",
+      role: UserRole.GUEST,
     };
 
     if ("sub" in userInfo) {
@@ -121,12 +130,12 @@ const AppProvider: React.FC = ({ children }) => {
 
   const isAdmin = () => {
     const userInfo = getUserInfo();
-    return userInfo.role === "admin";
+    return userInfo.role === UserRole.ADMIN;
   };
 
   const isRedactor = () => {
     const userInfo = getUserInfo();
-    return userInfo.role === "redactor";
+    return userInfo.role === UserRole.USER;
   };
 
   const canEdit = (userId: number) => {

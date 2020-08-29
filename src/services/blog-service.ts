@@ -1,4 +1,4 @@
-import { BlogServiceInterface } from "./types";
+import { BlogServiceInterface,UserFormValues } from "./types";
 import { authFetch } from "./fetch";
 import { PostFormValues } from "../components/post/post-form/post-form"
 
@@ -51,6 +51,16 @@ export default class BlogService implements BlogServiceInterface {
 
   updatePost = async (postId:number , values: PostFormValues) => {
     const res = await authFetch.patch(`/posts/${postId}`, values);
+    return res.data
+  }
+
+  getUsers = async () => {
+    const res = await authFetch.get(`/users`);
+    return res.data.users
+  }
+
+  updateUser = async (userId:number, values:UserFormValues) => {
+    const res = await authFetch.patch(`/users/${userId}`, values);
     return res.data
   }
 

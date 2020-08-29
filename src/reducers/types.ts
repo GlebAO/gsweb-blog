@@ -1,5 +1,5 @@
 import PostModel from "../types/PostModel";
-import UserModel from "../types/UserModel"
+import UserModel, {UserInfoType} from "../types/UserModel"
 import {
   PostsObjectActionTypes,
   PostsActionTypes,
@@ -12,11 +12,21 @@ import {
   PostFormObjectActionTypes,
   PostsFormActionTypes,
 } from "../actions/postForm/types";
+import {
+  UsersObjectActionTypes,
+  UsersActionTypes,
+} from "../actions/usersList/types";
 import { AuthObjectActionTypes, AuthActionTypes } from "../actions/auth/types";
 import { BackendObjectActionTypes } from "../actions/backend/types"
 
 export type PostState = {
   posts: PostModel[];
+  loading: boolean;
+  error: null | Error;
+};
+
+export type UserState = {
+  users: UserModel[];
   loading: boolean;
   error: null | Error;
 };
@@ -37,7 +47,7 @@ export type AuthState = {
   requested: boolean;
   message: string;
   authenticated: boolean;
-  userInfo: UserModel | {};
+  userInfo: UserInfoType | {};
   expiresAt: number | null;
   setRedirect: boolean
 };
@@ -52,7 +62,7 @@ export type InitialStateType = {
   postContent: PostContentState;
   postForm: PostFormState;
   backend: BackendState;
-  usersList?: { users: UserModel[] }
+  usersList?: UserState;
 };
 
 export type AppActionsTypes =
@@ -60,7 +70,8 @@ export type AppActionsTypes =
   | PostsActionTypes
   | PostsContentActionTypes
   | AuthActionTypes
-  | BackendObjectActionTypes;
+  | BackendObjectActionTypes
+  | UsersActionTypes;
 
 export type AppObjectActionsTypes =
   | PostFormObjectActionTypes
@@ -68,6 +79,7 @@ export type AppObjectActionsTypes =
   | PostContentObjectActionTypes
   | AuthObjectActionTypes
   | BackendObjectActionTypes
+  | UsersObjectActionTypes
 
 
 export interface MainReducerInterface {
@@ -85,7 +97,7 @@ export type AppContextType = {
   state: InitialStateType;
   dispatch: React.Dispatch<AppActionsTypes>;
   isAuthenticated: () => boolean;
-  getUserInfo: () => UserModel;
+  getUserInfo: () => UserInfoType;
   isAdmin: () => boolean;
   canEdit: (userId: number) => boolean;
 };
