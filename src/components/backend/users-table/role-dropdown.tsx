@@ -1,8 +1,8 @@
 import React, { useCallback, useContext, useState, useRef } from "react";
-import { UserRole, userRoles } from "../../types/UserModel";
-import ActiveDropdown from "../common/active-dropdown";
-import { useRequest } from "../../utils/hook-utils";
-import { BlogServiceContext } from "../../context";
+import { UserRole, userRoles } from "../../../types/UserModel";
+import ActiveDropdown from "../../common/active-dropdown";
+import { useRequest } from "../../../utils/hook-utils";
+import { BlogServiceContext } from "../../../context";
 
 const RoleDropdown: React.FC<{ currentRole: UserRole; userId: number }> = ({
   currentRole,

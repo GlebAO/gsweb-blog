@@ -36,5 +36,12 @@ const fetchPosts = (service: BlogServiceInterface) => (dispatch: React.Dispatch<
     }
 }
 
+const fetchAllPosts = (service: BlogServiceInterface) => (dispatch: React.Dispatch<PostsObjectActionTypes>, getState: () => InitialStateType): void => {
+    dispatch(postsRequested());
+    service.getAllPosts()
+        .then((data) => dispatch(postsLoaded(data)))
+        .catch((err) => dispatch(postsError(err)));
+}
 
-export { fetchPosts }
+
+export { fetchPosts, fetchAllPosts }

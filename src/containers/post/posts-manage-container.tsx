@@ -1,12 +1,12 @@
 import React, { useLayoutEffect, useContext, useCallback } from "react";
-import UsersTable from "../../components/backend/users-table";
+import PostsTable from "../../components/backend/posts-table";
 import { useAppContext } from "../../reducers";
 import { BlogServiceContext } from "../../context";
-import { fetchUsers } from "../../actions/usersList/actions";
 import { Spinner } from "../../components/common/spinner";
 import { Redirect } from "react-router-dom";
+import { fetchAllPosts } from "../../actions/postsList/actions";
 
-const UserContainer = () => {
+const PostsManageContainer = () => {
   const { state, dispatch } = useAppContext();
   const blogService = useContext(BlogServiceContext);
 
@@ -14,31 +14,33 @@ const UserContainer = () => {
 
   useLayoutEffect(() => {
     if (blogService) {
-      stableDispatch(fetchUsers(blogService));
+      stableDispatch(fetchAllPosts(blogService));
     }
   }, [stableDispatch, blogService]);
 
-  const { usersList } = state;
+  const { postsList } = state;
 
-  if (!usersList) {
+  if (!postsList) {
     return <Spinner />;
   }
 
-  const { users, loading, error } = usersList;
+  const { posts, loading, error } = postsList;
 
   if (loading) {
     return <Spinner />;
   }
 
   if (error) {
-    return <Redirect to="/404" />;
+    console.log(error)
+    return <span>"error"</span>;
+    //return <Redirect to="/404" />;
   }
 
   return (
     <div>
-      <UsersTable items={users} />
+      <PostsTable items={posts} />
     </div>
   );
 };
 
-export default UserContainer;
+export default PostsManageContainer;

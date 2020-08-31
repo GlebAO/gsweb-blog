@@ -10,11 +10,11 @@ const BackendLayoutContainer = () => {
     <div className="app">
       <div className="d-flex flex-row">
         <Sidebar />
-        <main className="c-wrapper">
+        <main className="c-wrapper bg-white">
           <BackendHeader />
           <div className="c-body">
             <main className="c-main">
-            <div className="container-fluid">
+            <div className="container-fluid ">
               <ContentContainer />
             </div>
             </main>

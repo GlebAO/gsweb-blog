@@ -24,17 +24,17 @@ const usersError = (error: Error): UsersObjectActionTypes => {
 };
 
 const fetchUsers = (service: BlogServiceInterface) => (dispatch: React.Dispatch<UsersObjectActionTypes>, getState: () => InitialStateType): void => {
-    const state = getState();
-    const {usersList} = state;
-    if ( usersList ) {
-        const {users } = usersList;
-        users.length > 0 && dispatch(usersLoaded(users))
-    } else {
+  //  const state = getState();
+  //  const {usersList} = state;
+  //  if ( usersList ) {
+  //      const {users } = usersList;
+  //      users.length > 0 && dispatch(usersLoaded(users))
+  //  } else {
         dispatch(usersRequested());
         service.getUsers()
             .then((data) => dispatch(usersLoaded(data)))
             .catch((err) => dispatch(usersError(err)));
-    }
+   // }
 }
 
 

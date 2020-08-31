@@ -15,11 +15,13 @@ import {
   postFormClear,
 } from "../../../actions/postForm/actions";
 import { BlogServiceContext } from "../../../context";
+import { PostStatus } from "../../../types/PostModel";
 
 export interface PostFormValues {
   title: string;
   slug: string;
   content: string;
+  status?: PostStatus
 }
 
 const PostFormSchema = object().shape({

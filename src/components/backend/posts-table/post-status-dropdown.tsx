@@ -1,12 +1,12 @@
 import React, { useCallback, useContext, useState, useRef } from "react";
-import { UserStatus, userStatuses } from "../../types/UserModel";
-import ActiveDropdown from "../common/active-dropdown";
-import { useRequest } from "../../utils/hook-utils";
-import { BlogServiceContext } from "../../context";
+import PostModel, { PostStatus, postStatuses } from "../../../types/PostModel";
+import ActiveDropdown from "../../common/active-dropdown";
+import { useRequest } from "../../../utils/hook-utils";
+import { BlogServiceContext } from "../../../context";
 
-const StatusDropdown: React.FC<{ currentStatus: UserStatus; userId: number }> = ({
+const PostStatusDropdown: React.FC<{ currentStatus: PostStatus; post: PostModel }> = ({
   currentStatus,
-  userId,
+  post,
 }) => {
   const blogService = useContext(BlogServiceContext);
 
@@ -14,16 +14,16 @@ const StatusDropdown: React.FC<{ currentStatus: UserStatus; userId: number }> = 
 
   const disablefirstUpdate = useRef(true);
 
-  const useChangeUserStatus = (newStatus: UserStatus) => {
+  const useChangePostStatus = (newStatus: PostStatus) => {
     const request = useCallback(() => {
       const values = { status: newStatus };
-      return blogService!.updateUser(userId, values);
+      return blogService!.managePost(post.id, values);
     }, [newStatus]);
 
     return useRequest(request, disablefirstUpdate);
   };
 
-  const dataState = useChangeUserStatus(status);
+  const dataState = useChangePostStatus(status);
 
   const { loading, data, error } = dataState;
 
@@ -33,14 +33,14 @@ const StatusDropdown: React.FC<{ currentStatus: UserStatus; userId: number }> = 
     const selectedValue = +event.target.value;
 
     switch (selectedValue) {
-      case UserStatus.ACTIVE:
-        setStatus(UserStatus.ACTIVE);
+      case PostStatus.ACTIVE:
+        setStatus(PostStatus.ACTIVE);
         break;
-      case UserStatus.DELETED:
-        setStatus(UserStatus.DELETED);
+      case PostStatus.DRAFT:
+        setStatus(PostStatus.DRAFT);
         break;
-      case UserStatus.INACTIVE:
-        setStatus(UserStatus.INACTIVE);
+      case PostStatus.ARCHIVED:
+        setStatus(PostStatus.ARCHIVED);
         break;
       default:
         break;
@@ -61,13 +61,13 @@ const StatusDropdown: React.FC<{ currentStatus: UserStatus; userId: number }> = 
     }
   };
 
-  const getStatusColor = (userStatus: UserStatus):string => {
+  const getStatusColor = (userStatus: PostStatus):string => {
     switch (userStatus) {
-        case UserStatus.ACTIVE:
+        case PostStatus.ACTIVE:
           return "text-success"
-        case UserStatus.DELETED:
+        case PostStatus.DRAFT:
             return "text-danger"
-        case UserStatus.INACTIVE:
+        case PostStatus.ARCHIVED:
             return "text-warning"
         default:
             return "text-muted"
@@ -78,7 +78,7 @@ const StatusDropdown: React.FC<{ currentStatus: UserStatus; userId: number }> = 
     <>
       <ActiveDropdown
         disabled={loading}
-        items={userStatuses}
+        items={postStatuses}
         selected={status}
         onChange={handleStatusDropdownChange}
         classes={getStatusColor(status)}
@@ -88,4 +88,4 @@ const StatusDropdown: React.FC<{ currentStatus: UserStatus; userId: number }> = 
   );
 };
 
-export default StatusDropdown;
+export default PostStatusDropdown;

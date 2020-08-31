@@ -1,5 +1,5 @@
 import React from "react";
-import UserModel from "../../types/UserModel";
+import UserModel from "../../../types/UserModel";
 import RoleDropdown from "./role-dropdown";
 import StatusDropdown from "./status-dropdown";
 

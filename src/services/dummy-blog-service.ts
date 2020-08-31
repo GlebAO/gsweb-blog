@@ -1,4 +1,4 @@
-import PostModel from "../types/PostModel";
+import PostModel, { PostStatus } from "../types/PostModel";
 import UserModel, { UserRole, UserStatus} from "../types/UserModel";
 import { BlogServiceInterface, UserFormValues } from "./types"
 import { PostFormValues } from "../components/post/post-form/post-form"
@@ -6,8 +6,8 @@ import { PostFormValues } from "../components/post/post-form/post-form"
 export default class DummyBlogService implements BlogServiceInterface {
 
     _posts: PostModel[] = [
-        { id: 1, title: 'Dummy first post', slug: 'slug1', content: 'We open a blog first time', createdAt: 'sdas', updatedAt: 'sdadsd', userId: 1 },
-        { id: 2, title: 'Dummy second post', slug: 'slug2', content: 'My second post is better than first', createdAt: 'sdas', updatedAt: 'sdadsd', userId: 1 }
+        { id: 1, title: 'Dummy first post', slug: 'slug1', content: 'We open a blog first time', createdAt: 'sdas', updatedAt: 'sdadsd', userId: 1, status: PostStatus.ACTIVE },
+        { id: 2, title: 'Dummy second post', slug: 'slug2', content: 'My second post is better than first', createdAt: 'sdas', updatedAt: 'sdadsd', userId: 1, status: PostStatus.DRAFT }
     ]
 
     _users: UserModel[] = [
@@ -16,6 +16,18 @@ export default class DummyBlogService implements BlogServiceInterface {
     ]
     
     getPosts() {
+        return new Promise<PostModel[]>((resolve, reject) => {
+            setTimeout(() => {
+                if (Math.random() > 0.75) {
+                    reject(new Error('Something bad happened'));
+                } else {
+                    resolve(this._posts);
+                }
+            }, 700);
+        });
+    }
+
+    getAllPosts() {
         return new Promise<PostModel[]>((resolve, reject) => {
             setTimeout(() => {
                 if (Math.random() > 0.75) {
@@ -52,6 +64,18 @@ export default class DummyBlogService implements BlogServiceInterface {
     }
 
     updatePost(postId:number, values: PostFormValues) {
+        return new Promise<PostModel>((resolve, reject) => {
+            setTimeout(() => {
+                if (Math.random() > 0.75) {
+                    reject(new Error('Something bad happened'));
+                } else {
+                    resolve(this._posts[0]);
+                }
+            }, 700);
+        });
+    }
+
+    managePost(postId:number, values: {status: PostStatus }) {
         return new Promise<PostModel>((resolve, reject) => {
             setTimeout(() => {
                 if (Math.random() > 0.75) {
