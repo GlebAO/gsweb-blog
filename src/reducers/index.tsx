@@ -14,6 +14,7 @@ import postContentReducer from "./post-content-reducer";
 import postFormReducer from "./post-form-reducer";
 import backendReducer from "./backend-reducer";
 import usersReducer from "./users-reducer";
+import config from "../config";
 
 const getAuthenticated = () => {
   const auth = localStorage.getItem("authenticated");
@@ -40,7 +41,14 @@ const initialState: InitialStateType = {
     setRedirect: getAuthenticated(),
   },
   postForm: { postData: null, loading: false, error: null },
-  postsList: { posts: [], loading: false, error: null },
+  postsList: {
+    posts: [],
+    total: 0,
+    page: 1,
+    perPage: config.PER_PAGE,
+    loading: false,
+    error: null,
+  },
   postContent: { postData: null, loading: false, error: null },
   backend: { sidebarOpened: true },
 };

@@ -1,5 +1,6 @@
 import { useMemo, useState, useEffect } from 'react'
 import { getErrorObject } from "./error-utils";
+import { useLocation } from "react-router-dom";
 
 interface initialStateInterface {
     loading: boolean,
@@ -8,8 +9,6 @@ interface initialStateInterface {
 }
 
 export const useRequest = (request: () => Promise<any>, disableFirstUpdate?: React.MutableRefObject<boolean>) => {
-
-
 
     const initialState = useMemo(
         () => ({
@@ -51,3 +50,8 @@ export const useRequest = (request: () => Promise<any>, disableFirstUpdate?: Rea
 
     return dataState;
 };
+
+export const useQueryString = () => {
+    const { search } = useLocation();
+    return search;
+}

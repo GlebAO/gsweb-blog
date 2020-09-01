@@ -1,7 +1,9 @@
 import { BlogServiceInterface,UserFormValues } from "./types";
 import { authFetch } from "./fetch";
 import { PostFormValues } from "../components/post/post-form/post-form"
-import { PostStatus } from "../types/PostModel";
+import PostModel, { PostStatus } from "../types/PostModel";
+import {PostsListsInterface} from "../actions/postsList/types";
+import config from "../config";
 
 export default class BlogService implements BlogServiceInterface {
 
@@ -15,14 +17,21 @@ export default class BlogService implements BlogServiceInterface {
     return await res.json();
   };
 
-  getPosts = async () => {
-    const res = await this.getResource(`/posts/`);
-    return res.posts;
+  _transformPostList = (postsList:[PostModel[], number]):PostsListsInterface => {
+    return {
+      posts: postsList[0],
+      total: postsList[1],
+    };
   };
 
-  getAllPosts = async () => {
-    const res = await authFetch.get(`/backend/posts`);
-    return res.data.posts
+  getPosts = async (page = 1, perPage = config.PER_PAGE) => {
+    const res = await this.getResource(`/posts/?page=${page}`);
+    return this._transformPostList(res.posts);
+  };
+
+  getAllPosts = async (page = 1, perPage = config.PER_PAGE) => {
+    const res = await authFetch.get(`/backend/posts?page=${page}`);
+    return this._transformPostList(res.data.posts);
   };
 
   getPostBySlug = async (slug: string) => {

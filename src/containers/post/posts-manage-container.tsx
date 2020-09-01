@@ -4,41 +4,37 @@ import { useAppContext } from "../../reducers";
 import { BlogServiceContext } from "../../context";
 import { Spinner } from "../../components/common/spinner";
 import { Redirect } from "react-router-dom";
-import { fetchAllPosts } from "../../actions/postsList/actions";
+import { fetchAllPosts, postsShowMore } from "../../actions/postsList/actions";
+import ShowMoreButton from "../../components/common/show-more-button";
 
 const PostsManageContainer = () => {
   const { state, dispatch } = useAppContext();
   const blogService = useContext(BlogServiceContext);
-
   const stableDispatch = useCallback(dispatch, []);
+
+  const {
+    postsList: { posts, total, page, perPage, loading, error },
+  } = state;
 
   useLayoutEffect(() => {
     if (blogService) {
-      stableDispatch(fetchAllPosts(blogService));
+      stableDispatch(fetchAllPosts(blogService, page));
     }
-  }, [stableDispatch, blogService]);
-
-  const { postsList } = state;
-
-  if (!postsList) {
-    return <Spinner />;
-  }
-
-  const { posts, loading, error } = postsList;
-
-  if (loading) {
-    return <Spinner />;
-  }
+  }, [stableDispatch, blogService, page]);
 
   if (error) {
-    console.log(error)
-    return <span>"error"</span>;
-    //return <Redirect to="/404" />;
+    return <Redirect to="/404" />;
   }
+
+  const handleShowMoreClick = () => {
+    dispatch(postsShowMore());
+  };
 
   return (
     <div>
       <PostsTable items={posts} />
+      {loading && <Spinner />}
+      <ShowMoreButton loading={loading} page={page} perPage={perPage} total={total} onClick={handleShowMoreClick} />
     </div>
   );
 };

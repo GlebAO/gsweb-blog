@@ -2,7 +2,7 @@ import PostModel from "../types/PostModel";
 import UserModel, {UserInfoType} from "../types/UserModel"
 import {
   PostsObjectActionTypes,
-  PostsActionTypes,
+  PostsActionTypes, PostsListsInterface
 } from "../actions/postsList/types";
 import {
   PostContentObjectActionTypes,
@@ -21,6 +21,9 @@ import { BackendObjectActionTypes } from "../actions/backend/types"
 
 export type PostState = {
   posts: PostModel[];
+  total: number,
+  page: number,
+  perPage: number,
   loading: boolean;
   error: null | Error;
 };
