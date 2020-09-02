@@ -13,7 +13,7 @@ import { UserInfoType, UserRole } from "../types/UserModel";
 import postContentReducer from "./post-content-reducer";
 import postFormReducer from "./post-form-reducer";
 import backendReducer from "./backend-reducer";
-import usersReducer from "./users-reducer";
+import entityReducer from "./entity-reducer";
 import config from "../config";
 
 const getAuthenticated = () => {
@@ -49,6 +49,7 @@ const initialState: InitialStateType = {
     loading: false,
     error: null,
   },
+  entities: {},
   postContent: { postData: null, loading: false, error: null },
   backend: { sidebarOpened: true },
 };
@@ -63,7 +64,14 @@ const AppContext = React.createContext<AppContextType>({
 });
 
 const mainReducer: MainReducerInterface = (state, action) => {
-  const { postsList, postContent, auth, postForm, backend, usersList } = state;
+  const {
+    postsList,
+    postContent,
+    auth,
+    postForm,
+    backend,
+    entities,
+  } = state;
 
   const newState = {
     auth: authReducer(auth, action),
@@ -71,22 +79,16 @@ const mainReducer: MainReducerInterface = (state, action) => {
     postContent: postContentReducer(postContent, action),
     postForm: postFormReducer(postForm, action),
     backend: backendReducer(backend, action),
+    entities: entityReducer(entities, action)
   };
 
-  const usersListState = usersReducer(usersList, action);
-  if (usersListState) {
-    Object.assign(newState, { usersList: usersListState });
-  }
+  //console.log(action.type, newState.entities)
 
   return newState;
 };
 
-const useEnhancedReducer: EnhancedStoreInterface<
-  InitialStateType,
-  AppActionsTypes
-> = (reducerFn, currentState) => {
+const useEnhancedReducer: EnhancedStoreInterface<InitialStateType, AppActionsTypes> = (reducerFn, currentState) => {
   const [state, originalDispatch] = useReducer(reducerFn, currentState);
-
   const dispatch = (action: AppActionsTypes) => {
     if (typeof action === "function") {
       action(originalDispatch, () => state);
@@ -95,7 +97,6 @@ const useEnhancedReducer: EnhancedStoreInterface<
       originalDispatch(action);
     }
   };
-
   return [state, dispatch];
 };
 

@@ -4,30 +4,34 @@ import { useAppContext } from "../../reducers";
 import { BlogServiceContext } from "../../context";
 import { Spinner } from "../../components/common/spinner";
 import { Redirect } from "react-router-dom";
-import { fetchAllPosts, postsShowMore } from "../../actions/postsList/actions";
 import ShowMoreButton from "../../components/common/show-more-button";
+
+import { fetchEntityItems, entityItemsShowMore } from "../../actions/entities/actions"
 
 const PostsManageContainer = () => {
   const { state, dispatch } = useAppContext();
   const blogService = useContext(BlogServiceContext);
   const stableDispatch = useCallback(dispatch, []);
 
-  const {
-    postsList: { posts, total, page, perPage, loading, error },
-  } = state;
+ const { entities: { adminPosts } } = state;
+ const page = adminPosts ? adminPosts.page : 1;
 
   useLayoutEffect(() => {
-    if (blogService) {
-      stableDispatch(fetchAllPosts(blogService, page));
-    }
+      stableDispatch(fetchEntityItems('adminPosts', blogService!.getAllPosts, page));
   }, [stableDispatch, blogService, page]);
+
+  if(!adminPosts) {
+    return <span>Нет записей.</span>;
+  }
+
+  const { items:posts, total, perPage, loading, error } = adminPosts;
 
   if (error) {
     return <Redirect to="/404" />;
   }
 
   const handleShowMoreClick = () => {
-    dispatch(postsShowMore());
+    dispatch(entityItemsShowMore('adminPosts'));
   };
 
   return (

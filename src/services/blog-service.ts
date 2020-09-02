@@ -31,7 +31,7 @@ export default class BlogService implements BlogServiceInterface {
 
   getAllPosts = async (page = 1, perPage = config.PER_PAGE) => {
     const res = await authFetch.get(`/backend/posts?page=${page}`);
-    return this._transformPostList(res.data.posts);
+    return res.data.posts;
   };
 
   getPostBySlug = async (slug: string) => {
@@ -74,8 +74,8 @@ export default class BlogService implements BlogServiceInterface {
     return res.data
   };
 
-  getUsers = async () => {
-    const res = await authFetch.get(`/users`);
+  getUsers = async (page = 1, perPage = config.PER_PAGE) => {
+    const res = await authFetch.get(`/users/?page=${page}`);
     return res.data.users
   }
 
