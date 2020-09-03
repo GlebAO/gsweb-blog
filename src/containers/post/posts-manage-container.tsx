@@ -8,6 +8,8 @@ import ShowMoreButton from "../../components/common/show-more-button";
 
 import { fetchEntityItems, entityItemsShowMore } from "../../actions/entities/actions"
 
+import PostModel from "../../types/PostModel";
+
 const PostsManageContainer = () => {
   const { state, dispatch } = useAppContext();
   const blogService = useContext(BlogServiceContext);
@@ -17,7 +19,7 @@ const PostsManageContainer = () => {
  const page = adminPosts ? adminPosts.page : 1;
 
   useLayoutEffect(() => {
-      stableDispatch(fetchEntityItems('adminPosts', blogService!.getAllPosts, page));
+      stableDispatch(fetchEntityItems<PostModel>('adminPosts', blogService!.getAllPosts, page));
   }, [stableDispatch, blogService, page]);
 
   if(!adminPosts) {

@@ -19,7 +19,7 @@ const entityReducer = (state: Record<string, EntityState<any>>, action: AppObjec
                 ...state,
                 [action.entityName]: {
                     items: entityState ? entityState.items : [],
-                    total: 0,
+                    total: entityState ? entityState.total : 0,
                     page: entityState ? entityState.page : 1,
                     perPage: config.PER_PAGE,
                     loading: true,

@@ -2,7 +2,6 @@ import PostModel, { PostStatus } from "../types/PostModel";
 import UserModel, { UserRole, UserStatus} from "../types/UserModel";
 import { BlogServiceInterface, UserFormValues } from "./types"
 import { PostFormValues } from "../components/post/post-form/post-form"
-import { PostsListsInterface } from "../actions/postsList/types";
 
 export default class DummyBlogService implements BlogServiceInterface {
 
@@ -17,24 +16,24 @@ export default class DummyBlogService implements BlogServiceInterface {
     ]
     
     getPosts() {
-        return new Promise<PostsListsInterface>((resolve, reject) => {
+        return new Promise<[PostModel[], number]>((resolve, reject) => {
             setTimeout(() => {
                 if (Math.random() > 0.75) {
                     reject(new Error('Something bad happened'));
                 } else {
-                    resolve({posts: this._posts, total:10});
+                    resolve([this._posts, 10]);
                 }
             }, 700);
         });
     }
 
     getAllPosts() {
-        return new Promise<PostsListsInterface>((resolve, reject) => {
+        return new Promise<[PostModel[], number]>((resolve, reject) => {
             setTimeout(() => {
                 if (Math.random() > 0.75) {
                     reject(new Error('Something bad happened'));
                 } else {
-                    resolve({posts: this._posts, total:10});
+                    resolve([this._posts, 10]);
                 }
             }, 700);
         });
@@ -90,12 +89,12 @@ export default class DummyBlogService implements BlogServiceInterface {
 
     
     getUsers() {
-        return new Promise<UserModel[]>((resolve, reject) => {
+        return new Promise<[UserModel[], number]>((resolve, reject) => {
             setTimeout(() => {
                 if (Math.random() > 0.75) {
                     reject(new Error('Something bad happened'));
                 } else {
-                    resolve(this._users);
+                    resolve([this._users, 24]);
                 }
             }, 700);
         });

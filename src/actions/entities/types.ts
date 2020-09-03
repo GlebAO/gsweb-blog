@@ -5,30 +5,30 @@ export const FETCH_ENTITY_SUCCESS = 'FETCH_ENTITY_SUCCESS'
 export const FETCH_ENTITY_FAILURE = 'FETCH_ENTITY_FAILURE'
 export const INC_ENTITY_PAGE = 'INC_ENTITY_PAGE'
 
-interface EntityItemsShowMoreAction {
+export interface EntityItemsShowMoreAction {
     entityName: string,
     type: typeof INC_ENTITY_PAGE
 }
 
-interface EntityItemsRequestedAction {
+export interface EntityItemsRequestedAction {
     entityName: string,
     type: typeof FETCH_ENTITY_REQUEST
 }
 
-interface EntityItemsLoadedAction {
+export interface EntityItemsLoadedAction<T> {
     entityName: string,
     type: typeof FETCH_ENTITY_SUCCESS,
-    payload: [any[], number]
+    payload: [ T[], number ]
 }
 
-interface EntityItemsErrorAction {
+export interface EntityItemsErrorAction {
     entityName: string,
     type: typeof FETCH_ENTITY_FAILURE
     payload: Error
 }
 
-export type EntityItemsObjectActionTypes = EntityItemsRequestedAction | EntityItemsLoadedAction | EntityItemsErrorAction | EntityItemsShowMoreAction;
+export type EntityItemsObjectActionTypes<T> = EntityItemsLoadedAction<T> | EntityItemsRequestedAction | EntityItemsErrorAction | EntityItemsShowMoreAction;
 
-export type EntityItemsFunctionActionTypes = (dispatch: React.Dispatch<EntityItemsObjectActionTypes>, getState: () => InitialStateType) => void;
+export type EntityItemsFunctionActionTypes<T> = (dispatch: React.Dispatch<EntityItemsObjectActionTypes<T>>, getState: () => InitialStateType) => void;
 
-export type EntityItemsActionTypes = EntityItemsObjectActionTypes | EntityItemsFunctionActionTypes;
+export type EntityItemsActionTypes<T> = EntityItemsObjectActionTypes<T> | EntityItemsFunctionActionTypes<T>;

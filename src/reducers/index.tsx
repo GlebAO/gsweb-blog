@@ -1,5 +1,4 @@
 import React, { useReducer, useContext } from "react";
-import postReducer from "./post-reducer";
 import authReducer from "./auth-reducer";
 import {
   InitialStateType,
@@ -14,7 +13,6 @@ import postContentReducer from "./post-content-reducer";
 import postFormReducer from "./post-form-reducer";
 import backendReducer from "./backend-reducer";
 import entityReducer from "./entity-reducer";
-import config from "../config";
 
 const getAuthenticated = () => {
   const auth = localStorage.getItem("authenticated");
@@ -41,14 +39,6 @@ const initialState: InitialStateType = {
     setRedirect: getAuthenticated(),
   },
   postForm: { postData: null, loading: false, error: null },
-  postsList: {
-    posts: [],
-    total: 0,
-    page: 1,
-    perPage: config.PER_PAGE,
-    loading: false,
-    error: null,
-  },
   entities: {},
   postContent: { postData: null, loading: false, error: null },
   backend: { sidebarOpened: true },
@@ -65,7 +55,6 @@ const AppContext = React.createContext<AppContextType>({
 
 const mainReducer: MainReducerInterface = (state, action) => {
   const {
-    postsList,
     postContent,
     auth,
     postForm,
@@ -75,14 +64,11 @@ const mainReducer: MainReducerInterface = (state, action) => {
 
   const newState = {
     auth: authReducer(auth, action),
-    postsList: postReducer(postsList, action),
     postContent: postContentReducer(postContent, action),
     postForm: postFormReducer(postForm, action),
     backend: backendReducer(backend, action),
     entities: entityReducer(entities, action)
   };
-
-  //console.log(action.type, newState.entities)
 
   return newState;
 };

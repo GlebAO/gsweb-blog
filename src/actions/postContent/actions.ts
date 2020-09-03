@@ -35,10 +35,11 @@ export const fetchPostBySlug = (
   service: BlogServiceInterface
 ) => (
   dispatch: React.Dispatch<PostContentObjectActionTypes>,
-  getState: () => InitialStateType
+  getState: () => InitialStateType<PostModel>
 ): void => {
   const state = getState();
-  const postBySlug = state.postsList.posts.find((post) => post.slug === slug);
+  const {entities: {publicPosts}} = state;
+  const postBySlug = publicPosts && publicPosts.items.find((post) => post.slug === slug);
   if (postBySlug) {
     dispatch(postContentLoaded(postBySlug));
   } else {

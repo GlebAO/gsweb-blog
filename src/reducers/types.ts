@@ -1,10 +1,6 @@
 import PostModel from "../types/PostModel";
 import UserModel, { UserInfoType } from "../types/UserModel"
 import {
-  PostsObjectActionTypes,
-  PostsActionTypes,
-} from "../actions/postsList/types";
-import {
   PostContentObjectActionTypes,
   PostsContentActionTypes,
 } from "../actions/postContent/types";
@@ -70,33 +66,29 @@ export type BackendState = {
   sidebarOpened: boolean
 }
 
-export type entitiesTypes = PostModel | UserModel
+export type EntitiesTypes = PostModel | UserModel;
 
-export type InitialStateType = {
+export type InitialStateType<T = any> = {
   auth: AuthState;
-  postsList: PostState;
   postContent: PostContentState;
   postForm: PostFormState;
   backend: BackendState;
-  entities: Record<string, EntityState<any>>;
+  entities: {[x:string]: EntityState<T>};
 };
 
 export type AppActionsTypes =
   | PostsFormActionTypes
-  | PostsActionTypes
   | PostsContentActionTypes
   | AuthActionTypes
   | BackendObjectActionTypes
-  | EntityItemsActionTypes
+  | EntityItemsActionTypes<EntitiesTypes>
 
 export type AppObjectActionsTypes =
   | PostFormObjectActionTypes
-  | PostsObjectActionTypes
   | PostContentObjectActionTypes
   | AuthObjectActionTypes
   | BackendObjectActionTypes
-  | EntityItemsObjectActionTypes
-
+  | EntityItemsObjectActionTypes<EntitiesTypes>
 
 export interface MainReducerInterface {
   (

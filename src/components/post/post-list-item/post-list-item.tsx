@@ -12,8 +12,8 @@ const PostListItem: React.FC<PostListItemProps> = ({ post }) => {
   const { id, title, slug } = post;
   return (
     <div id={`post-${id}`} className="card post-list-item mb-2">
-      <div className="card-body">
-        <Link to={`/post/${slug}`}>
+      <div className="post-list-item__body card-body">
+        <Link to={`/post/${slug}`} className="post-list-item__title h4">
         <strong>{title}</strong>
         </Link>
       </div>

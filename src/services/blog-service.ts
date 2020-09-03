@@ -1,9 +1,10 @@
-import { BlogServiceInterface,UserFormValues } from "./types";
+import { BlogServiceInterface,UserFormValues, EntityWithTotal } from "./types";
 import { authFetch } from "./fetch";
 import { PostFormValues } from "../components/post/post-form/post-form"
 import PostModel, { PostStatus } from "../types/PostModel";
-import {PostsListsInterface} from "../actions/postsList/types";
+import UserModel from "../types/UserModel";
 import config from "../config";
+import { AxiosResponse } from "axios";
 
 export default class BlogService implements BlogServiceInterface {
 
@@ -17,19 +18,12 @@ export default class BlogService implements BlogServiceInterface {
     return await res.json();
   };
 
-  _transformPostList = (postsList:[PostModel[], number]):PostsListsInterface => {
-    return {
-      posts: postsList[0],
-      total: postsList[1],
-    };
-  };
-
-  getPosts = async (page = 1, perPage = config.PER_PAGE) => {
+  getPosts = async (page = 1, perPage = config.PER_PAGE):Promise<EntityWithTotal<PostModel>> => {
     const res = await this.getResource(`/posts/?page=${page}`);
     return res.posts;
   };
 
-  getAllPosts = async (page = 1, perPage = config.PER_PAGE) => {
+  getAllPosts = async (page = 1, perPage = config.PER_PAGE):Promise<EntityWithTotal<PostModel>> => {
     const res = await authFetch.get(`/backend/posts?page=${page}`);
     return res.data.posts;
   };
@@ -75,7 +69,7 @@ export default class BlogService implements BlogServiceInterface {
   };
 
   getUsers = async (page = 1, perPage = config.PER_PAGE) => {
-    const res = await authFetch.get(`/users/?page=${page}`);
+    const res = await authFetch.get<string, AxiosResponse<{users:EntityWithTotal<UserModel>}>>(`/users/?page=${page}`);
     return res.data.users
   }
 
