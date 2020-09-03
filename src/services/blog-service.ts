@@ -26,7 +26,7 @@ export default class BlogService implements BlogServiceInterface {
 
   getPosts = async (page = 1, perPage = config.PER_PAGE) => {
     const res = await this.getResource(`/posts/?page=${page}`);
-    return this._transformPostList(res.posts);
+    return res.posts;
   };
 
   getAllPosts = async (page = 1, perPage = config.PER_PAGE) => {

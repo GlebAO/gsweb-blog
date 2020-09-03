@@ -21,7 +21,7 @@ const PostsManageContainer = () => {
   }, [stableDispatch, blogService, page]);
 
   if(!adminPosts) {
-    return <span>Нет записей.</span>;
+    return null;
   }
 
   const { items:posts, total, perPage, loading, error } = adminPosts;

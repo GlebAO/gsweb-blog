@@ -1,25 +1,31 @@
 import React, { useContext, useEffect, useCallback } from "react";
 import { AppContext } from "../../reducers";
-import { fetchPosts, postsShowMore } from "../../actions/postsList/actions";
 import { Spinner } from "../../components/common/spinner";
 import PostsList from "../../components/post/posts-list";
 import { BlogServiceContext } from "../../context";
 import ShowMoreButton from "../../components/common/show-more-button";
+
+import { fetchEntityItems, entityItemsShowMore } from "../../actions/entities/actions"
 
 const PostsListContainer = () => {
   const { state, dispatch } = useContext(AppContext);
   const blogService = useContext(BlogServiceContext);
   const stableDispatch = useCallback(dispatch, []);
 
-  const {
-    postsList: { posts, total, page, perPage, loading, error },
-  } = state;
+  const { entities: { publicPosts } } = state;
+  const page = publicPosts ? publicPosts.page : 1;
 
   useEffect(() => {
     if (blogService) {
-      stableDispatch(fetchPosts(blogService, page));
+      stableDispatch(fetchEntityItems('publicPosts', blogService.getPosts, page));
     }
   }, [stableDispatch, blogService, page]);
+
+  if(!publicPosts) {
+    return null;
+  }
+
+  const { items:posts, total, perPage, loading, error } = publicPosts;
 
   if (error) {
     return <p>Error</p>;
@@ -30,7 +36,7 @@ const PostsListContainer = () => {
   }
 
   const handleShowMoreClick = () => {
-    dispatch(postsShowMore());
+    dispatch(entityItemsShowMore('publicPosts'));
   };
 
   return (

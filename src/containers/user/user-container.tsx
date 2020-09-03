@@ -9,7 +9,6 @@ import {
   entityItemsShowMore,
 } from "../../actions/entities/actions";
 import ShowMoreButton from "../../components/common/show-more-button";
-import UserModel from "../../types/UserModel"
 
 const UserContainer = () => {
   const { state, dispatch } = useAppContext();
@@ -26,7 +25,7 @@ const UserContainer = () => {
   }, [stableDispatch, blogService, page]);
 
   if (!adminUsers) {
-    return <span>Нет записей.</span>;
+    return null;
   }
   const { items: users, total, perPage, loading, error } = adminUsers;
 
@@ -37,8 +36,6 @@ const UserContainer = () => {
   const handleShowMoreClick = () => {
     dispatch(entityItemsShowMore("adminUsers"));
   };
-
-  type u = typeof users;
 
   return (
     <div>
