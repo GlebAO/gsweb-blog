@@ -3,6 +3,7 @@ import PostModel from "../../../types/PostModel";
 import DOMpurify from "dompurify";
 import { AppContext } from "../../../reducers";
 import EditButton from "../../common/edit-button";
+import { getFormattedDate } from "../../../utils/date-utils";
 
 import "./post-view.scss";
 
@@ -12,7 +13,7 @@ interface PostViewProps {
 
 const PostView: React.FC<PostViewProps> = ({ post }) => {
   const { canEdit } = useContext(AppContext);
-  const { title, content, userId, slug } = post;
+  const { title, content, userId, slug, user, createdAt } = post;
   return (
     <div className="post-view">
       <div className="card position-relative">
@@ -20,6 +21,14 @@ const PostView: React.FC<PostViewProps> = ({ post }) => {
           {canEdit(userId) && <EditButton url={`/post/edit/${slug}`} />}
         </div>
         <div className="card-body p-md-5">
+        {user && (
+            <span className="post-list-item__author text-secondary">
+              {user.name}
+            </span>
+          )}
+          <span className="post-list-item__createdAt text-secondary d-block">
+            {getFormattedDate(createdAt)}
+          </span>
           <h1 className="font-weight-bold mb-3">{title}</h1>
           <div
             className="post-content-body"

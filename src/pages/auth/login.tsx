@@ -6,12 +6,16 @@ import { string, object } from "yup";
 import { AppContext } from "../../reducers";
 import { AuthServiceContext } from "../../context";
 import { login } from "../../actions/auth/actions";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
+
+import "./auth.scss"
 
 export interface LoginFormValues {
   email: string;
   password: string;
 }
+
+
 
 const LoginSchema = object().shape({
   email: string()
@@ -39,7 +43,7 @@ const Login = () => {
   return (
     <>
     {(setRedirect && isAuthenticated()) && <Redirect to="/"/>}
-      <div className="w-50 m-auto h-100 py-5">
+      <div className="auth-page m-auto h-100 py-5">
         <div className="card bg-white shadow-sm">
           <div className="card-body p-lg-5">
             <div className="text-center">
@@ -47,8 +51,11 @@ const Login = () => {
                 <SquareLogo />
               </div>
               <h1 className="h3 text-bold mb-3">Добро пожаловть в GSweb</h1>
+              <p className="text-muted">
+                Ещё нет аккаунта? <Link to="/signup">Зарегистрируйтесь</Link>
+              </p>
             </div>
-            <div className="m-auto col-md-6">
+            <div className="m-auto">
               <Formik
                 initialValues={{
                   email: "",

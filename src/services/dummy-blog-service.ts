@@ -6,8 +6,8 @@ import { PostFormValues } from "../components/post/post-form/post-form"
 export default class DummyBlogService implements BlogServiceInterface {
 
     _posts: PostModel[] = [
-        { id: 1, title: 'Dummy first post', slug: 'slug1', content: 'We open a blog first time', createdAt: 'sdas', updatedAt: 'sdadsd', userId: 1, status: PostStatus.ACTIVE },
-        { id: 2, title: 'Dummy second post', slug: 'slug2', content: 'My second post is better than first', createdAt: 'sdas', updatedAt: 'sdadsd', userId: 1, status: PostStatus.DRAFT }
+        { id: 1, title: 'Dummy first post', slug: 'slug1', content: 'We open a blog first time', createdAt: 'sdas', updatedAt: 'sdadsd', userId: 1, status: PostStatus.ACTIVE, user: {name: 'john'} },
+        { id: 2, title: 'Dummy second post', slug: 'slug2', content: 'My second post is better than first', createdAt: 'sdas', updatedAt: 'sdadsd', userId: 1, status: PostStatus.DRAFT , user: {name: 'john'}}
     ]
 
     _users: UserModel[] = [

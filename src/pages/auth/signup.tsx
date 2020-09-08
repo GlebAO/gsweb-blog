@@ -2,18 +2,21 @@ import React, { useContext } from "react";
 import { SquareLogo } from "../../components/common/square-logo";
 import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
-import { FormInput, Button, FormAlert } from "../../components/form";
-import { string, object, ref } from "yup";
+import { FormInput, Button, FormAlert, FormCheckbox } from "../../components/form";
+import { string, object, ref, bool } from "yup";
 import { AppContext } from "../../reducers";
 import { AuthServiceContext } from "../../context";
 import { authenticate } from "../../actions/auth/actions";
 import { Redirect } from "react-router-dom";
+
+import "./auth.scss";
 
 export interface SignupFormValues {
   name: string;
   email: string;
   password: string;
   confirmPassword: string;
+  accept: boolean | null;
 }
 
 const SignupSchema = object().shape({
@@ -28,7 +31,10 @@ const SignupSchema = object().shape({
     .required("Укажите пароль")
     .min(8, "Минимум 8 символов")
     .max(100),
-  confirmPassword: string().oneOf([ref('password'), undefined], "Пароли не совпадают").required('Укажите пароль ещё раз'),
+  confirmPassword: string()
+    .oneOf([ref("password"), undefined], "Пароли не совпадают")
+    .required("Укажите пароль ещё раз"),
+    accept: bool().oneOf([true], 'Необходимо принять условия пользовательского соглашения')
 });
 
 const Signup = () => {
@@ -46,7 +52,7 @@ const Signup = () => {
   return (
     <>
       {setRedirect && isAuthenticated() && <Redirect to="/" />}
-      <div className="w-50 m-auto h-100 py-5">
+      <div className="auth-page m-auto h-100 py-5">
         <div className="card bg-white shadow-sm">
           <div className="card-body p-lg-5">
             <div className="text-center">
@@ -55,16 +61,17 @@ const Signup = () => {
               </div>
               <h1 className="h3 text-bold">Добро пожаловть в GSweb</h1>
               <p className="text-muted">
-                Уже есть аккаунт? <Link to="/login">Войдите</Link>
+                Уже зарегистрированы? <Link to="/login">Войдите</Link>
               </p>
             </div>
-            <div className="m-auto col-md-6">
+            <div className="m-auto">
               <Formik
                 initialValues={{
                   name: "",
                   email: "",
                   password: "",
                   confirmPassword: "",
+                  accept: true
                 }}
                 validationSchema={SignupSchema}
                 onSubmit={(values) => submitCredentials(values)}
@@ -74,39 +81,46 @@ const Signup = () => {
                     {message && (
                       <FormAlert text={message} success={authenticated} />
                     )}
-                    <div className="mb-3">
-                      <FormInput
-                        ariaLabel="Имя"
-                        name="name"
-                        type="text"
-                        placeholder="Имя"
-                      />
+                    <div className="signup-form-fields mb-5">
+                      <div className="mb-3">
+                        <FormInput
+                          ariaLabel="Имя"
+                          name="name"
+                          type="text"
+                          placeholder="Имя"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <FormInput
+                          ariaLabel="Email"
+                          name="email"
+                          type="email"
+                          placeholder="Email"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <FormInput
+                          ariaLabel="Пароль"
+                          name="password"
+                          type="password"
+                          placeholder="Пароль"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <FormInput
+                          ariaLabel="Повторите пароль"
+                          name="confirmPassword"
+                          type="password"
+                          placeholder="Повторите пароль"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <FormCheckbox name="accept">
+                            Я принимаю условия <Link to="/policy">Пользовательского соглашения</Link>
+                        </FormCheckbox>
+                      </div>
                     </div>
-                    <div className="mb-3">
-                      <FormInput
-                        ariaLabel="Email"
-                        name="email"
-                        type="email"
-                        placeholder="Email"
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <FormInput
-                        ariaLabel="Пароль"
-                        name="password"
-                        type="password"
-                        placeholder="Пароль"
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <FormInput
-                        ariaLabel="Повторите пароль"
-                        name="confirmPassword"
-                        type="password"
-                        placeholder="Повторите пароль"
-                      />
-                    </div>
-                    <div className="mt-3">
+                    <div>
                       <Button
                         text="Зарегистрироваться"
                         type="submit"

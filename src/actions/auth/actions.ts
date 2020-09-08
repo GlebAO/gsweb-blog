@@ -59,16 +59,16 @@ export const login = (service: AuthServiceInterface,
   ): void => {
     dispatch(AuthRequested());
     service
-    .login(credentials)
-    .then((data) => {
-      dispatch(AuthLoaded(data));
-      setTimeout(() => {
-        dispatch(setRedirect());
-      }, 700);
-    })
-    .catch((err) => {
-        dispatch(AuthError(getErrorObject(err)));   
-    });
+      .login(credentials)
+      .then((data) => {
+        dispatch(AuthLoaded(data));
+        setTimeout(() => {
+          dispatch(setRedirect());
+        }, 700);
+      })
+      .catch((err) => {
+        dispatch(AuthError(getErrorObject(err)));
+      });
   }
 
 export const authenticate = (
@@ -78,16 +78,16 @@ export const authenticate = (
   dispatch: React.Dispatch<AuthObjectActionTypes>,
   getState: () => InitialStateType
 ): void => {
-  dispatch(AuthRequested());
-  service
-    .signup(credentials)
-    .then((data) => {
-      dispatch(AuthLoaded(data));
-      setTimeout(() => {
-        dispatch(setRedirect());
-      }, 700);
-    })
-    .catch((err) => {
-      dispatch(AuthError(typeof err.response.data === "object" ? err.response.data.error : err)); 
-    });
-};
+    dispatch(AuthRequested());
+    service
+      .signup(credentials)
+      .then((data) => {
+        dispatch(AuthLoaded(data));
+        setTimeout(() => {
+          dispatch(setRedirect());
+        }, 700);
+      })
+      .catch((err) => {
+        dispatch(AuthError(typeof err.response.data === "object" ? err.response.data.error : err));
+      });
+  };

@@ -13,6 +13,9 @@ export default interface PostModel {
     createdAt: string
     updatedAt: string
     status: PostStatus
+    user: {
+        name: string
+    }
 }
 
 export const postStatuses = [

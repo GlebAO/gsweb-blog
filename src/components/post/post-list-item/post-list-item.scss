@@ -1,3 +1,11 @@
 .post-list-item__title {
-    color: var(--bs-dark)
+  color: var(--bs-dark);
+  font-weight: var(--fw-600);
+  text-decoration: none;
+}
+.post-list-item__author {
+    font-size: var(--fs-sm) 
+}
+.post-list-item__createdAt {
+    font-size: var(--fs-xs) 
 }
