@@ -59,7 +59,9 @@ export type AuthState = {
   authenticated: boolean;
   userInfo: UserInfoType | {};
   expiresAt: number | null;
-  setRedirect: boolean
+  setRedirect: boolean;
+  registered?: boolean;
+  confirmed?: boolean;
 };
 
 export type BackendState = {
@@ -73,7 +75,7 @@ export type InitialStateType<T = any> = {
   postContent: PostContentState;
   postForm: PostFormState;
   backend: BackendState;
-  entities: {[x:string]: EntityState<T>};
+  entities: { [x: string]: EntityState<T> };
 };
 
 export type AppActionsTypes =

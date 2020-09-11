@@ -5,6 +5,9 @@ import {
   AUTH_LOGOUT,
   SET_REDIRECT,
   AuthObjectActionTypes,
+  AUTH_RESET,
+  FETCH_SIGNUP_SUCCESS,
+  EMAIL_CONFIRMED
 } from "./types";
 import { authPayloadInterface } from "./types";
 import { AuthServiceInterface } from "../../services/types";
@@ -19,9 +22,16 @@ const AuthRequested = (): AuthObjectActionTypes => {
   };
 };
 
-const setRedirect = (): AuthObjectActionTypes => {
+export const setRedirect = (): AuthObjectActionTypes => {
   return {
     type: SET_REDIRECT
+  }
+}
+
+
+export const authReset = (): AuthObjectActionTypes => {
+  return {
+    type: AUTH_RESET
   }
 }
 
@@ -36,12 +46,26 @@ const AuthLoaded = (data: authPayloadInterface): AuthObjectActionTypes => {
   };
 };
 
+const SignupCompleted = (data: { message: string }): AuthObjectActionTypes => {
+  return {
+    type: FETCH_SIGNUP_SUCCESS,
+    payload: data,
+  };
+};
+
 const AuthError = (error: Error): AuthObjectActionTypes => {
   return {
     type: FETCH_AUTH_FAILURE,
     payload: error,
   };
 };
+
+const EmailConfirmed = (data: { message: string }): AuthObjectActionTypes => {
+  return {
+    type: EMAIL_CONFIRMED,
+    payload: data,
+  };
+}
 
 export const logout = (): AuthObjectActionTypes => {
   localStorage.removeItem("authenticated");
@@ -82,12 +106,29 @@ export const authenticate = (
     service
       .signup(credentials)
       .then((data) => {
-        dispatch(AuthLoaded(data));
-        setTimeout(() => {
-          dispatch(setRedirect());
-        }, 700);
+        dispatch(SignupCompleted(data));
+        //dispatch(AuthLoaded(data));
+        //setTimeout(() => {
+        // dispatch(setRedirect());
+        //  }, 700);
       })
       .catch((err) => {
-        dispatch(AuthError(typeof err.response.data === "object" ? err.response.data.error : err));
+        dispatch(AuthError(getErrorObject(err)));
       });
   };
+
+export const confirmEmail = (hash: string, endpoint: (token: string) => Promise<any>) => (
+  dispatch: React.Dispatch<AuthObjectActionTypes>,
+  getState: () => InitialStateType
+): void => {
+  dispatch(AuthRequested());
+  endpoint(hash).then((data) => {
+    dispatch(EmailConfirmed(data));
+    setTimeout(() => {
+      dispatch(setRedirect());
+    }, 1500);
+  })
+    .catch((err) => {
+      dispatch(AuthError(getErrorObject(err)));
+    });
+}

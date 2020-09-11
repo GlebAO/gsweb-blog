@@ -26,4 +26,5 @@ export interface BlogServiceInterface {
 export interface AuthServiceInterface {
     signup(credentials: SignupFormValues): Promise<any>
     login(credentials: LoginFormValues): Promise<any>
+    confirm(token: string): Promise<any>
 }

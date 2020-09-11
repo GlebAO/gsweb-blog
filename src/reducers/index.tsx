@@ -21,7 +21,7 @@ const getAuthenticated = () => {
 
 const getUserInfo = (): UserInfoType | {} => {
   const userInfo = localStorage.getItem("userInfo");
-  return userInfo ? JSON.parse(userInfo) : {};
+  return userInfo && userInfo !== "undefined" ? JSON.parse(userInfo) : {};
 };
 
 const getExpiresAt = () => {

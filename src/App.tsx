@@ -22,6 +22,7 @@ const BackendLayoutContainer = React.lazy(() =>
 const Page404 = React.lazy(() => import("./pages/404"));
 const Signup = React.lazy(() => import("./pages/auth/signup"));
 const Login = React.lazy(() => import("./pages/auth/login"));
+const Confirm = React.lazy(() => import("./pages/auth/confirm"));
 
 const blogService = new BlogService();
 const authService = new AuthService();
@@ -37,6 +38,7 @@ function App() {
                 <Switch>
                   <Route exact path="/404" render={() => <Page404 />} />
                   <Route exact path="/signup" render={() => <Signup />} />
+                  <Route exact path="/signup/confirm" render={() => <Confirm />} />
                   <Route exact path="/login" render={() => <Login />} />
                   <Route path="/backend" render={() => <BackendLayoutContainer />} />
                   <Route path="/" render={() => <LayoutContainer />} />

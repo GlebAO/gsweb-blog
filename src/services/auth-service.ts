@@ -11,4 +11,8 @@ export default class AuthService {
     const { data } = await publicFetch.post(`/login`, credentials);
     return data;
   };
+  confirm = async (token: string) => {
+    const { data } = await publicFetch.get(`/signup/confirm?token=${token}`);
+    return data;
+  }
 }

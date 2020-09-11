@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import PostModel from "../../../types/PostModel";
 import DOMpurify from "dompurify";
 import { AppContext } from "../../../reducers";
 import EditButton from "../../common/edit-button";
 import { getFormattedDate } from "../../../utils/date-utils";
+import Prism from "prismjs";
 
 import "./post-view.scss";
+import "../../../assets/css/prism.css"
 
 interface PostViewProps {
   post: PostModel;
@@ -14,6 +16,11 @@ interface PostViewProps {
 const PostView: React.FC<PostViewProps> = ({ post }) => {
   const { canEdit } = useContext(AppContext);
   const { title, content, userId, slug, user, createdAt } = post;
+
+  useEffect(() => {
+    setTimeout( () => Prism.highlightAll(), 0)
+  },[])
+
   return (
     <div className="post-view">
       <div className="card position-relative">
