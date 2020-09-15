@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { getFormattedDate } from "../../../utils/date-utils";
 
 import "./post-list-item.scss";
-import PostTags from "../post-tags";
+import PostTags from "../../tags/post-tags";
 
 interface PostListItemProps {
   post: PostModel;
@@ -25,7 +25,7 @@ const PostListItem: React.FC<PostListItemProps> = ({ post }) => {
             {getFormattedDate(createdAt)}
           </span>
         </div>
-        <div className="post-list-item__main mb-2">
+        <div className="post-list-item__main mb-1">
           <Link to={`/post/${slug}`} className="post-list-item__title h3">
             {title}
           </Link>

@@ -8,7 +8,7 @@ import Prism from "prismjs";
 
 import "./post-view.scss";
 import "../../../assets/css/prism.css";
-import PostTags from "../post-tags";
+import PostTags from "../../tags/post-tags";
 
 interface PostViewProps {
   post: PostModel;
@@ -21,6 +21,16 @@ const PostView: React.FC<PostViewProps> = ({ post }) => {
   useEffect(() => {
     setTimeout(() => Prism.highlightAll(), 0);
   }, []);
+
+  const renderContent = (content: string | undefined) => {
+    if(content) {
+      return <div
+      className="post-content-body"
+      dangerouslySetInnerHTML={{ __html: DOMpurify.sanitize(content) }}
+    />
+    }
+    return null
+  }
 
   return (
     <div className="post-view">
@@ -41,10 +51,7 @@ const PostView: React.FC<PostViewProps> = ({ post }) => {
           <div className="mb-3">
             {tags && <PostTags tags={tags} postId={id}/>}
           </div>
-          <div
-            className="post-content-body"
-            dangerouslySetInnerHTML={{ __html: DOMpurify.sanitize(content) }}
-          />
+          {renderContent(content)}
         </div>
       </div>
     </div>

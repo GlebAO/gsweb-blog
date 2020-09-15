@@ -13,6 +13,7 @@ import postContentReducer from "./post-content-reducer";
 import postFormReducer from "./post-form-reducer";
 import backendReducer from "./backend-reducer";
 import entityReducer from "./entity-reducer";
+import detailedEntityReducer from "./detailed-entity-reducer";
 
 const getAuthenticated = () => {
   const auth = localStorage.getItem("authenticated");
@@ -40,6 +41,7 @@ const initialState: InitialStateType = {
   },
   postForm: { postData: null, loading: false, error: null },
   entities: {},
+  detailedEntities: {},
   postContent: { postData: null, loading: false, error: null },
   backend: { sidebarOpened: true },
 };
@@ -60,6 +62,7 @@ const mainReducer: MainReducerInterface = (state, action) => {
     postForm,
     backend,
     entities,
+    detailedEntities
   } = state;
 
   const newState = {
@@ -67,7 +70,8 @@ const mainReducer: MainReducerInterface = (state, action) => {
     postContent: postContentReducer(postContent, action),
     postForm: postFormReducer(postForm, action),
     backend: backendReducer(backend, action),
-    entities: entityReducer(entities, action)
+    entities: entityReducer(entities, action),
+    detailedEntities: detailedEntityReducer(detailedEntities, action)
   };
 
   return newState;

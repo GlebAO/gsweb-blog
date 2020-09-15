@@ -41,11 +41,9 @@ const PostsListContainer = () => {
 
   return (
     <div className="posts-list-container">
-      <div className="list-info text-right mb-2">
-        Записей:{" "}
-        <span className="badge rounded-pill bg-secondary">{total}</span>
+      <div className="mb-2">
+        <strong>Записи</strong>
       </div>
-
       <PostsList posts={posts} />
       {loading && <Spinner />}
       <ShowMoreButton

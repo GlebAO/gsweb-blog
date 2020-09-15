@@ -2,6 +2,7 @@ import PostModel, { PostStatus } from "../types/PostModel";
 import UserModel, { UserRole, UserStatus} from "../types/UserModel";
 import { BlogServiceInterface, UserFormValues } from "./types"
 import { PostFormValues } from "../components/post/post-form/post-form"
+import TagModel from "../types/TagModel";
 
 export default class DummyBlogService implements BlogServiceInterface {
 
@@ -14,6 +15,10 @@ export default class DummyBlogService implements BlogServiceInterface {
         { id: 1, name: "John", email: "john@mail.com", role: UserRole.ADMIN, createdAt: '', status: UserStatus.ACTIVE, lastLoggedIn: 2132312 },
         { id: 2, name: "Doe", email: "doen@mail.com", role: UserRole.GUEST, createdAt: '', status: UserStatus.ACTIVE, lastLoggedIn: 12312123 }
     ]
+
+    _tags: TagModel[] = [
+        {id: 1, title: "super_tag", slug:"super-tag", score: 10}
+    ]
     
     getPosts() {
         return new Promise<[PostModel[], number]>((resolve, reject) => {
@@ -22,6 +27,18 @@ export default class DummyBlogService implements BlogServiceInterface {
                     reject(new Error('Something bad happened'));
                 } else {
                     resolve([this._posts, 10]);
+                }
+            }, 700);
+        });
+    }
+
+    getTags() {
+        return new Promise<[TagModel[], number]>((resolve, reject) => {
+            setTimeout(() => {
+                if (Math.random() > 0.75) {
+                    reject(new Error('Something bad happened'));
+                } else {
+                    resolve([this._tags, 10]);
                 }
             }, 700);
         });
@@ -46,6 +63,18 @@ export default class DummyBlogService implements BlogServiceInterface {
                     reject(new Error('Something bad happened'));
                 } else {
                     resolve(this._posts[0]);
+                }
+            }, 700);
+        });
+    }
+
+    getTagBySlug(slug:string) {
+        return new Promise<TagModel>((resolve, reject) => {
+            setTimeout(() => {
+                if (Math.random() > 0.75) {
+                    reject(new Error('Something bad happened'));
+                } else {
+                    resolve(this._tags[0]);
                 }
             }, 700);
         });

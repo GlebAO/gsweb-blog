@@ -1,5 +1,6 @@
 import PostModel, { PostStatus } from "../types/PostModel";
 import UserModel, { UserRole, UserStatus } from "../types/UserModel";
+import TagModel from "../types/TagModel";
 import { SignupFormValues } from "../pages/auth/signup";
 import { LoginFormValues } from "../pages/auth/login";
 import { PostFormValues } from "../components/post/post-form/post-form"
@@ -13,6 +14,8 @@ export type EntityWithTotal<T> = [T[], number];
 
 export interface BlogServiceInterface {
     getPosts(page?: number, perPage?: number): Promise<EntityWithTotal<PostModel>>,
+    getTags(page?: number, perPage?: number): Promise<EntityWithTotal<TagModel>>,
+    getTagBySlug(slug: string): Promise<TagModel>,
     getAllPosts(page?: number, perPage?: number): Promise<EntityWithTotal<PostModel>>,
     getPostBySlug(slug: string): Promise<PostModel>,
     createPost(values: PostFormValues): Promise<any>,

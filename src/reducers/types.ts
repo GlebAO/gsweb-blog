@@ -16,6 +16,8 @@ import {
 
 import { AuthObjectActionTypes, AuthActionTypes } from "../actions/auth/types";
 import { BackendObjectActionTypes } from "../actions/backend/types"
+import TagModel from "../types/TagModel";
+import { DetailedEntityItemsActionTypes, DetailedEntityItemsObjectActionTypes } from "../actions/detailedEntities/types";
 
 export type PostState = {
   posts: PostModel[];
@@ -34,6 +36,13 @@ export type EntityState<T> = {
   loading: boolean;
   error: null | Error;
 }
+
+export type DetailedEntityState<T> = {
+  key: string | number | null,
+  item: T;
+  loading: boolean;
+  error: null | Error;
+}[]
 
 export type UserState = {
   users: UserModel[];
@@ -68,7 +77,7 @@ export type BackendState = {
   sidebarOpened: boolean
 }
 
-export type EntitiesTypes = PostModel | UserModel;
+export type EntitiesTypes = PostModel | UserModel | TagModel;
 
 export type InitialStateType<T = any> = {
   auth: AuthState;
@@ -76,6 +85,7 @@ export type InitialStateType<T = any> = {
   postForm: PostFormState;
   backend: BackendState;
   entities: { [x: string]: EntityState<T> };
+  detailedEntities: { [x: string]: DetailedEntityState<T>};
 };
 
 export type AppActionsTypes =
@@ -84,6 +94,7 @@ export type AppActionsTypes =
   | AuthActionTypes
   | BackendObjectActionTypes
   | EntityItemsActionTypes<EntitiesTypes>
+  | DetailedEntityItemsActionTypes<EntitiesTypes>
 
 export type AppObjectActionsTypes =
   | PostFormObjectActionTypes
@@ -91,6 +102,7 @@ export type AppObjectActionsTypes =
   | AuthObjectActionTypes
   | BackendObjectActionTypes
   | EntityItemsObjectActionTypes<EntitiesTypes>
+  | DetailedEntityItemsObjectActionTypes<EntitiesTypes>
 
 export interface MainReducerInterface {
   (

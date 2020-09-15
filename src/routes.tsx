@@ -5,6 +5,7 @@ import { AuthenticatedRoute, AdminRoute } from "./components/route-with-roles";
 
 const PostsPage = React.lazy(() => import("./pages/post/posts-page"));
 const PostPage = React.lazy(() => import("./pages/post/post-page"));
+const TagPage = React.lazy(() => import("./pages/tag/tag-page"));
 const Profile = React.lazy(() => import("./pages/profile"));
 const Policy = React.lazy(() => import("./pages/policy"));
 const CreatePostPage = React.lazy(
@@ -42,6 +43,7 @@ const Routes = () => {
           component={EditPostPage}
         />
         <Route path="/post/:slug" exact component={PostPage} />
+        <Route path="/t/:slug" exact component={TagPage} />
         <AuthenticatedRoute
           path="/backend/profile"
           exact

@@ -5,6 +5,7 @@ import PostModel, { PostStatus } from "../types/PostModel";
 import UserModel from "../types/UserModel";
 import config from "../config";
 import { AxiosResponse } from "axios";
+import TagModel from "../types/TagModel";
 
 export default class BlogService implements BlogServiceInterface {
 
@@ -22,6 +23,16 @@ export default class BlogService implements BlogServiceInterface {
     const res = await this.getResource(`/posts/?page=${page}`);
     return res.posts;
   };
+
+  getTags = async (page = 1, perPage = config.PER_PAGE):Promise<EntityWithTotal<TagModel>> => {
+    const res = await this.getResource(`/tags/?page=${page}&per-page=${perPage}`);
+    return res.tags;
+  }
+
+  getTagBySlug = async (slug: string) => {
+    const res = await this.getResource(`/tags/${slug}`);
+    return res.tag;
+  }
 
   getAllPosts = async (page = 1, perPage = config.PER_PAGE):Promise<EntityWithTotal<PostModel>> => {
     const res = await authFetch.get(`/backend/posts?page=${page}`);
