@@ -8,7 +8,7 @@ const CreatePostPage = () => {
       <div className=" row">
         <div className="col-md-9">
           <div className="card">
-            <div className="card-body">
+            <div className="gs-post-form">
               <CreatePostContainer />
             </div>
           </div>

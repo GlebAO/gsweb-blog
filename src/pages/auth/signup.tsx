@@ -79,7 +79,13 @@ const Signup = () => {
               {message && (
                 <FormAlert text={message} success={registered ? true : false} />
               )}
-              {!registered ? (
+              {!message && registered && (
+                <FormAlert
+                  text="Проверьте Вашу почту для завершения регистрации."
+                  success={true}
+                />
+              )}
+              {!registered && (
                 <Formik
                   initialValues={{
                     name: "",
@@ -100,6 +106,7 @@ const Signup = () => {
                             name="name"
                             type="text"
                             placeholder="Имя"
+                            classes="form-control"
                           />
                         </div>
                         <div className="mb-3">
@@ -108,6 +115,7 @@ const Signup = () => {
                             name="email"
                             type="email"
                             placeholder="Email"
+                            classes="form-control"
                           />
                         </div>
                         <div className="mb-3">
@@ -116,6 +124,7 @@ const Signup = () => {
                             name="password"
                             type="password"
                             placeholder="Пароль"
+                            classes="form-control"
                           />
                         </div>
                         <div className="mb-3">
@@ -124,6 +133,7 @@ const Signup = () => {
                             name="confirmPassword"
                             type="password"
                             placeholder="Повторите пароль"
+                            classes="form-control"
                           />
                         </div>
                         <div className="mb-3">
@@ -146,11 +156,6 @@ const Signup = () => {
                     </Form>
                   )}
                 </Formik>
-              ) : ( !message &&
-                <FormAlert
-                  text="Проверьте Вашу почту для завершения регистрации."
-                  success={true}
-                />
               )}
             </div>
           </div>

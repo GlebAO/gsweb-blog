@@ -1,3 +1,5 @@
+import TagModel from "./TagModel"
+
 export enum PostStatus {
     ACTIVE = 10,
     DRAFT = 9,
@@ -16,6 +18,7 @@ export default interface PostModel {
     user: {
         name: string
     }
+    tags?: TagModel[]
 }
 
 export const postStatuses = [

@@ -1,0 +1,29 @@
+.gs-post-form-input {
+  border: 0 none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  box-shadow: none;
+  resize: none;
+  transition: none;
+}
+
+.gs-post-form-title-input {
+  font-weight: var(--fw-600);
+  font-size: var(--fs-lg);
+  width: 100%;
+  display: block;
+  line-height: 1.2;
+}
+
+.gs-post-form-url-input {
+  border-bottom: 1px solid;
+}
+
+.gs-post-form-textarea {
+  font-size: var(--fs-md);
+  height: 45vh;
+  width: 100%;
+  display: block;
+  line-height: 1.5;
+}

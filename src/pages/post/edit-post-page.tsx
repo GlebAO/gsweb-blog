@@ -14,7 +14,7 @@ const EditPostPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => 
       <div className=" row">
         <div className="col-md-9">
           <div className="card">
-            <div className="card-body">
+            <div className="gs-post-form">
               <EditPostContainer slug={slug} />
             </div>
           </div>

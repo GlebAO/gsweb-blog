@@ -6,9 +6,10 @@ interface TextareaProps {
   name: string;
   rows: number;
   placeholder: string;
+  classes?: string;
 }
 
-const FormTextarea: React.FC<TextareaProps> = ({ name, rows, placeholder }) => {
+const FormTextarea: React.FC<TextareaProps> = ({ name, rows, placeholder, classes }) => {
   const [field, meta] = useField(name);
 
   return (
@@ -18,7 +19,7 @@ const FormTextarea: React.FC<TextareaProps> = ({ name, rows, placeholder }) => {
         name={field.name}
         rows={rows}
         placeholder={placeholder}
-        className="form-control"
+        className={classes}
       />
       {meta.touched && meta.error ? (
         <FormError text={meta.error}></FormError>

@@ -6,5 +6,6 @@ import FormTextarea from "./form-textarea";
 import FormLabel from './form-label';
 import FormEditor from "./form-editor";
 import FormCheckbox from "./form-checkbox";
+import TagsInput from "./tags-input";
 
-export { FormInput, FormError, Button, FormAlert, FormTextarea, FormLabel, FormEditor, FormCheckbox };
+export { FormInput, FormError, Button, FormAlert, FormTextarea, FormLabel, FormEditor, FormCheckbox, TagsInput };

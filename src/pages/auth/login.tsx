@@ -76,6 +76,7 @@ const Login = () => {
                         name="email"
                         type="email"
                         placeholder="Email"
+                        classes="form-control"
                       />
                     </div>
                     <div className="mb-3">
@@ -84,6 +85,7 @@ const Login = () => {
                         name="password"
                         type="password"
                         placeholder="Пароль"
+                        classes="form-control"
                       />
                     </div>
                     <div className="mt-3">

@@ -4,13 +4,14 @@ import { Link } from "react-router-dom";
 import { getFormattedDate } from "../../../utils/date-utils";
 
 import "./post-list-item.scss";
+import PostTags from "../post-tags";
 
 interface PostListItemProps {
   post: PostModel;
 }
 
 const PostListItem: React.FC<PostListItemProps> = ({ post }) => {
-  const { id, title, slug, user, createdAt } = post;
+  const { id, title, slug, user, createdAt, tags } = post;
   return (
     <div id={`post-${id}`} className="card post-list-item mb-2">
       <div className="post-list-item__body card-body px-md-4">
@@ -29,8 +30,11 @@ const PostListItem: React.FC<PostListItemProps> = ({ post }) => {
             {title}
           </Link>
         </div>
+        <div className="mb-3">
+          {tags && <PostTags tags={tags} postId={id}/>}
+        </div>
         <div className="">
-          <Link to={`/post/${slug}`}>Читать далее...</Link>
+          <Link to={`/post/${slug}`} className="text-decoration-none">Читать далее...</Link>
         </div>
       </div>
     </div>

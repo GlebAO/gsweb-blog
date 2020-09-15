@@ -3,8 +3,8 @@ import { Form, Formik } from "formik";
 import {
   FormInput,
   Button,
-  FormLabel,
   FormAlert,
+  TagsInput,
 } from "../../../components/form";
 import { string, object } from "yup";
 import { FormTextarea } from "../../form";
@@ -17,11 +17,15 @@ import {
 import { BlogServiceContext } from "../../../context";
 import { PostStatus } from "../../../types/PostModel";
 
+import "./post-form.scss";
+import TagModel from "../../../types/TagModel";
+
 export interface PostFormValues {
   title: string;
   slug: string;
   content: string;
-  status?: PostStatus
+  status?: PostStatus;
+  tags?: string[];
 }
 
 const PostFormSchema = object().shape({
@@ -43,7 +47,13 @@ const PostFormSchema = object().shape({
 });
 
 interface PostFormProps {
-  initialValues?: { id: number; title: string; slug: string; content: string };
+  initialValues?: {
+    id: number;
+    title: string;
+    slug: string;
+    content: string;
+    tags?: TagModel[];
+  };
 }
 
 const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
@@ -63,6 +73,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
         ? dispatch(updatePost(initialValues.id, values, blogServiceContext))
         : dispatch(createPost(values, blogServiceContext));
     }
+    //console.log(values)
   };
 
   if (postData) {
@@ -82,11 +93,17 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
     <Formik
       initialValues={
         initialValues
-          ? initialValues
+          ? {
+              ...initialValues,
+              tags:
+                initialValues.tags &&
+                initialValues.tags.map((tag) => tag.title)
+            }
           : {
               title: "",
               slug: "",
               content: "",
+              tags: [],
             }
       }
       validationSchema={PostFormSchema}
@@ -95,35 +112,46 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
       {() => (
         <Form>
           {error && <FormAlert text={error.message} success={false} />}
-          <div className="mb-3">
-            <FormLabel name="Название" />
+          <div className="px-lg-5 px-3 pt-lg-5 pt-3 mb-3">
             <FormInput
               ariaLabel="Название"
               name="title"
               type="text"
               placeholder="Название"
+              classes="gs-post-form-input gs-post-form-title-input"
             />
           </div>
-          <div className="mb-3">
-            <FormLabel name="Красивый URL" />
+          <div className="px-lg-5 px-3 mb-3">
+            <strong>https:/gsweb.ru/post/</strong>
             <FormInput
-              ariaLabel="Красивый URL"
+              ariaLabel="https:/gsweb.ru/post/"
               name="slug"
               type="text"
-              placeholder="my-beautiful-article"
+              placeholder="my-new-post"
+              classes="gs-post-form-input gs-post-form-url-input"
             />
           </div>
-          <div className="mb-3">
-            <FormLabel name="Содержание" />
-            <FormTextarea name="content" rows={10} placeholder="Содержание" />
+
+          <div className="px-lg-5 px-3 mb-3">
+            <TagsInput name="tags" />
           </div>
 
-          <div className="mt-3">
+          <div className="px-lg-5 pb-lg-5 p-3 mb-3">
+            <FormTextarea
+              name="content"
+              rows={10}
+              placeholder="Напишите здесь что-нибудь интересное..."
+              classes="gs-post-form-input gs-post-form-textarea"
+            />
+          </div>
+
+          <div className="px-lg-5 mb-lg-5 px-3 mb-3">
             <Button
               text="Отправить"
               type="submit"
               loading={loading}
               block={false}
+              sizeLg={true}
             />
           </div>
         </Form>

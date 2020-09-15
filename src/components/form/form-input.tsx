@@ -7,6 +7,7 @@ export interface formInputInterfaceProps {
   name: string;
   type: string;
   placeholder: string;
+  classes?: string
 }
 
 const FormInput: React.FC<formInputInterfaceProps> = ({
@@ -14,6 +15,7 @@ const FormInput: React.FC<formInputInterfaceProps> = ({
   name,
   type,
   placeholder,
+  classes
 }) => {
   const [field, meta] = useField(name);
 
@@ -24,7 +26,7 @@ const FormInput: React.FC<formInputInterfaceProps> = ({
         aria-label={ariaLabel}
         name={field.name}
         type={type}
-        className="form-control"
+        className={classes}
         placeholder={placeholder}
       />
       {meta.touched && meta.error ? (

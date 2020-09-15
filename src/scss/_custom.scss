@@ -1,8 +1,12 @@
 //Custom styles
 :root {
-  --fs-xs: .75em;
-  --fs-sm: .875em;
+  --fs-xs: .75rem;
+  --fs-sm: .875rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 3rem;
   --fw-600: 600;
+
+  --g2: .5rem;
 }
 
 html,
@@ -20,3 +24,6 @@ body {
   background-color: var(--bs-light);
 }
 
+.ml-n2 {
+  margin-left: calc(var(--g2) * -1);
+}

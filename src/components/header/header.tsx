@@ -18,7 +18,7 @@ const Header = () => {
           <div className="navbar-right">
             {appContext.isAuthenticated() ? (
               <div className="d-flex align-items-center">
-                <Link to="/post/create" className="mr-2">Добавить запись</Link>
+                <Link to="/post/create" className="mr-2 text-decoration-none">Добавить запись</Link>
                 <AvatarDropdown />
               </div>
             ) : (
