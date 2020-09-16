@@ -1,4 +1,4 @@
-import { BlogServiceInterface,UserFormValues, EntityWithTotal } from "./types";
+import { BlogServiceInterface, UserFormValues, EntityWithTotal } from "./types";
 import { authFetch } from "./fetch";
 import { PostFormValues } from "../components/post/post-form/post-form"
 import PostModel, { PostStatus } from "../types/PostModel";
@@ -7,24 +7,40 @@ import config from "../config";
 import { AxiosResponse } from "axios";
 import TagModel from "../types/TagModel";
 
+class ResponseError extends Error {
+  status: number;
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+  }
+}
+
 export default class BlogService implements BlogServiceInterface {
 
   _apiBase = process.env.REACT_APP_API_URL;
 
   protected getResource = async (url: string) => {
     const res = await fetch(`${this._apiBase}${url}`);
-    if (!res.ok) {
-      throw new Error(`Could not fetch ${url}, received ${res.status}`);
+
+    if (!res.ok && res.status >= 500) {
+      throw new ResponseError("Возникли проблемы на стороне сервера. Повторите запрос позже.", res.status);
     }
-    return await res.json();
+
+    const json = await res.json();
+
+    if (!res.ok) {
+      throw new ResponseError(json.error && json.error.message ? json.error.message : `Запрос ${res.url} завершился со статусом ${res.status}.`, res.status);
+    }
+
+    return json; 
   };
 
-  getPosts = async (page = 1, perPage = config.PER_PAGE):Promise<EntityWithTotal<PostModel>> => {
+  getPosts = async (page = 1, perPage = config.PER_PAGE): Promise<EntityWithTotal<PostModel>> => {
     const res = await this.getResource(`/posts/?page=${page}`);
     return res.posts;
   };
 
-  getTags = async (page = 1, perPage = config.PER_PAGE):Promise<EntityWithTotal<TagModel>> => {
+  getTags = async (page = 1, perPage = config.PER_PAGE): Promise<EntityWithTotal<TagModel>> => {
     const res = await this.getResource(`/tags/?page=${page}&per-page=${perPage}`);
     return res.tags;
   }
@@ -34,7 +50,7 @@ export default class BlogService implements BlogServiceInterface {
     return res.tag;
   }
 
-  getAllPosts = async (page = 1, perPage = config.PER_PAGE):Promise<EntityWithTotal<PostModel>> => {
+  getAllPosts = async (page = 1, perPage = config.PER_PAGE): Promise<EntityWithTotal<PostModel>> => {
     const res = await authFetch.get(`/backend/posts?page=${page}`);
     return res.data.posts;
   };
@@ -69,22 +85,22 @@ export default class BlogService implements BlogServiceInterface {
     return res.data.post
   }
 
-  updatePost = async (postId:number , values: PostFormValues) => {
+  updatePost = async (postId: number, values: PostFormValues) => {
     const res = await authFetch.patch(`/posts/${postId}`, values);
     return res.data.post
   }
 
-  managePost =  async (postId:number, values: {status:PostStatus}) => {
+  managePost = async (postId: number, values: { status: PostStatus }) => {
     const res = await authFetch.patch(`/backend/posts/${postId}`, values);
     return res.data
   };
 
   getUsers = async (page = 1, perPage = config.PER_PAGE) => {
-    const res = await authFetch.get<string, AxiosResponse<{users:EntityWithTotal<UserModel>}>>(`/users/?page=${page}`);
+    const res = await authFetch.get<string, AxiosResponse<{ users: EntityWithTotal<UserModel> }>>(`/users/?page=${page}`);
     return res.data.users
   }
 
-  updateUser = async (userId:number, values:UserFormValues) => {
+  updateUser = async (userId: number, values: UserFormValues) => {
     const res = await authFetch.patch(`/users/${userId}`, values);
     return res.data
   }

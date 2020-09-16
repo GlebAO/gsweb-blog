@@ -3,12 +3,12 @@ import PostsTable from "../../components/backend/posts-table";
 import { useAppContext } from "../../reducers";
 import { BlogServiceContext } from "../../context";
 import { Spinner } from "../../components/common/spinner";
-import { Redirect } from "react-router-dom";
 import ShowMoreButton from "../../components/common/show-more-button";
 
 import { fetchEntityItems, entityItemsShowMore } from "../../actions/entities/actions"
 
 import PostModel from "../../types/PostModel";
+import ResponseErrorIndicator from "../../components/common/response-error-indicator";
 
 const PostsManageContainer = () => {
   const { state, dispatch } = useAppContext();
@@ -29,7 +29,7 @@ const PostsManageContainer = () => {
   const { items:posts, total, perPage, loading, error } = adminPosts;
 
   if (error) {
-    return <Redirect to="/404" />;
+    return <ResponseErrorIndicator error={error} />
   }
 
   const handleShowMoreClick = () => {

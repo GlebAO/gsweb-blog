@@ -1,4 +1,4 @@
-import { InitialStateType } from "../../reducers/types";
+import { InitialStateType, ResponseError } from "../../reducers/types";
 
 export const FETCH_DETAILED_ENTITY_REQUEST = 'FETCH_DETAILED_ENTITY_REQUEST'
 export const FETCH_DETAILED_ENTITY_SUCCESS = 'FETCH_DETAILED_ENTITY_SUCCESS'
@@ -21,7 +21,7 @@ export interface DetailedEntityItemsErrorAction {
     key: string,
     detailedEntityName: string,
     type: typeof FETCH_DETAILED_ENTITY_FAILURE
-    payload: Error
+    payload: ResponseError
 }
 
 export type DetailedEntityItemsObjectActionTypes<T> = DetailedEntityItemsLoadedAction<T> | DetailedEntityItemsRequestedAction | DetailedEntityItemsErrorAction;

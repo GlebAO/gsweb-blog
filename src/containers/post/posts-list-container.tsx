@@ -6,6 +6,7 @@ import { BlogServiceContext } from "../../context";
 import ShowMoreButton from "../../components/common/show-more-button";
 
 import { fetchEntityItems, entityItemsShowMore } from "../../actions/entities/actions"
+import ResponseErrorIndicator from "../../components/common/response-error-indicator";
 
 const PostsListContainer = () => {
   const { state, dispatch } = useContext(AppContext);
@@ -28,7 +29,7 @@ const PostsListContainer = () => {
   const { items:posts, total, perPage, loading, error } = publicPosts;
 
   if (error) {
-    return <p>Error</p>;
+    return <ResponseErrorIndicator error={error} />
   }
 
   if (!loading && total === 0 && posts.length === 0) {

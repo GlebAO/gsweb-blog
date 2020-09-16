@@ -1,10 +1,12 @@
-import { DetailedEntityItemsObjectActionTypes, 
-    FETCH_DETAILED_ENTITY_FAILURE, FETCH_DETAILED_ENTITY_REQUEST, FETCH_DETAILED_ENTITY_SUCCESS, 
-    DetailedEntityItemsLoadedAction, DetailedEntityItemsRequestedAction, DetailedEntityItemsErrorAction } from "./types";
-import { InitialStateType } from "../../reducers/types";
+import {
+    DetailedEntityItemsObjectActionTypes,
+    FETCH_DETAILED_ENTITY_FAILURE, FETCH_DETAILED_ENTITY_REQUEST, FETCH_DETAILED_ENTITY_SUCCESS,
+    DetailedEntityItemsLoadedAction, DetailedEntityItemsRequestedAction, DetailedEntityItemsErrorAction
+} from "./types";
+import { InitialStateType, ResponseError } from "../../reducers/types";
 import { getErrorObject } from "../../utils/error-utils";
 
-const detailedEntityItemsRequested = (detailedEntityName: string, key: string ): DetailedEntityItemsRequestedAction => {
+const detailedEntityItemsRequested = (detailedEntityName: string, key: string): DetailedEntityItemsRequestedAction => {
     return {
         detailedEntityName,
         key,
@@ -21,7 +23,7 @@ export const detailedEntityItemsLoaded = <T extends {}>(detailedEntityName: stri
     };
 };
 
-const detailedEntityItemsError = <T extends {}>(detailedEntityName: string, key: string, error: Error): DetailedEntityItemsErrorAction => {
+const detailedEntityItemsError = <T extends {}>(detailedEntityName: string, key: string, error: ResponseError): DetailedEntityItemsErrorAction => {
     return {
         key,
         detailedEntityName,
@@ -32,14 +34,15 @@ const detailedEntityItemsError = <T extends {}>(detailedEntityName: string, key:
 
 export const fetchDetailedEntityItem = <T extends {}>(detailedEntityName: string, key: string, endpoint: () => Promise<T>) => (dispatch: React.Dispatch<DetailedEntityItemsObjectActionTypes<T>>, getState: () => InitialStateType): void => {
     const { detailedEntities } = getState();
-    if(detailedEntities[detailedEntityName] && detailedEntities[detailedEntityName][key] && detailedEntities[detailedEntityName][key].item){
+    if (detailedEntities[detailedEntityName] && detailedEntities[detailedEntityName][key] && detailedEntities[detailedEntityName][key].item) {
         // console.log('cached detailed entity', detailedEntities[detailedEntityName][key])
         dispatch(detailedEntityItemsLoaded(detailedEntityName, key, detailedEntities[detailedEntityName][key].item))
     } else {
         // console.log('CALL API DetailedEntityItems', detailedEntities)
-        dispatch(detailedEntityItemsRequested(detailedEntityName, key));     
-            endpoint()
-                .then((data) => dispatch(detailedEntityItemsLoaded(detailedEntityName, key, data)))
-                .catch((err) => dispatch(detailedEntityItemsError(detailedEntityName, key, getErrorObject(err))));
-    }    
+        dispatch(detailedEntityItemsRequested(detailedEntityName, key));
+        endpoint()
+            .then((data) => dispatch(detailedEntityItemsLoaded(detailedEntityName, key, data)))
+            .catch((err) => dispatch(detailedEntityItemsError(detailedEntityName, key, getErrorObject(err))));
+
+    }
 }

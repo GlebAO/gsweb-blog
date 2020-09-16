@@ -4,7 +4,7 @@ import { useAppContext } from "../../reducers";
 import { BlogServiceContext } from "../../context";
 import { fetchDetailedEntityItem } from "../../actions/detailedEntities/actions";
 import { Spinner } from "../../components/common/spinner";
-import ErrorIndicator from "../../components/common/error-indicator";
+import ResponseErrorIndicator from "../../components/common/response-error-indicator";
 
 interface EditPostContainerProps {
     slug: string
@@ -39,7 +39,7 @@ const EditPostContainer:React.FC<EditPostContainerProps> = ({ slug }) => {
   }
 
   if(error) {
-    return <ErrorIndicator />;
+    return <ResponseErrorIndicator error={error} />
   }
 
   if (postData) {

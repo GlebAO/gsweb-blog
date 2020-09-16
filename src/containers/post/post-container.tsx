@@ -6,9 +6,7 @@ import { BlogServiceContext } from "../../context";
 import { fetchDetailedEntityItem } from "../../actions/detailedEntities/actions";
 import { Spinner } from "../../components/common/spinner";
 import PostView from "../../components/post/post-view";
-import { Redirect } from "react-router-dom";
-import { FormAlert } from "../../components/form";
-
+import ResponseErrorIndicator from "../../components/common/response-error-indicator";
 
 interface PostContainerProps {
   slug: string;
@@ -44,7 +42,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ slug }) => {
   }
 
   if (error) {
-    return <FormAlert text={error.message} success={false}/>
+    return <ResponseErrorIndicator error={error} />
   }
 
   if (postData) {
