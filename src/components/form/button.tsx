@@ -7,6 +7,8 @@ interface buttonProps {
   loading: boolean;
   block: boolean;
   sizeLg?: boolean;
+  onClick?: ()=>void;
+  buttonType?: string;
 }
 
 const Button: React.FC<buttonProps> = ({
@@ -15,14 +17,17 @@ const Button: React.FC<buttonProps> = ({
   loading,
   block,
   sizeLg,
+  onClick,
+  buttonType
 }) => {
   const classes = classNames({
     "btn-lg": sizeLg,
-    "btn btn-primary": true,
+    "btn": true,
     "btn-block": block,
+    [`btn-${buttonType}`]: true
   });
   return (
-    <button className={classes} type={type} disabled={loading}>
+    <button className={classes} type={type} disabled={loading} onClick={onClick}> 
       {loading ? (
         <span className="flex items-center">
           <span className="ml-2">Загружается...</span>

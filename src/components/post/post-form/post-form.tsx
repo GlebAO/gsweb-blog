@@ -78,14 +78,16 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
 
   if (postData) {
     return (
-      <FormAlert
-        text={
-          initialValues
-            ? "Запись отредактирована и ожидает модерации"
-            : "Запись успешно сохранена и ожидает модерации"
-        }
-        success={true}
-      />
+      <div className="p-2">
+        <FormAlert
+          text={
+            initialValues
+              ? "Запись отредактирована и ожидает модерации"
+              : "Запись успешно сохранена и ожидает модерации"
+          }
+          success={true}
+        />
+      </div>
     );
   }
 
@@ -97,7 +99,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
               ...initialValues,
               tags:
                 initialValues.tags &&
-                initialValues.tags.map((tag) => tag.title)
+                initialValues.tags.map((tag) => tag.title),
             }
           : {
               title: "",
@@ -109,53 +111,56 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
       validationSchema={PostFormSchema}
       onSubmit={(values) => submitPostForm(values)}
     >
-      {() => (
-        <Form>
-          {error && <FormAlert text={error.message} success={false} />}
-          <div className="px-lg-5 px-3 pt-lg-5 pt-3 mb-3">
-            <FormInput
-              ariaLabel="Название"
-              name="title"
-              type="text"
-              placeholder="Название"
-              classes="gs-post-form-input gs-post-form-title-input"
-            />
-          </div>
-          <div className="px-lg-5 px-3 mb-3">
-            <strong>https:/gsweb.ru/post/</strong>
-            <FormInput
-              ariaLabel="https:/gsweb.ru/post/"
-              name="slug"
-              type="text"
-              placeholder="my-new-post"
-              classes="gs-post-form-input gs-post-form-url-input"
-            />
-          </div>
+      {() => {
+        return (
+          <Form>
+            {error && <FormAlert text={error.message} success={false} />}
+            <div className="px-lg-5 px-3 pt-lg-5 pt-3 mb-3">
+              <FormInput
+                ariaLabel="Название"
+                name="title"
+                type="text"
+                placeholder="Название"
+                classes="gs-post-form-input gs-post-form-title-input"
+              />
+            </div>
+            <div className="px-lg-5 px-3 mb-3">
+              <strong>https:/gsweb.ru/post/</strong>
+              <FormInput
+                ariaLabel="https:/gsweb.ru/post/"
+                name="slug"
+                type="text"
+                placeholder="my-new-post"
+                classes="gs-post-form-input gs-post-form-url-input"
+              />
+            </div>
 
-          <div className="px-lg-5 px-3 mb-3">
-            <TagsInput name="tags" />
-          </div>
+            <div className="px-lg-5 px-3 mb-3">
+              <TagsInput name="tags" />
+            </div>
 
-          <div className="px-lg-5 pb-lg-5 p-3 mb-3">
-            <FormTextarea
-              name="content"
-              rows={10}
-              placeholder="Напишите здесь что-нибудь интересное..."
-              classes="gs-post-form-input gs-post-form-textarea"
-            />
-          </div>
+            <div className="px-lg-5 pb-lg-5 p-3 mb-3">
+              <FormTextarea
+                name="content"
+                rows={10}
+                placeholder="Напишите здесь что-нибудь интересное..."
+                classes="gs-post-form-input gs-post-form-textarea"
+              />
+            </div>
 
-          <div className="px-lg-5 mb-lg-5 px-3 mb-3">
-            <Button
-              text="Отправить"
-              type="submit"
-              loading={loading}
-              block={false}
-              sizeLg={true}
-            />
-          </div>
-        </Form>
-      )}
+            <div className="px-lg-5 mb-lg-5 px-3 mb-3">
+              <Button
+                text="Отправить"
+                type="submit"
+                loading={loading}
+                block={false}
+                sizeLg={true}
+                buttonType="primary"
+              />
+            </div>
+          </Form>
+        );
+      }}
     </Formik>
   );
 };

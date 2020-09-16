@@ -34,7 +34,7 @@ const PostView: React.FC<PostViewProps> = ({ post }) => {
 
   return (
     <div className="post-view">
-      <div className="card position-relative">
+      <div className="position-relative">
         <div className="post-toolbar">
           {canEdit(userId) && <EditButton url={`/post/edit/${slug}`} />}
         </div>
@@ -45,7 +45,7 @@ const PostView: React.FC<PostViewProps> = ({ post }) => {
             </span>
           )}
           <span className="post-list-item__createdAt text-secondary d-block">
-            {getFormattedDate(createdAt)}
+            {createdAt && getFormattedDate(createdAt)}
           </span>
           <h1 className="font-weight-bold mb-3">{title}</h1>
           <div className="mb-3">

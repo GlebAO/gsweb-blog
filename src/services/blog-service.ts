@@ -66,12 +66,12 @@ export default class BlogService implements BlogServiceInterface {
 
   createPost = async (values: PostFormValues) => {
     const res = await authFetch.post('/posts', values);
-    return res.data
+    return res.data.post
   }
 
   updatePost = async (postId:number , values: PostFormValues) => {
     const res = await authFetch.patch(`/posts/${postId}`, values);
-    return res.data
+    return res.data.post
   }
 
   managePost =  async (postId:number, values: {status:PostStatus}) => {

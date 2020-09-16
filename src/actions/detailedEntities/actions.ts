@@ -2,6 +2,7 @@ import { DetailedEntityItemsObjectActionTypes,
     FETCH_DETAILED_ENTITY_FAILURE, FETCH_DETAILED_ENTITY_REQUEST, FETCH_DETAILED_ENTITY_SUCCESS, 
     DetailedEntityItemsLoadedAction, DetailedEntityItemsRequestedAction, DetailedEntityItemsErrorAction } from "./types";
 import { InitialStateType } from "../../reducers/types";
+import { getErrorObject } from "../../utils/error-utils";
 
 const detailedEntityItemsRequested = (detailedEntityName: string, key: string ): DetailedEntityItemsRequestedAction => {
     return {
@@ -11,7 +12,7 @@ const detailedEntityItemsRequested = (detailedEntityName: string, key: string ):
     };
 };
 
-const detailedEntityItemsLoaded = <T extends {}>(detailedEntityName: string, key: string, detailedEntityItem: T): DetailedEntityItemsLoadedAction<T> => {
+export const detailedEntityItemsLoaded = <T extends {}>(detailedEntityName: string, key: string, detailedEntityItem: T): DetailedEntityItemsLoadedAction<T> => {
     return {
         key,
         detailedEntityName,
@@ -34,11 +35,11 @@ export const fetchDetailedEntityItem = <T extends {}>(detailedEntityName: string
     if(detailedEntities[detailedEntityName] && detailedEntities[detailedEntityName][key] && detailedEntities[detailedEntityName][key].item){
         // console.log('cached detailed entity', detailedEntities[detailedEntityName][key])
         dispatch(detailedEntityItemsLoaded(detailedEntityName, key, detailedEntities[detailedEntityName][key].item))
-    }else{
+    } else {
         // console.log('CALL API DetailedEntityItems', detailedEntities)
         dispatch(detailedEntityItemsRequested(detailedEntityName, key));     
             endpoint()
                 .then((data) => dispatch(detailedEntityItemsLoaded(detailedEntityName, key, data)))
-                .catch((err) => dispatch(detailedEntityItemsError(detailedEntityName, key, err)));
+                .catch((err) => dispatch(detailedEntityItemsError(detailedEntityName, key, getErrorObject(err))));
     }    
 }

@@ -8,7 +8,7 @@ import {
 import PostModel from "../../types/PostModel";
 import { InitialStateType } from "../../reducers/types";
 import { BlogServiceInterface } from "../../services/types";
-import { PostFormValues } from "../../components/post/post-form/post-form"
+import { PostFormValues } from "../../components/post/post-form/post-form";
 import { getErrorObject } from "../../utils/error-utils";
 
 const postFormSaveRequested = (): PostFormObjectActionTypes => {
@@ -57,6 +57,8 @@ export const updatePost = (postId: number, values: PostFormValues, service: Blog
   dispatch(postFormSaveRequested());
   service
     .updatePost(postId, values)
-    .then((data) => dispatch(postFormSaved(data)))
+    .then((data) => {
+      dispatch(postFormSaved(data))
+    })
     .catch((err) => dispatch(postFormSavingError(getErrorObject(err))));
 }
