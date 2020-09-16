@@ -19,6 +19,10 @@ import { BackendObjectActionTypes } from "../actions/backend/types"
 import TagModel from "../types/TagModel";
 import { DetailedEntityItemsActionTypes, DetailedEntityItemsObjectActionTypes } from "../actions/detailedEntities/types";
 
+export interface ResponseError extends Error {
+  status?: number;
+}
+
 export type PostState = {
   posts: PostModel[];
   total: number,

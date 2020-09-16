@@ -151,6 +151,7 @@ const Signup = () => {
                           type="submit"
                           loading={requested && !registered}
                           block={true}
+                          buttonType="primary"
                         />
                       </div>
                     </Form>

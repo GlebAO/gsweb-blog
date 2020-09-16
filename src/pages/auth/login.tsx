@@ -94,6 +94,7 @@ const Login = () => {
                         type="submit"
                         loading={requested && !authenticated}
                         block={true}
+                        buttonType="primary"
                       />
                     </div>
                   </Form>

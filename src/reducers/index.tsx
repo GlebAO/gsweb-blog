@@ -14,6 +14,7 @@ import postFormReducer from "./post-form-reducer";
 import backendReducer from "./backend-reducer";
 import entityReducer from "./entity-reducer";
 import detailedEntityReducer from "./detailed-entity-reducer";
+import mixedEntitiesReducer from "./mixed-entities-reducer";
 
 const getAuthenticated = () => {
   const auth = localStorage.getItem("authenticated");
@@ -65,16 +66,16 @@ const mainReducer: MainReducerInterface = (state, action) => {
     detailedEntities
   } = state;
 
-  const newState = {
+  const { entityState, detailedEntityState } = mixedEntitiesReducer(entities, detailedEntities, action)
+
+  return {
     auth: authReducer(auth, action),
     postContent: postContentReducer(postContent, action),
     postForm: postFormReducer(postForm, action),
     backend: backendReducer(backend, action),
-    entities: entityReducer(entities, action),
-    detailedEntities: detailedEntityReducer(detailedEntities, action)
+    entities: entityReducer(entityState, action),
+    detailedEntities: detailedEntityReducer(detailedEntityState, action)
   };
-
-  return newState;
 };
 
 const useEnhancedReducer: EnhancedStoreInterface<InitialStateType, AppActionsTypes> = (reducerFn, currentState) => {

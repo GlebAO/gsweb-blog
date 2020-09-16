@@ -7,8 +7,6 @@ import {
 } from "./types";
 import PostModel from "../../types/PostModel";
 import { InitialStateType } from "../../reducers/types";
-import { BlogServiceInterface } from "../../services/types";
-import { PostFormValues } from "../../components/post/post-form/post-form";
 import { getErrorObject } from "../../utils/error-utils";
 
 const postFormSaveRequested = (): PostFormObjectActionTypes => {
@@ -16,6 +14,12 @@ const postFormSaveRequested = (): PostFormObjectActionTypes => {
     type: FETCH_POST_FORM_REQUEST,
   };
 };
+
+export const postFormClear = (): PostFormObjectActionTypes => {
+  return {
+    type: CLEAR_FORM,
+  }
+}
 
 const postFormSaved = (
   postContent: PostModel
@@ -33,32 +37,12 @@ const postFormSavingError = (error: Error): PostFormObjectActionTypes => {
   };
 };
 
-export const postFormClear = (): PostFormObjectActionTypes => {
-  return {
-    type: CLEAR_FORM,
-  }
-}
-
-export const createPost = (values: PostFormValues, service: BlogServiceInterface) => (
+export const fetchPost = (endpoint: ()=>Promise<any>) => (
   dispatch: React.Dispatch<PostFormObjectActionTypes>,
   getState: () => InitialStateType
 ): void => {
   dispatch(postFormSaveRequested());
-  service
-    .createPost(values)
+  endpoint()
     .then((data) => dispatch(postFormSaved(data)))
-    .catch((err) => dispatch(postFormSavingError(getErrorObject(err))));
-}
-
-export const updatePost = (postId: number, values: PostFormValues, service: BlogServiceInterface) => (
-  dispatch: React.Dispatch<PostFormObjectActionTypes>,
-  getState: () => InitialStateType
-): void => {
-  dispatch(postFormSaveRequested());
-  service
-    .updatePost(postId, values)
-    .then((data) => {
-      dispatch(postFormSaved(data))
-    })
     .catch((err) => dispatch(postFormSavingError(getErrorObject(err))));
 }

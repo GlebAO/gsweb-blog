@@ -7,6 +7,7 @@ import { fetchDetailedEntityItem } from "../../actions/detailedEntities/actions"
 import { Spinner } from "../../components/common/spinner";
 import PostView from "../../components/post/post-view";
 import { Redirect } from "react-router-dom";
+import { FormAlert } from "../../components/form";
 
 
 interface PostContainerProps {
@@ -43,7 +44,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ slug }) => {
   }
 
   if (error) {
-    return <Redirect to="/404" />;
+    return <FormAlert text={error.message} success={false}/>
   }
 
   if (postData) {

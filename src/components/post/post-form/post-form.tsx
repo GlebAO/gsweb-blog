@@ -10,8 +10,7 @@ import { string, object } from "yup";
 import { FormTextarea } from "../../form";
 import { useAppContext } from "../../../reducers";
 import {
-  createPost,
-  updatePost,
+  fetchPost,
   postFormClear,
 } from "../../../actions/postForm/actions";
 import { BlogServiceContext } from "../../../context";
@@ -70,8 +69,8 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
   const submitPostForm = (values: PostFormValues) => {
     if (blogServiceContext) {
       initialValues && initialValues.id
-        ? dispatch(updatePost(initialValues.id, values, blogServiceContext))
-        : dispatch(createPost(values, blogServiceContext));
+        ? dispatch(fetchPost(() => blogServiceContext.updatePost(initialValues.id, values)))
+        : dispatch(fetchPost(() => blogServiceContext.createPost(values)));
     }
     //console.log(values)
   };
