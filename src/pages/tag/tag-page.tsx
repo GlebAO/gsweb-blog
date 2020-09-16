@@ -18,7 +18,7 @@ const TagPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
   useEffect(() => {
     if (blogService) {
       stableDispatch(
-        fetchDetailedEntityItem("tags", () => blogService.getTagBySlug(slug))
+        fetchDetailedEntityItem("tags", slug, () => blogService.getTagBySlug(slug))
       );
     }
   }, [stableDispatch, blogService, slug]);
@@ -30,8 +30,8 @@ const TagPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
   const getTagTitle = () => {
     let tagTitle = null;
     if (tags) {
-      const tag = tags.find((tag) => tag.key === slug);
-      if (tag) {
+      const tag = tags[slug];
+      if (tag && tag.item) {
         tagTitle = tag.item.title;
       }
     }

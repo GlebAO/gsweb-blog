@@ -2,7 +2,7 @@ import React, { useContext, useCallback, useEffect } from "react";
 import PostForm from "../../components/post/post-form";
 import { useAppContext } from "../../reducers";
 import { BlogServiceContext } from "../../context";
-import { fetchPostBySlug } from "../../actions/postContent/actions";
+import { fetchDetailedEntityItem } from "../../actions/detailedEntities/actions";
 import { Spinner } from "../../components/common/spinner";
 import ErrorIndicator from "../../components/common/error-indicator";
 
@@ -18,13 +18,21 @@ const EditPostContainer:React.FC<EditPostContainerProps> = ({ slug }) => {
 
   useEffect(() => {
     if (blogService) {
-      stableDispatch(fetchPostBySlug(slug, blogService));
+      stableDispatch(fetchDetailedEntityItem("posts", slug, () => blogService.getPostBySlug(slug)));
     }
   }, [slug, stableDispatch, blogService]);
 
   const {
-    postContent: { postData, loading, error },
+    detailedEntities: { posts },
   } = state;
+
+  if(posts === undefined || posts[slug] === undefined) {
+    return null
+  }
+
+  const {
+     item:postData, loading, error
+  } = posts[slug];
 
   if(loading) {
       return <Spinner />

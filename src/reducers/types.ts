@@ -38,11 +38,12 @@ export type EntityState<T> = {
 }
 
 export type DetailedEntityState<T> = {
-  key: string | number | null,
-  item: T;
-  loading: boolean;
-  error: null | Error;
-}[]
+    [key: string]: {
+      item: T | null;
+      loading: boolean;
+      error: null | Error;
+    }
+}
 
 export type UserState = {
   users: UserModel[];
@@ -85,7 +86,7 @@ export type InitialStateType<T = any> = {
   postForm: PostFormState;
   backend: BackendState;
   entities: { [x: string]: EntityState<T> };
-  detailedEntities: { [x: string]: DetailedEntityState<T>};
+  detailedEntities: { [x: string]: DetailedEntityState<T> };
 };
 
 export type AppActionsTypes =

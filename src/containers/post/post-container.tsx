@@ -2,8 +2,8 @@ import React, { useContext, useLayoutEffect, useCallback } from "react";
 
 import { AppContext } from "../../reducers";
 import { BlogServiceContext } from "../../context";
-import { fetchPostBySlug } from "../../actions/postContent/actions";
 
+import { fetchDetailedEntityItem } from "../../actions/detailedEntities/actions";
 import { Spinner } from "../../components/common/spinner";
 import PostView from "../../components/post/post-view";
 import { Redirect } from "react-router-dom";
@@ -21,13 +21,22 @@ const PostContainer: React.FC<PostContainerProps> = ({ slug }) => {
 
   useLayoutEffect(() => {
     if (blogService) {
-      stableDispatch(fetchPostBySlug(slug, blogService));
+      stableDispatch(fetchDetailedEntityItem("posts", slug, () => blogService.getPostBySlug(slug)));
     }
   }, [slug, stableDispatch, blogService]);
 
+
   const {
-    postContent: { postData, loading, error },
+    detailedEntities: { posts },
   } = state;
+
+  if(posts === undefined || posts[slug] === undefined) {
+    return null
+  }
+
+  const {
+     item:postData, loading, error
+  } = posts[slug];
 
   if (loading) {
     return <Spinner />;
