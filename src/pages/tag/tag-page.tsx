@@ -3,6 +3,8 @@ import { RouteComponentProps } from "react-router-dom";
 import { useAppContext } from "../../reducers";
 import { BlogServiceContext } from "../../context";
 import { fetchDetailedEntityItem } from "../../actions/detailedEntities/actions";
+import { PostsListContainer } from "../../containers";
+import PostsListLayout from "../post/posts-list-layout";
 
 interface MatchParams {
   slug: string;
@@ -18,7 +20,9 @@ const TagPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
   useEffect(() => {
     if (blogService) {
       stableDispatch(
-        fetchDetailedEntityItem("tags", slug, () => blogService.getTagBySlug(slug))
+        fetchDetailedEntityItem("tags", slug, () =>
+          blogService.getTagBySlug(slug)
+        )
       );
     }
   }, [stableDispatch, blogService, slug]);
@@ -41,6 +45,11 @@ const TagPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
   return (
     <div className="tag-page">
       <h1>{getTagTitle()}</h1>
+      <PostsListLayout
+        left={null}
+        center={<PostsListContainer tag={slug}/>}
+        right={null}
+      />
     </div>
   );
 };

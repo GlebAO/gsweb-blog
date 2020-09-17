@@ -1,5 +1,5 @@
 import { EntityItemsObjectActionTypes, INC_ENTITY_PAGE, FETCH_ENTITY_FAILURE, FETCH_ENTITY_REQUEST, FETCH_ENTITY_SUCCESS, EntityItemsLoadedAction, EntityItemsShowMoreAction, EntityItemsRequestedAction, EntityItemsErrorAction } from "./types";
-import { InitialStateType } from "../../reducers/types";
+import { InitialStateType, FilterObjectInterface } from "../../reducers/types";
 import { EntityWithTotal } from "../../services/types";
 
 
@@ -33,7 +33,7 @@ export const entityItemsShowMore = (entityName: string): EntityItemsShowMoreActi
     };
 };
 
-export const fetchEntityItems = <T extends {}>(entityName: string, endpoint: (page: number) => Promise<EntityWithTotal<T>>, page: number) => (dispatch: React.Dispatch<EntityItemsObjectActionTypes<T>>, getState: () => InitialStateType): void => {
+export const fetchEntityItems = <T extends {}>(entityName: string, endpoint: (page: number, perPage?:number, filter?: FilterObjectInterface) => Promise<EntityWithTotal<T>>, page: number, perPage?: number, filter?: {}) => (dispatch: React.Dispatch<EntityItemsObjectActionTypes<T>>, getState: () => InitialStateType): void => {
     const { entities } = getState();
     const loadedPage = entities[entityName] ? entities[entityName].page : 1;
 
@@ -41,7 +41,7 @@ export const fetchEntityItems = <T extends {}>(entityName: string, endpoint: (pa
 
     if ((entities[entityName] === undefined && page === 1) || page > loadedPage) {
         dispatch(entityItemsRequested(entityName));
-        endpoint(page)
+        endpoint(page, perPage, filter)
             .then((data) => dispatch(entityItemsLoaded(entityName, data)))
             .catch((err) => dispatch(entityItemsError(entityName, err)));
     }

@@ -13,36 +13,40 @@ interface PostContainerProps {
 }
 
 const PostContainer: React.FC<PostContainerProps> = ({ slug }) => {
-  const { state, dispatch } = useContext(AppContext);
+  const { state, dispatch, isAuthenticated } = useContext(AppContext);
   const blogService = useContext(BlogServiceContext);
 
   const stableDispatch = useCallback(dispatch, []);
 
+  const authenticated = isAuthenticated(); 
+
   useLayoutEffect(() => {
     if (blogService) {
-      stableDispatch(fetchDetailedEntityItem("posts", slug, () => blogService.getPostBySlug(slug)));
-    }
-  }, [slug, stableDispatch, blogService]);
+      //allows user to view his own post if it's on moderation
+      const endpoint = authenticated 
+        ? () => blogService.getOwnPostBySlug(slug)
+        : () => blogService.getPostBySlug(slug);
 
+      stableDispatch(fetchDetailedEntityItem("posts", slug, endpoint));
+    }
+  }, [slug, stableDispatch, blogService, authenticated]);
 
   const {
     detailedEntities: { posts },
   } = state;
 
-  if(posts === undefined || posts[slug] === undefined) {
-    return null
+  if (posts === undefined || posts[slug] === undefined) {
+    return null;
   }
 
-  const {
-     item:postData, loading, error
-  } = posts[slug];
+  const { item: postData, loading, error } = posts[slug];
 
   if (loading) {
     return <Spinner />;
   }
 
   if (error) {
-    return <ResponseErrorIndicator error={error} />
+    return <ResponseErrorIndicator error={error} />;
   }
 
   if (postData) {

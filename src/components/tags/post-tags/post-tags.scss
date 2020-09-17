@@ -1,6 +1,7 @@
 .post-tag-item {
     color: var(--bs-gray);
     text-decoration: none;
+    display: inline-block;
 }
 .post-tag-item:hover {
     color: var(--bs-gray-dark);

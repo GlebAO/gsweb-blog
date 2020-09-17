@@ -5,31 +5,57 @@ import PostsList from "../../components/post/posts-list";
 import { BlogServiceContext } from "../../context";
 import ShowMoreButton from "../../components/common/show-more-button";
 
-import { fetchEntityItems, entityItemsShowMore } from "../../actions/entities/actions"
+import {
+  fetchEntityItems,
+  entityItemsShowMore,
+} from "../../actions/entities/actions";
 import ResponseErrorIndicator from "../../components/common/response-error-indicator";
+import config from "../../config";
+import { FilterObjectInterface } from "../../reducers/types";
 
-const PostsListContainer = () => {
+interface PostsListContainerInterface {
+  tag?: string;
+}
+
+const PostsListContainer: React.FC<PostsListContainerInterface> = ({ tag }) => {
   const { state, dispatch } = useContext(AppContext);
   const blogService = useContext(BlogServiceContext);
   const stableDispatch = useCallback(dispatch, []);
 
-  const { entities: { publicPosts } } = state;
-  const page = publicPosts ? publicPosts.page : 1;
+  //save posts-list and posts-for-specific-tag-list separatly in entities state
+  const stateKey = `publicPosts${tag ? "For" + tag : ""}`;
+  const { entities } = state;
+
+  const data = entities[stateKey];
+  const page = data ? data.page : 1;
+  const filter = data ? data.filter : undefined;
 
   useEffect(() => {
-    if (blogService) {
-      stableDispatch(fetchEntityItems('publicPosts', blogService.getPosts, page));
+    let filterObject: FilterObjectInterface | undefined = filter;
+    if (tag) {
+      filterObject = { ...filter, tag };
     }
-  }, [stableDispatch, blogService, page]);
+    if (blogService) {
+      stableDispatch(
+        fetchEntityItems(
+          stateKey,
+          blogService.getPosts,
+          page,
+          config.PER_PAGE,
+          filterObject
+        )
+      );
+    }
+  }, [stableDispatch, blogService, page, stateKey, filter, tag]);
 
-  if(!publicPosts) {
+  if (!data) {
     return null;
   }
 
-  const { items:posts, total, perPage, loading, error } = publicPosts;
+  const { items: posts, total, perPage, loading, error } = data;
 
   if (error) {
-    return <ResponseErrorIndicator error={error} />
+    return <ResponseErrorIndicator error={error} />;
   }
 
   if (!loading && total === 0 && posts.length === 0) {
@@ -37,7 +63,7 @@ const PostsListContainer = () => {
   }
 
   const handleShowMoreClick = () => {
-    dispatch(entityItemsShowMore('publicPosts'));
+    dispatch(entityItemsShowMore(stateKey));
   };
 
   return (

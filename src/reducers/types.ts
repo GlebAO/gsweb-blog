@@ -32,6 +32,10 @@ export type PostState = {
   error: null | Error;
 };
 
+export interface FilterObjectInterface {
+  [prop: string] : string | number
+}
+
 export type EntityState<T> = {
   items: T[];
   total: number,
@@ -39,6 +43,7 @@ export type EntityState<T> = {
   perPage: number,
   loading: boolean;
   error: null | Error;
+  filter: FilterObjectInterface | undefined
 }
 
 export type DetailedEntityState<T> = {

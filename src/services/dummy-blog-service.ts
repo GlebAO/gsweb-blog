@@ -68,6 +68,18 @@ export default class DummyBlogService implements BlogServiceInterface {
         });
     }
 
+    getOwnPostBySlug(slug:string) {
+        return new Promise<PostModel>((resolve, reject) => {
+            setTimeout(() => {
+                if (Math.random() > 0.75) {
+                    reject(new Error('Something bad happened'));
+                } else {
+                    resolve(this._posts[0]);
+                }
+            }, 700);
+        });
+    }
+
     getTagBySlug(slug:string) {
         return new Promise<TagModel>((resolve, reject) => {
             setTimeout(() => {

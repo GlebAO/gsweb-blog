@@ -24,6 +24,7 @@ const entityReducer = (state: Record<string, EntityState<any>>, action: AppObjec
                     perPage: config.PER_PAGE,
                     loading: true,
                     error: null,
+                    filter: undefined
                 }
             };
         case FETCH_ENTITY_SUCCESS:
@@ -38,6 +39,7 @@ const entityReducer = (state: Record<string, EntityState<any>>, action: AppObjec
                     perPage: config.PER_PAGE,
                     loading: false,
                     error: null,
+                    filter: undefined
                 }
             };
         case FETCH_ENTITY_FAILURE:
@@ -50,6 +52,7 @@ const entityReducer = (state: Record<string, EntityState<any>>, action: AppObjec
                     perPage: config.PER_PAGE,
                     loading: false,
                     error: action.payload,
+                    filter: undefined
                 }
             };
         case INC_ENTITY_PAGE:

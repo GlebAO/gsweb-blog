@@ -6,6 +6,7 @@ import UserModel from "../types/UserModel";
 import config from "../config";
 import { AxiosResponse } from "axios";
 import TagModel from "../types/TagModel";
+import { FilterObjectInterface } from "../reducers/types";
 
 class ResponseError extends Error {
   status: number;
@@ -21,27 +22,29 @@ export default class BlogService implements BlogServiceInterface {
 
   protected getResource = async (url: string) => {
     const res = await fetch(`${this._apiBase}${url}`);
-
     if (!res.ok && res.status >= 500) {
       throw new ResponseError("Возникли проблемы на стороне сервера. Повторите запрос позже.", res.status);
     }
-
     const json = await res.json();
-
     if (!res.ok) {
       throw new ResponseError(json.error && json.error.message ? json.error.message : `Запрос ${res.url} завершился со статусом ${res.status}.`, res.status);
     }
-
     return json; 
   };
 
-  getPosts = async (page = 1, perPage = config.PER_PAGE): Promise<EntityWithTotal<PostModel>> => {
-    const res = await this.getResource(`/posts/?page=${page}`);
+  getPosts = async (page = 1, perPage = config.PER_PAGE, filter: FilterObjectInterface | undefined = undefined): Promise<EntityWithTotal<PostModel>> => {
+    let url = `/posts/?page=${page}&perPage=${perPage}`;
+    
+    if(filter !== undefined && typeof filter === "object") {
+      const str = Object.keys(filter).map((key:string) => `${key}=${filter[key]}`).join("&");
+      url += '&'+str;
+    }
+    const res = await this.getResource(url);
     return res.posts;
   };
 
   getTags = async (page = 1, perPage = config.PER_PAGE): Promise<EntityWithTotal<TagModel>> => {
-    const res = await this.getResource(`/tags/?page=${page}&per-page=${perPage}`);
+    const res = await this.getResource(`/tags/?page=${page}&perPage=${perPage}`);
     return res.tags;
   }
 
@@ -58,6 +61,11 @@ export default class BlogService implements BlogServiceInterface {
   getPostBySlug = async (slug: string) => {
     const res = await this.getResource(`/posts/${slug}`);
     return res.post;
+  }
+
+  getOwnPostBySlug = async (slug: string) => {
+    const res = await authFetch.get(`/posts/own/${slug}`);
+    return res.data.post;
   }
 
   getResourcePost = async (slug: string) => {

@@ -18,6 +18,7 @@ export interface BlogServiceInterface {
     getTagBySlug(slug: string): Promise<TagModel>,
     getAllPosts(page?: number, perPage?: number): Promise<EntityWithTotal<PostModel>>,
     getPostBySlug(slug: string): Promise<PostModel>,
+    getOwnPostBySlug(slug: string): Promise<PostModel>,
     createPost(values: PostFormValues): Promise<any>,
     updatePost(postId: number, values: PostFormValues): Promise<any>,
     managePost(postId: number, values: { status: PostStatus }): Promise<any>,

@@ -18,7 +18,7 @@ const EditPostContainer:React.FC<EditPostContainerProps> = ({ slug }) => {
 
   useEffect(() => {
     if (blogService) {
-      stableDispatch(fetchDetailedEntityItem("posts", slug, () => blogService.getPostBySlug(slug)));
+      stableDispatch(fetchDetailedEntityItem("posts", slug, () => blogService.getOwnPostBySlug(slug)));
     }
   }, [slug, stableDispatch, blogService]);
 
