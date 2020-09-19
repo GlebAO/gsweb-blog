@@ -22,6 +22,9 @@ const PostsManagement = React.lazy(
 const UsersManagement = React.lazy(
   () => import("./pages/backend/users-management")
 );
+const OwnPosts = React.lazy(
+  () => import("./pages/backend/own-posts")
+)
 
 const Routes = () => {
   return (
@@ -49,10 +52,11 @@ const Routes = () => {
           exact
           component={ProfileManagement}
         />
+        <AuthenticatedRoute path="/backend/posts" exact component={OwnPosts} />
         <AdminRoute path="/backend" exact component={Dashboard} />
-        <AdminRoute path="/backend/posts" exact component={PostsManagement} />
-        <AdminRoute path="/backend/users" exact component={UsersManagement} />
-
+        <AdminRoute path="/backend/admin-posts" exact component={PostsManagement} />
+        <AdminRoute path="/backend/admin-users" exact component={UsersManagement} />
+      
         <Redirect from="/" to="/404" />
       </Switch>
     </Suspense>

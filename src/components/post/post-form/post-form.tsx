@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect, useCallback } from "react";
+import React, { useContext, useEffect, useCallback } from "react";
 import { Form, Formik } from "formik";
 import {
   FormInput,
@@ -9,15 +9,13 @@ import {
 import { string, object } from "yup";
 import { FormTextarea } from "../../form";
 import { useAppContext } from "../../../reducers";
-import {
-  fetchPost,
-  postFormClear,
-} from "../../../actions/postForm/actions";
+import { fetchPost, postFormClear } from "../../../actions/postForm/actions";
 import { BlogServiceContext } from "../../../context";
 import { PostStatus } from "../../../types/PostModel";
 
 import "./post-form.scss";
 import TagModel from "../../../types/TagModel";
+import { Redirect } from "react-router-dom";
 
 export interface PostFormValues {
   title: string;
@@ -52,6 +50,7 @@ interface PostFormProps {
     slug: string;
     content: string;
     tags?: TagModel[];
+    status: PostStatus.PENDING | PostStatus.DRAFT
   };
 }
 
@@ -60,8 +59,10 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
   const blogServiceContext = useContext(BlogServiceContext);
   const stableDispatch = useCallback(dispatch, []);
 
-  useLayoutEffect(() => {
-    stableDispatch(postFormClear());
+  useEffect(() => {
+    return () => {
+      stableDispatch(postFormClear());
+    };
   }, [stableDispatch]);
 
   const { postData, loading, error } = state.postForm;
@@ -69,25 +70,18 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
   const submitPostForm = (values: PostFormValues) => {
     if (blogServiceContext) {
       initialValues && initialValues.id
-        ? dispatch(fetchPost(() => blogServiceContext.updatePost(initialValues.id, values)))
+        ? dispatch(
+            fetchPost(() =>
+              blogServiceContext.updatePost(initialValues.id, values)
+            )
+          )
         : dispatch(fetchPost(() => blogServiceContext.createPost(values)));
     }
     //console.log(values)
   };
 
   if (postData) {
-    return (
-      <div className="p-2">
-        <FormAlert
-          text={
-            initialValues
-              ? "Запись отредактирована и ожидает модерации"
-              : "Запись успешно сохранена и ожидает модерации"
-          }
-          success={true}
-        />
-      </div>
-    );
+    return <Redirect to={`/post/${postData.slug}`} />;
   }
 
   return (
@@ -99,18 +93,25 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
               tags:
                 initialValues.tags &&
                 initialValues.tags.map((tag) => tag.title),
+                status: PostStatus.PENDING
             }
           : {
               title: "",
               slug: "",
               content: "",
               tags: [],
+              status: PostStatus.PENDING
             }
       }
       validationSchema={PostFormSchema}
       onSubmit={(values) => submitPostForm(values)}
     >
-      {() => {
+      {(props) => {
+        const handleDraftClick = () => {
+          const { values } = props;
+          values.status = PostStatus.DRAFT;
+          props.handleSubmit()
+        };
         return (
           <Form>
             {error && <FormAlert text={error.message} success={false} />}
@@ -148,14 +149,29 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
             </div>
 
             <div className="px-lg-5 mb-lg-5 px-3 mb-3">
-              <Button
-                text="Отправить"
-                type="submit"
-                loading={loading}
-                block={false}
-                sizeLg={true}
-                buttonType="primary"
-              />
+              <div className="d-flex">
+                <div className="mr-3">
+                  <Button
+                    text="Опубликовать"
+                    type="submit"
+                    loading={loading}
+                    block={false}
+                    sizeLg={true}
+                    buttonType="primary"
+                  />
+                </div>
+                <div>
+                  <Button
+                    text="Сохранить в черновиках"
+                    type="button"
+                    onClick={handleDraftClick}
+                    loading={loading}
+                    block={false}
+                    sizeLg={true}
+                    buttonType="secondary"
+                  />
+                </div>
+              </div>
             </div>
           </Form>
         );

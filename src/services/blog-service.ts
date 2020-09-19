@@ -43,6 +43,12 @@ export default class BlogService implements BlogServiceInterface {
     return res.posts;
   };
 
+  getOwnPosts = async (page = 1, perPage = config.PER_PAGE) : Promise<EntityWithTotal<PostModel>> => {
+    let url = `/my-posts?page=${page}&perPage=${perPage}`;
+    const res = await this.getResource(url);
+    return res.posts;
+  }
+
   getTags = async (page = 1, perPage = config.PER_PAGE): Promise<EntityWithTotal<TagModel>> => {
     const res = await this.getResource(`/tags/?page=${page}&perPage=${perPage}`);
     return res.tags;

@@ -6,7 +6,7 @@ import { FormAlert } from "../../form";
 const ResponseErrorIndicator: React.FC<{ error: ResponseError }> = ({
   error,
 }) => {
-    console.log(error.status);
+   // console.log(error.status);
 
   switch (error.status) {
     case 500:

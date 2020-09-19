@@ -14,6 +14,7 @@ export type EntityWithTotal<T> = [T[], number];
 
 export interface BlogServiceInterface {
     getPosts(page?: number, perPage?: number): Promise<EntityWithTotal<PostModel>>,
+    getOwnPosts(page?: number, perPage?: number): Promise<EntityWithTotal<PostModel>>,
     getTags(page?: number, perPage?: number): Promise<EntityWithTotal<TagModel>>,
     getTagBySlug(slug: string): Promise<TagModel>,
     getAllPosts(page?: number, perPage?: number): Promise<EntityWithTotal<PostModel>>,

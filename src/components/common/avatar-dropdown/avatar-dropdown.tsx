@@ -58,10 +58,15 @@ const AvatarDropdown:React.FC<{theme?: "dark" | "light"}> = ({theme = "light"}) 
 
   const dropdownItems = [
     {
+      title: "Мои посты",
+      path: "/backend/posts",
+      onClick: () => setDropdownOpen(false)
+    },
+    {
       title: "Профиль",
       path: "/backend",
       onClick: () => setDropdownOpen(false)
-    },
+    },  
   ];
 
   const handleClick = (event: MouseEvent) => {

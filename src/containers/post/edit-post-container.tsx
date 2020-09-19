@@ -43,8 +43,8 @@ const EditPostContainer:React.FC<EditPostContainerProps> = ({ slug }) => {
   }
 
   if (postData) {
-    const { id, title, slug, content = '', tags } = postData;
-    return <PostForm initialValues={{ id, title, slug, content, tags }} />;
+    const { id, title, slug, content = '', tags, status } = postData;
+    return <PostForm initialValues={{ id, title, slug, content, tags, status }} />;
   }
 
   return <PostForm />;

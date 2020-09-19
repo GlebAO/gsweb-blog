@@ -2,7 +2,8 @@ import TagModel from "./TagModel"
 
 export enum PostStatus {
     ACTIVE = 10,
-    DRAFT = 9,
+    PENDING = 9,
+    DRAFT = 8,
     ARCHIVED = 0,
 }
 
@@ -23,6 +24,7 @@ export default interface PostModel {
 
 export const postStatuses = [
     { val: PostStatus.ACTIVE, label: "Активен", classes: "text-success" },
+    { val: PostStatus.PENDING, label: "На модерации", classes: "text-warning" },
     { val: PostStatus.DRAFT, label: "Черновик", classes: "text-danger" },
     { val: PostStatus.ARCHIVED, label: "Архивирован", classes: "text-muted" },
 ]

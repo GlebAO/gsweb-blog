@@ -47,7 +47,7 @@ const TagPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
       <h1>{getTagTitle()}</h1>
       <PostsListLayout
         left={null}
-        center={<PostsListContainer tag={slug}/>}
+        center={<PostsListContainer tag={slug} entityKey={'publicPosts'} endpoint={blogService!.getPosts}/>}
         right={null}
       />
     </div>

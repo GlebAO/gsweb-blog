@@ -3,16 +3,21 @@ import {
     FETCH_POST_FORM_SUCCESS
 } from "../actions/postForm/types";
 import PostModel from "../types/PostModel";
+import { AUTH_LOGOUT } from "../actions/auth/types";
+import config from "../config";
+
 
 const editAllPostEntities = (state: Record<string, EntityState<PostModel>>, entity: PostModel) => {
-    let publicPosts = editEntities('publicPosts', state, entity);
+    let publicPosts = editEntities(config.entities.OWN_POSTS , state, entity);
 
-    if(entity.tags) {  
-        console.log(entity.tags.slice(0,5))
-        for(let tag of entity.tags.slice(0,10)) { //update only 10 tag pages for perfonce reasons
-            publicPosts = editEntities(`publicPostsFor${tag.slug}`, publicPosts, entity);
-        }
-    }
+    //publicPosts = editEntities('publicPosts', state, entity);
+
+    //if(entity.tags) {  
+    // console.log(entity.tags.slice(0,5))
+    // for(let tag of entity.tags.slice(0,10)) { //update only 10 tag pages for perfonce reasons
+    //     publicPosts = editEntities(`publicPostsFor${tag.slug}`, publicPosts, entity);
+    //  }
+    // }
 
     return publicPosts;
 }
@@ -24,7 +29,7 @@ const editEntities = (key: string, state: Record<string, EntityState<PostModel>>
 
     const { [key]: { items } } = state;
     const idx = items.findIndex(item => item.id === entity.id);
- 
+
     return {
         ...state,
         [key]: {
@@ -58,9 +63,14 @@ const editDetailedEntities = (state: Record<string, DetailedEntityState<any>>, e
 
 const entityReducer = (entityState: Record<string, EntityState<any>>, detailedEntityState: Record<string, DetailedEntityState<any>>, action: AppObjectActionsTypes) => {
     switch (action.type) {
+        case AUTH_LOGOUT:
+            return {
+                entityState: {},
+                detailedEntityState: {}
+            }
         case FETCH_POST_FORM_SUCCESS:
             return {
-                entityState: editAllPostEntities( entityState, action.payload),
+                entityState: editAllPostEntities(entityState, action.payload),
                 detailedEntityState: editDetailedEntities(detailedEntityState, action.payload)
             };
         default:

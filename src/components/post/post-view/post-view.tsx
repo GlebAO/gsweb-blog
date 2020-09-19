@@ -9,6 +9,7 @@ import Prism from "prismjs";
 import "./post-view.scss";
 import "../../../assets/css/prism.css";
 import PostTags from "../../tags/post-tags";
+import PostStatusIndicator from "../post-status-indicator";
 
 interface PostViewProps {
   post: PostModel;
@@ -16,7 +17,7 @@ interface PostViewProps {
 
 const PostView: React.FC<PostViewProps> = ({ post }) => {
   const { canEdit } = useContext(AppContext);
-  const { id, title, content, userId, slug, user, createdAt, tags } = post;
+  const { id, title, content, userId, slug, user, createdAt, tags, status } = post;
 
   useEffect(() => {
     setTimeout(() => Prism.highlightAll(), 0);
@@ -39,6 +40,7 @@ const PostView: React.FC<PostViewProps> = ({ post }) => {
           {canEdit(userId) && <EditButton url={`/post/edit/${slug}`} />}
         </div>
         <div className="card-body p-md-5">
+          <PostStatusIndicator status={status} />
           {user && (
             <span className="post-list-item__author text-secondary">
               {user.name}
