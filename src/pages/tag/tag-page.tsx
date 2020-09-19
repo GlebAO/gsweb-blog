@@ -3,8 +3,10 @@ import { RouteComponentProps } from "react-router-dom";
 import { useAppContext } from "../../reducers";
 import { BlogServiceContext } from "../../context";
 import { fetchDetailedEntityItem } from "../../actions/detailedEntities/actions";
-import { PostsListContainer } from "../../containers";
+import { EntitiesContainer } from "../../containers";
 import PostsListLayout from "../post/posts-list-layout";
+import PostsList from "../../components/post/posts-list";
+import config from "../../config";
 
 interface MatchParams {
   slug: string;
@@ -47,7 +49,14 @@ const TagPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
       <h1>{getTagTitle()}</h1>
       <PostsListLayout
         left={null}
-        center={<PostsListContainer tag={slug} entityKey={'publicPosts'} endpoint={blogService!.getPosts}/>}
+        center={
+          <EntitiesContainer
+            entityKey={config.entities.PUBLIC_POSTS_FOR_TAG(slug)}
+            endpoint={blogService!.getPosts}
+          >
+            {(items) => <PostsList posts={items} />}
+          </EntitiesContainer>
+        }
         right={null}
       />
     </div>

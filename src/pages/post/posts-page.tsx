@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
-import { PostsListContainer } from "../../containers";
+import { EntitiesContainer } from "../../containers";
 import { TagsListContainer } from "../../containers";
 import PostsListLayout from "./posts-list-layout";
 import { BlogServiceContext } from "../../context";
 import config from "../../config";
+import PostsList from "../../components/post/posts-list";
 
 const Banner = () => {
   return (
@@ -25,7 +26,14 @@ const PostsPage = () => {
   return (
     <PostsListLayout
       left={<TagsListContainer />}
-      center={<PostsListContainer entityKey={config.entities.PUBLIC_POSTS} endpoint={blogService!.getPosts} />}
+      center={
+        <EntitiesContainer
+          entityKey={config.entities.PUBLIC_POSTS}
+          endpoint={blogService!.getPosts}
+        >
+          {(items) => <PostsList posts={items} />}
+        </EntitiesContainer>
+      }
       right={<Banner />}
     />
   );
