@@ -16,29 +16,26 @@ interface EntitiesContainerInterface {
   tag?: string;
   endpoint: () => Promise<any>;
   children: (items: any[]) => React.ReactNode;
+  initialFilter?: FilterObjectInterface
 }
 
 const EntitiesContainer: React.FC<EntitiesContainerInterface> = ({
   entityKey,
   endpoint,
   children,
+  initialFilter
 }) => {
   const { state, dispatch } = useContext(AppContext);
   const stableDispatch = useCallback(dispatch, []);
 
-  //save posts-list and posts-for-specific-tag-list separatly in entities state
-  const { entities } = state;
-
-  const data = entities[entityKey];
+  const data = state.entities[entityKey];
   const page = data ? data.page : 1;
-  const filter = data ? data.filter : undefined;
 
   useEffect(() => {
-    let filterObject: FilterObjectInterface | undefined = filter;
     stableDispatch(
-      fetchEntityItems(entityKey, endpoint, page, config.PER_PAGE, filterObject)
+      fetchEntityItems(entityKey, endpoint, page, config.PER_PAGE, initialFilter )
     );
-  }, [stableDispatch, page, entityKey, filter, endpoint]);
+  }, [stableDispatch, page, entityKey, endpoint, initialFilter]);
 
   if (!data) {
     return null;

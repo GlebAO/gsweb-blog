@@ -3,7 +3,8 @@ import {
     FETCH_ENTITY_FAILURE,
     FETCH_ENTITY_REQUEST,
     FETCH_ENTITY_SUCCESS,
-    INC_ENTITY_PAGE
+    INC_ENTITY_PAGE,
+    APPLY_ENTITY_FILTER
 } from "../actions/entities/types";
 import config from "../config";
 //import PostModel from "../types/PostModel"
@@ -65,6 +66,16 @@ const entityReducer = (state: Record<string, EntityState<any>>, action: AppObjec
                 }
 
             }
+            case APPLY_ENTITY_FILTER:
+                entityState = state[action.entityName];
+                return {
+                    ...state,
+                    [action.entityName]: {
+                        ...entityState,
+                        filter: {...entityState.filter, ...action.filterObject}
+                    }
+    
+                }
         default:
             return state;
     }

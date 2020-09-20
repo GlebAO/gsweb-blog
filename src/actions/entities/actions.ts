@@ -1,4 +1,4 @@
-import { EntityItemsObjectActionTypes, INC_ENTITY_PAGE, FETCH_ENTITY_FAILURE, FETCH_ENTITY_REQUEST, FETCH_ENTITY_SUCCESS, EntityItemsLoadedAction, EntityItemsShowMoreAction, EntityItemsRequestedAction, EntityItemsErrorAction } from "./types";
+import { EntityItemsObjectActionTypes, APPLY_ENTITY_FILTER, INC_ENTITY_PAGE, FETCH_ENTITY_FAILURE, FETCH_ENTITY_REQUEST, FETCH_ENTITY_SUCCESS, EntityItemsLoadedAction, EntityItemsShowMoreAction, EntityItemsRequestedAction, EntityItemsErrorAction, EntityItemsApplyFilterAction } from "./types";
 import { InitialStateType, FilterObjectInterface } from "../../reducers/types";
 import { EntityWithTotal } from "../../services/types";
 
@@ -30,6 +30,14 @@ export const entityItemsShowMore = (entityName: string): EntityItemsShowMoreActi
     return {
         entityName,
         type: INC_ENTITY_PAGE,
+    };
+};
+
+export const entityItemsApplyFilter = (entityName: string, filterObject: FilterObjectInterface): EntityItemsApplyFilterAction => {
+    return {
+        entityName,
+        filterObject,
+        type: APPLY_ENTITY_FILTER,
     };
 };
 

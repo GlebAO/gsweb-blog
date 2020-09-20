@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useAppContext } from "../../reducers";
 import { BlogServiceContext } from "../../context";
@@ -7,6 +7,7 @@ import { EntitiesContainer } from "../../containers";
 import PostsListLayout from "../post/posts-list-layout";
 import PostsList from "../../components/post/posts-list";
 import config from "../../config";
+//import { entityItemsApplyFilter } from "../../actions/entities/actions";
 
 interface MatchParams {
   slug: string;
@@ -28,6 +29,12 @@ const TagPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
       );
     }
   }, [stableDispatch, blogService, slug]);
+
+  const initialFilter = useMemo(() => ({tag: slug}), [slug])
+
+ // useEffect(() => {
+   // stableDispatch(entityItemsApplyFilter(config.entities.PUBLIC_POSTS_FOR_TAG(slug), {tag: slug}))
+  //}, [stableDispatch, slug])
 
   const {
     detailedEntities: { tags },
@@ -53,6 +60,7 @@ const TagPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
           <EntitiesContainer
             entityKey={config.entities.PUBLIC_POSTS_FOR_TAG(slug)}
             endpoint={blogService!.getPosts}
+            initialFilter={initialFilter}
           >
             {(items) => <PostsList posts={items} />}
           </EntitiesContainer>
