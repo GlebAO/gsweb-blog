@@ -43,6 +43,9 @@ export const fetchPost = (endpoint: ()=>Promise<any>) => (
 ): void => {
   dispatch(postFormSaveRequested());
   endpoint()
-    .then((data) => dispatch(postFormSaved(data)))
+    .then((data) => {
+      dispatch(postFormSaved(data))
+      dispatch(postFormClear())
+    })
     .catch((err) => dispatch(postFormSavingError(getErrorObject(err))));
 }

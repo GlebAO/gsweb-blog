@@ -2,23 +2,24 @@ import { DetailedEntityState, EntityState, AppObjectActionsTypes } from "./types
 import {
     FETCH_POST_FORM_SUCCESS
 } from "../actions/postForm/types";
-import PostModel from "../types/PostModel";
+import PostModel, { PostStatus } from "../types/PostModel";
 import { AUTH_LOGOUT } from "../actions/auth/types";
 import config from "../config";
 
 
 const editAllPostEntities = (state: Record<string, EntityState<PostModel>>, entity: PostModel) => {
-    let publicPosts = editEntities(config.entities.OWN_POSTS , state, entity);
-
-    //publicPosts = editEntities('publicPosts', state, entity);
-
-    //if(entity.tags) {  
-    // console.log(entity.tags.slice(0,5))
-    // for(let tag of entity.tags.slice(0,10)) { //update only 10 tag pages for perfonce reasons
-    //     publicPosts = editEntities(`publicPostsFor${tag.slug}`, publicPosts, entity);
-    //  }
-    // }
-
+    let publicPosts = editEntities(config.entities.OWN_POSTS, state, entity);
+    
+    if(entity.status === PostStatus.ACTIVE){
+        publicPosts = editEntities(config.entities.PUBLIC_POSTS, publicPosts, entity);
+        if (entity.tags) {
+            // console.log(entity.tags.slice(0,5))
+            for (let tag of entity.tags.slice(0, 10)) { //update only 10 tag pages for performance reasons
+                publicPosts = editEntities(config.entities.PUBLIC_POSTS_FOR_TAG(tag.slug), publicPosts, entity);
+            }
+        }
+    }
+    
     return publicPosts;
 }
 
@@ -34,7 +35,7 @@ const editEntities = (key: string, state: Record<string, EntityState<PostModel>>
         ...state,
         [key]: {
             ...state[key],
-            items: idx === -1 ? addEntity<PostModel>(idx, entity, items) : updateEntity<PostModel>(idx, entity, items)
+            items: manageEntity<PostModel>(idx, entity, items)
         }
     }
 }
@@ -46,6 +47,12 @@ function updateEntity<T>(idx: number, item: T, items: T[]): T[] {
 }
 function addEntity<T>(idx: number, item: T, items: T[]): T[] {
     return [item, ...items]
+}
+function manageEntity<T>(idx: number, item: T, items: T[]): T[] {
+    if(idx === -1) {
+        return addEntity<T>(idx, item, items)
+    }
+    return updateEntity<T>(idx, item, items)
 }
 
 const editDetailedEntities = (state: Record<string, DetailedEntityState<any>>, entity: PostModel) => {

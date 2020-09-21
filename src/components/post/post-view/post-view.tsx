@@ -2,45 +2,56 @@ import React, { useContext, useEffect } from "react";
 import PostModel from "../../../types/PostModel";
 import DOMpurify from "dompurify";
 import { AppContext } from "../../../reducers";
-import EditButton from "../../common/edit-button";
 import { getFormattedDate } from "../../../utils/date-utils";
 import Prism from "prismjs";
 
 import "./post-view.scss";
 import "../../../assets/css/prism.css";
 import PostTags from "../../tags/post-tags";
-import PostStatusIndicator from "../post-status-indicator";
+import PostManageToolbar from "../post-manage-toolbar";
 
 interface PostViewProps {
   post: PostModel;
 }
 
 const PostView: React.FC<PostViewProps> = ({ post }) => {
-  const { canEdit } = useContext(AppContext);
-  const { id, title, content, userId, slug, user, createdAt, tags, status } = post;
+  const { isPostAuthor } = useContext(AppContext);
+  const {
+    id,
+    title,
+    content,
+    userId,
+    slug,
+    user,
+    createdAt,
+    tags,
+    status,
+  } = post;
 
   useEffect(() => {
     setTimeout(() => Prism.highlightAll(), 0);
   }, []);
 
   const renderContent = (content: string | undefined) => {
-    if(content) {
-      return <div
-      className="post-content-body"
-      dangerouslySetInnerHTML={{ __html: DOMpurify.sanitize(content) }}
-    />
+    if (content) {
+      return (
+        <div
+          className="post-content-body"
+          dangerouslySetInnerHTML={{ __html: DOMpurify.sanitize(content) }}
+        />
+      );
     }
-    return null
-  }
+    return null;
+  };
 
   return (
     <div className="post-view">
       <div className="position-relative">
-        <div className="post-toolbar">
-          {canEdit(userId) && <EditButton url={`/post/edit/${slug}`} />}
-        </div>
+        {isPostAuthor(userId) && (
+          <PostManageToolbar status={status} slug={slug}/>
+        )}
+
         <div className="card-body p-md-5">
-          <PostStatusIndicator status={status} />
           {user && (
             <span className="post-list-item__author text-secondary">
               {user.name}
@@ -51,7 +62,7 @@ const PostView: React.FC<PostViewProps> = ({ post }) => {
           </span>
           <h1 className="font-weight-bold mb-3">{title}</h1>
           <div className="mb-3">
-            {tags && <PostTags tags={tags} postId={id}/>}
+            {tags && <PostTags tags={tags} postId={id} />}
           </div>
           {renderContent(content)}
         </div>

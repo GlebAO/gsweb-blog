@@ -1,6 +1,8 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect, useCallback } from 'react'
 import { getErrorObject } from "./error-utils";
 import { useLocation } from "react-router-dom";
+import { AppActionsTypes, DetailedEntity } from '../reducers/types';
+import { useAppContext } from '../reducers';
 
 interface initialStateInterface {
     loading: boolean,
@@ -50,6 +52,27 @@ export const useRequest = (request: () => Promise<any>, disableFirstUpdate?: Rea
 
     return dataState;
 };
+
+export function useDetailedEntity<T>(
+    slug: string,
+    key: string
+): [DetailedEntity<T> | null, React.Dispatch<AppActionsTypes>] {
+    const { state, dispatch } = useAppContext();
+    const stableDispatch = useCallback(dispatch, []);
+
+    const { detailedEntities } = state;
+
+    if (
+        detailedEntities[key] === undefined ||
+        detailedEntities[key][slug] === undefined
+    ) {
+        return [null, stableDispatch];
+    }
+
+    const itemState = detailedEntities[key][slug];
+
+    return [itemState, stableDispatch];
+}
 
 export const useQueryString = () => {
     const { search } = useLocation();

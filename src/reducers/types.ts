@@ -47,11 +47,13 @@ export type EntityState<T> = {
 }
 
 export type DetailedEntityState<T> = {
-    [key: string]: {
-      item: T | null;
-      loading: boolean;
-      error: null | Error;
-    }
+    [key: string]: DetailedEntity<T>
+}
+
+export type DetailedEntity<T> = {
+  item: T | null;
+  loading: boolean;
+  error: null | Error;
 }
 
 export type UserState = {
@@ -131,5 +133,5 @@ export type AppContextType = {
   isAuthenticated: () => boolean;
   getUserInfo: () => UserInfoType;
   isAdmin: () => boolean;
-  canEdit: (userId: number) => boolean;
+  isPostAuthor: (userId: number) => boolean;
 };

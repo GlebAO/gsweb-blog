@@ -7,10 +7,12 @@ interface PostsTableInterface {
 }
 
 const PostsTableRow: React.FC<{ item: PostModel }> = ({ item }) => {
-  const { title, status, createdAt, updatedAt } = item;
+  const { title, user, status, createdAt, updatedAt, tags } = item;
   return (
     <>
       <td>{title}</td>
+      <td>{user && user.name}</td>
+      <td>{tags && tags.map(tag=>tag.title).join(', ')}</td>
       <td>
         <PostStatusDropdown currentStatus={status} post={item} />
       </td>
@@ -26,6 +28,8 @@ const PostsTable: React.FC<PostsTableInterface> = ({ items }) => {
       <thead>
         <tr>
           <th scope="col">Название</th>
+          <th scope="col">Автор</th>
+          <th scope="col">Тэги</th>
           <th scope="col">Статус</th>
           <th scope="col">Updated at</th>
           <th scope="col">Created at</th>

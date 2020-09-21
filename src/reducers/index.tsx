@@ -52,7 +52,7 @@ const AppContext = React.createContext<AppContextType>({
   dispatch: () => null,
   isAuthenticated: () => false,
   isAdmin: () => false,
-  canEdit: () => false,
+  isPostAuthor: () => false,
   getUserInfo: () => ({ sub: null, name: "", email: "", role: UserRole.GUEST }),
 });
 
@@ -138,7 +138,7 @@ const AppProvider: React.FC = ({ children }) => {
     return userInfo.role === UserRole.USER;
   };
 
-  const canEdit = (userId: number) => {
+  const isPostAuthor = (userId: number) => {
     const userInfo = getUserInfo();
     return (
       isAuthenticated() &&
@@ -155,7 +155,7 @@ const AppProvider: React.FC = ({ children }) => {
         isAuthenticated,
         getUserInfo,
         isAdmin,
-        canEdit,
+        isPostAuthor
       }}
     >
       {children}

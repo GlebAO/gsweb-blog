@@ -6,18 +6,20 @@ import { getFormattedDate } from "../../../utils/date-utils";
 import "./post-list-item.scss";
 import PostTags from "../../tags/post-tags";
 import PostStatusIndicator from "../post-status-indicator";
+import { useAppContext } from "../../../reducers";
 
 interface PostListItemProps {
   post: PostModel;
 }
 
 const PostListItem: React.FC<PostListItemProps> = ({ post }) => {
-  const { id, title, slug, user, createdAt, tags, status } = post;
+  const {isPostAuthor} = useAppContext();
+  const { id, title, slug, user, userId, createdAt, tags, status } = post;
   return (
     <div id={`post-${id}`} className="card post-list-item mb-2">
       <div className="post-list-item__body card-body px-md-4">
 
-       <PostStatusIndicator status={status}/>
+        {isPostAuthor(userId) && <PostStatusIndicator status={status}/>}
 
         <div className="post-list-item__top">
           {user && (

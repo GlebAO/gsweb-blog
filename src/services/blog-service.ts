@@ -106,7 +106,7 @@ export default class BlogService implements BlogServiceInterface {
 
   managePost = async (postId: number, values: { status: PostStatus }) => {
     const res = await authFetch.patch(`/backend/posts/${postId}`, values);
-    return res.data
+    return res.data.post
   };
 
   getUsers = async (page = 1, perPage = config.PER_PAGE) => {

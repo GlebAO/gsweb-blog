@@ -1,13 +1,47 @@
-import React from 'react'
-import { PostStatus } from '../../../types/PostModel'
+import {
+  faInfoCircle,
+  IconDefinition,
+} from "@fortawesome/free-solid-svg-icons";
+import React from "react";
+import { PostStatus } from "../../../types/PostModel";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const PostStatusIndicator:React.FC<{status:PostStatus}> = ({status}) => {
+const PostStatusIndicator: React.FC<{ status: PostStatus }> = ({ status }) => {
+
+  function renderSpan(
+    classes: string,
+    hint: string,
+    icon: IconDefinition,
+    text: string
+  ) {
     return (
-        <div>
-             {status === PostStatus.DRAFT && <span className="text-danger">Черновик (виден только Вам)</span>}
-             {status === PostStatus.PENDING && <span className="text-warning">На модерации (скоро будет виден всему Интернету)</span>}
-        </div>
-    )
-}
+      <span className={classes} title={hint}>
+        {" "}
+        <FontAwesomeIcon icon={icon} /> {text}
+      </span>
+    );
+  }
 
-export default PostStatusIndicator
+  return (
+    <div>
+      {status === PostStatus.ACTIVE &&
+        renderSpan("text-success", "Виден всем", faInfoCircle, "Опубликовано")}
+      {status === PostStatus.DRAFT &&
+        renderSpan(
+          "text-secondary",
+          "Виден только Вам",
+          faInfoCircle,
+          "Черновик"
+        )}
+      {status === PostStatus.PENDING &&
+        renderSpan(
+          "text-warning",
+          "После проверки станет виден Всем",
+          faInfoCircle,
+          "На модерации"
+        )}
+    </div>
+  );
+};
+
+export default PostStatusIndicator;
