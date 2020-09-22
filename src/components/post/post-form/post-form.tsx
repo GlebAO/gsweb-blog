@@ -5,17 +5,17 @@ import {
   Button,
   FormAlert,
   TagsInput,
+  MarkdownEditor,
 } from "../../../components/form";
 import { string, object } from "yup";
-import { FormTextarea } from "../../form";
 import { useAppContext } from "../../../reducers";
 import { fetchPost, postFormClear } from "../../../actions/postForm/actions";
 import { BlogServiceContext } from "../../../context";
 import { PostStatus } from "../../../types/PostModel";
-
-import "./post-form.scss";
 import TagModel from "../../../types/TagModel";
 import { Redirect } from "react-router-dom";
+
+import "./post-form.scss";
 
 export interface PostFormValues {
   title: string;
@@ -50,7 +50,7 @@ interface PostFormProps {
     slug: string;
     content: string;
     tags?: TagModel[];
-    status: PostStatus.PENDING | PostStatus.DRAFT
+    status: PostStatus.PENDING | PostStatus.DRAFT;
   };
 }
 
@@ -93,14 +93,14 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
               tags:
                 initialValues.tags &&
                 initialValues.tags.map((tag) => tag.title),
-                status: PostStatus.PENDING
+              status: PostStatus.PENDING,
             }
           : {
               title: "",
               slug: "",
               content: "",
               tags: [],
-              status: PostStatus.PENDING
+              status: PostStatus.PENDING,
             }
       }
       validationSchema={PostFormSchema}
@@ -110,7 +110,7 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
         const handleDraftClick = () => {
           const { values } = props;
           values.status = PostStatus.DRAFT;
-          props.handleSubmit()
+          props.handleSubmit();
         };
         return (
           <Form>
@@ -139,13 +139,10 @@ const PostForm: React.FC<PostFormProps> = ({ initialValues }) => {
               <TagsInput name="tags" />
             </div>
 
-            <div className="px-lg-5 pb-lg-5 p-3 mb-3">
-              <FormTextarea
-                name="content"
-                rows={10}
-                placeholder="Напишите здесь что-нибудь интересное..."
-                classes="gs-post-form-input gs-post-form-textarea"
-              />
+            <div className="pb-lg-5 mb-3">
+              <div className="post-form-content">
+                <MarkdownEditor name="content" />
+              </div>
             </div>
 
             <div className="px-lg-5 mb-lg-5 px-3 mb-3">

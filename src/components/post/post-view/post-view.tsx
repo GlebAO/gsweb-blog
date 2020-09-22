@@ -4,11 +4,13 @@ import DOMpurify from "dompurify";
 import { AppContext } from "../../../reducers";
 import { getFormattedDate } from "../../../utils/date-utils";
 import Prism from "prismjs";
+import ReactMarkdown from "react-markdown";
+import PostTags from "../../tags/post-tags";
+import PostManageToolbar from "../post-manage-toolbar";
 
 import "./post-view.scss";
 import "../../../assets/css/prism.css";
-import PostTags from "../../tags/post-tags";
-import PostManageToolbar from "../post-manage-toolbar";
+import "react-markdown-editor-lite/lib/index.css";
 
 interface PostViewProps {
   post: PostModel;
@@ -34,11 +36,17 @@ const PostView: React.FC<PostViewProps> = ({ post }) => {
 
   const renderContent = (content: string | undefined) => {
     if (content) {
+      // XSS test
+      // return (
+      //   <div
+      //     className="post-content-body"
+      //     dangerouslySetInnerHTML={{ __html: content }}
+      //   />
+      // )
       return (
-        <div
-          className="post-content-body"
-          dangerouslySetInnerHTML={{ __html: DOMpurify.sanitize(content) }}
-        />
+        <div className="post-content">
+          <ReactMarkdown source={DOMpurify.sanitize(content)} disallowedTypes={['heading', 'html', 'link']} unwrapDisallowed={true}/>
+        </div>
       );
     }
     return null;
@@ -48,7 +56,7 @@ const PostView: React.FC<PostViewProps> = ({ post }) => {
     <div className="post-view">
       <div className="position-relative">
         {isPostAuthor(userId) && (
-          <PostManageToolbar status={status} slug={slug}/>
+          <PostManageToolbar status={status} slug={slug} />
         )}
 
         <div className="card-body p-md-5">

@@ -9,5 +9,6 @@ import EditPostContainer from './post/edit-post-container';
 import BackendLayoutContainer from "./backend-layout-container";
 import TagsListContainer from "./tag/tags-list-container";
 import EntitiesContainer from "./entities-container";
+import CommentsContainer from "./comments-container";
 
-export { EntitiesContainer, BackendLayoutContainer, HeaderContainer, LayoutContainer, ContentContainer, FooterContainer, PostsListContainer, PostContainer, CreatePostContainer, EditPostContainer, TagsListContainer };
+export { CommentsContainer, EntitiesContainer, BackendLayoutContainer, HeaderContainer, LayoutContainer, ContentContainer, FooterContainer, PostsListContainer, PostContainer, CreatePostContainer, EditPostContainer, TagsListContainer };
