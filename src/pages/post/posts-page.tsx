@@ -27,12 +27,15 @@ const PostsPage = () => {
     <PostsListLayout
       left={<TagsListContainer />}
       center={
+        <>
+        <strong className="mb-2 d-block">Записи:</strong>
         <EntitiesContainer
           entityKey={config.entities.PUBLIC_POSTS}
           endpoint={blogService!.getPosts}
         >
           {(items) => <PostsList posts={items} />}
         </EntitiesContainer>
+        </>
       }
       right={<Banner />}
     />
