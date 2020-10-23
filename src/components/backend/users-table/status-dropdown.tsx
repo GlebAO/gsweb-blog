@@ -23,7 +23,7 @@ const StatusDropdown: React.FC<{ currentStatus: UserStatus; userId: number }> = 
     return useRequest(request, disablefirstUpdate);
   };
 
-  const dataState = useChangeUserStatus(status);
+  const [dataState] = useChangeUserStatus(status);
 
   const { loading, data, error } = dataState;
 

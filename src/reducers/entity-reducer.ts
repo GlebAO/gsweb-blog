@@ -66,16 +66,16 @@ const entityReducer = (state: Record<string, EntityState<any>>, action: AppObjec
                 }
 
             }
-            case APPLY_ENTITY_FILTER:
-                entityState = state[action.entityName];
-                return {
-                    ...state,
-                    [action.entityName]: {
-                        ...entityState,
-                        filter: {...entityState.filter, ...action.filterObject}
-                    }
-    
+        case APPLY_ENTITY_FILTER:
+            entityState = state[action.entityName];
+            return {
+                ...state,
+                [action.entityName]: {
+                    ...entityState,
+                    filter: { ...entityState.filter, ...action.filterObject }
                 }
+
+            }
         default:
             return state;
     }

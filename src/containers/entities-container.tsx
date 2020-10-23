@@ -13,7 +13,6 @@ import { FilterObjectInterface } from "../reducers/types";
 
 interface EntitiesContainerInterface {
   entityKey: string;
-  tag?: string;
   endpoint: () => Promise<any>;
   children: (items: any[]) => React.ReactNode;
   initialFilter?: FilterObjectInterface

@@ -7,6 +7,8 @@ import config from "../config";
 import { AxiosResponse } from "axios";
 import TagModel from "../types/TagModel";
 import { FilterObjectInterface } from "../reducers/types";
+import { CommentsFormValuesInterface } from "../components/comments/comments-form";
+import CommentModel from "../types/CommentModel";
 
 class ResponseError extends Error {
   status: number;
@@ -49,6 +51,12 @@ export default class BlogService implements BlogServiceInterface {
     return res.posts;
   }
 
+  getComments = async (commentableId: string | number, commentabletype: string, page = 1, perPage = config.PER_PAGE) : Promise<EntityWithTotal<CommentModel>> => {
+    let url = `/comments?commentableId=${commentableId}&commentabletype=${commentabletype}&page=${page}&perPage=${perPage}`;
+    const res = await this.getResource(url);
+    return res.comments;
+  }
+
   getTags = async (page = 1, perPage = config.PER_PAGE): Promise<EntityWithTotal<TagModel>> => {
     const res = await this.getResource(`/tags/?page=${page}&perPage=${perPage}`);
     return res.tags;
@@ -63,6 +71,11 @@ export default class BlogService implements BlogServiceInterface {
     const res = await authFetch.get(`/backend/posts?page=${page}`);
     return res.data.posts;
   };
+
+  getAllComments = async (page = 1, perPage = config.PER_PAGE): Promise<EntityWithTotal<CommentModel>> => {
+    const res = await authFetch.get(`/comments/all?page=${page}`);
+    return res.data.comments
+  }
 
   getPostBySlug = async (slug: string) => {
     const res = await this.getResource(`/posts/${slug}`);
@@ -99,6 +112,21 @@ export default class BlogService implements BlogServiceInterface {
     return res.data.post
   }
 
+  createComment = async (values: CommentsFormValuesInterface) => {
+    const res = await authFetch.post(`/comments/${values.commentableId}`, values);
+    return res.data.comment
+  }
+
+  updateComment = async (id: number, content: string) => {
+    const res = await authFetch.patch(`/comments/${id}`, {content});
+    return res.data.comment
+  }
+
+  deleteComment = async (id: number) => {
+    const res = await authFetch.delete(`/comments/${id}`);
+    return res.data.deleted
+  }
+
   updatePost = async (postId: number, values: PostFormValues) => {
     const res = await authFetch.patch(`/posts/${postId}`, values);
     return res.data.post
@@ -118,6 +146,8 @@ export default class BlogService implements BlogServiceInterface {
     const res = await authFetch.patch(`/users/${userId}`, values);
     return res.data
   }
+
+  
 
   test() {
     console.log("testing...");

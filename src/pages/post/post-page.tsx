@@ -12,13 +12,13 @@ const PostPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
   return (
     <div className="post-page">
       <div className="row">
-        <div className="col-md-1"></div>
-        <div className="col-md-8">
-          <div className="card">
+        <div className="col-lg-1"></div>
+        <div className="col-lg-9">
+          <div className="mb-3">
             <PostContainer slug={slug} />
           </div>
         </div>
-        <div className="col-md-3"></div>
+        <div className="col-lg-2"></div>
       </div>
     </div>
   );

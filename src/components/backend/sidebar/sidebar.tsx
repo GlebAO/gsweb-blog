@@ -10,6 +10,7 @@ import {
   faExternalLinkSquareAlt,
   IconDefinition,
   faCogs,
+  faCommentAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BrandLogoWhite from "../../common/brand-logo-white";
@@ -52,6 +53,12 @@ const navItems: NavItemType[] = [
     label: "Упр. постами",
     path: "/backend/admin-posts",
     icon: faCogs,
+    allowedRoles: ["admin"],
+  },
+  {
+    label: "Упр. комментариями",
+    path: "/backend/admin-comments",
+    icon: faCommentAlt,
     allowedRoles: ["admin"],
   },
   {

@@ -4,6 +4,8 @@ import ActiveDropdown from "../../common/active-dropdown";
 import { useDetailedEntity } from "../../../utils/hook-utils";
 import { BlogServiceContext } from "../../../context";
 import { fetchPost } from "../../../actions/postForm/actions";
+import config from "../../../config";
+
 
 const PostStatusDropdown: React.FC<{
   currentStatus: PostStatus;
@@ -29,7 +31,7 @@ const PostStatusDropdown: React.FC<{
 
   const [itemState, stableDispatch] = useDetailedEntity<PostModel>(
     post.slug,
-    "posts"
+    config.detailedEntities.POSTS
   );
 
   let initialState: {

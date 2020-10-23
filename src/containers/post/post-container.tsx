@@ -22,7 +22,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ slug }) => {
 
   useLayoutEffect(() => {
     if (blogService) {
-      //allows user to view his own post if it's on moderation
+      //allows auth  user to view his own post if it's on moderation
       const endpoint = authenticated 
         ? () => blogService.getOwnPostBySlug(slug)
         : () => blogService.getPostBySlug(slug);

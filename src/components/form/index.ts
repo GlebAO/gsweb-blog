@@ -7,5 +7,6 @@ import FormLabel from './form-label';
 import FormCheckbox from "./form-checkbox";
 import TagsInput from "./tags-input";
 import MarkdownEditor from "./markdown-editor";
+import FormInputHidden from "./form-input-hidden";
 
-export { MarkdownEditor, FormInput, FormError, Button, FormAlert, FormTextarea, FormLabel, FormCheckbox, TagsInput };
+export { FormInputHidden, MarkdownEditor, FormInput, FormError, Button, FormAlert, FormTextarea, FormLabel, FormCheckbox, TagsInput };

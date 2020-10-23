@@ -10,7 +10,7 @@ interface initialStateInterface {
     data: null | {}
 }
 
-export const useRequest = (request: () => Promise<any>, disableFirstUpdate?: React.MutableRefObject<boolean>) => {
+export const useRequest = (request: () => Promise<any>, disableFirstUpdate?: React.MutableRefObject<boolean>, successCalback?: (data: Comment) => void): [initialStateInterface, React.Dispatch<React.SetStateAction<initialStateInterface>>] => {
 
     const initialState = useMemo(
         () => ({
@@ -33,10 +33,12 @@ export const useRequest = (request: () => Promise<any>, disableFirstUpdate?: Rea
         let cancelled = false;
         request()
             .then((data) => {
-                return (
-                    !cancelled &&
-                    setDataState({ data: data, error: null, loading: false })
-                );
+                if (!cancelled) {
+                    setDataState({ data, error: null, loading: false });
+                    successCalback && successCalback(data)
+                    return;
+                }
+                return;
             })
             .catch(
                 (err) =>
@@ -48,9 +50,9 @@ export const useRequest = (request: () => Promise<any>, disableFirstUpdate?: Rea
             cancelled = true
         }
 
-    }, [initialState, request, disableFirstUpdate])
+    }, [initialState, request, disableFirstUpdate, successCalback])
 
-    return dataState;
+    return [dataState, setDataState];
 };
 
 export function useDetailedEntity<T>(

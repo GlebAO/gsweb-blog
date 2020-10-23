@@ -1,5 +1,6 @@
 import PostModel from "../types/PostModel";
-import UserModel, { UserInfoType } from "../types/UserModel"
+import UserModel, { UserInfoType } from "../types/UserModel";
+import CommentModel from "../types/CommentModel";
 import {
   PostContentObjectActionTypes,
   PostsContentActionTypes,
@@ -18,11 +19,10 @@ import { AuthObjectActionTypes, AuthActionTypes } from "../actions/auth/types";
 import { BackendObjectActionTypes } from "../actions/backend/types"
 import TagModel from "../types/TagModel";
 import { DetailedEntityItemsActionTypes, DetailedEntityItemsObjectActionTypes } from "../actions/detailedEntities/types";
-
+import { ManageEntityActionTypes, ManageEntityObjectActionTypes } from "../actions/manageEntity/types";
 export interface ResponseError extends Error {
   status?: number;
 }
-
 export type PostState = {
   posts: PostModel[];
   total: number,
@@ -31,11 +31,9 @@ export type PostState = {
   loading: boolean;
   error: null | Error;
 };
-
 export interface FilterObjectInterface {
   [prop: string] : string | number
 }
-
 export type EntityState<T> = {
   items: T[];
   total: number,
@@ -45,35 +43,29 @@ export type EntityState<T> = {
   error: null | Error;
   filter: FilterObjectInterface | undefined
 }
-
 export type DetailedEntityState<T> = {
     [key: string]: DetailedEntity<T>
 }
-
 export type DetailedEntity<T> = {
   item: T | null;
   loading: boolean;
   error: null | Error;
 }
-
 export type UserState = {
   users: UserModel[];
   loading: boolean;
   error: null | Error;
 };
-
 export type PostContentState = {
   postData: null | PostModel;
   loading: boolean;
   error: null | Error;
 };
-
 export type PostFormState = {
   postData: null | PostModel;
   loading: boolean;
   error: null | Error;
 };
-
 export type AuthState = {
   requested: boolean;
   message: string;
@@ -84,12 +76,11 @@ export type AuthState = {
   registered?: boolean;
   confirmed?: boolean;
 };
-
 export type BackendState = {
   sidebarOpened: boolean
 }
 
-export type EntitiesTypes = PostModel | UserModel | TagModel;
+export type EntitiesTypes = PostModel | UserModel | TagModel | CommentModel;
 
 export type InitialStateType<T = any> = {
   auth: AuthState;
@@ -107,6 +98,7 @@ export type AppActionsTypes =
   | BackendObjectActionTypes
   | EntityItemsActionTypes<EntitiesTypes>
   | DetailedEntityItemsActionTypes<EntitiesTypes>
+  | ManageEntityActionTypes<EntitiesTypes>
 
 export type AppObjectActionsTypes =
   | PostFormObjectActionTypes
@@ -115,6 +107,7 @@ export type AppObjectActionsTypes =
   | BackendObjectActionTypes
   | EntityItemsObjectActionTypes<EntitiesTypes>
   | DetailedEntityItemsObjectActionTypes<EntitiesTypes>
+  | ManageEntityObjectActionTypes<EntitiesTypes>
 
 export interface MainReducerInterface {
   (

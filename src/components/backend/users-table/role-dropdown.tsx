@@ -23,7 +23,7 @@ const RoleDropdown: React.FC<{ currentRole: UserRole; userId: number }> = ({
     return useRequest(request, disablefirstUpdate);
   };
 
-  const dataState = useChangeUserRole(role);
+  const [dataState] = useChangeUserRole(role);
 
   const { loading, data, error } = dataState;
 

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { BlogServiceContext } from "../../../context";
 import { fetchPost } from "../../../actions/postForm/actions";
 import { useDetailedEntity } from "../../../utils/hook-utils";
+import config from "../../../config";
 
 const PostStatusManageButton: React.FC<{ postSlug: string }> = ({
   postSlug,
@@ -13,7 +14,7 @@ const PostStatusManageButton: React.FC<{ postSlug: string }> = ({
 
   const [itemState, stableDispatch] = useDetailedEntity<PostModel>(
     postSlug,
-    "posts"
+    config.detailedEntities.POSTS
   );
 
   if (!itemState || !itemState.item) {

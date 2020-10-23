@@ -14,7 +14,7 @@ const Banner = () => {
       </div>
       <div className="card bg-light">
         <div className="card-body">
-          <p className="lead">Блог о веб-разработке компании GSweb</p>
+          <p className="lead">Блог GSweb</p>
         </div>
       </div>
     </div>

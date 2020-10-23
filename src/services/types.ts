@@ -4,6 +4,8 @@ import TagModel from "../types/TagModel";
 import { SignupFormValues } from "../pages/auth/signup";
 import { LoginFormValues } from "../pages/auth/login";
 import { PostFormValues } from "../components/post/post-form/post-form"
+import { CommentsFormValuesInterface } from "../components/comments/comments-form";
+import CommentModel from "../types/CommentModel";
 
 export interface UserFormValues {
     role?: UserRole
@@ -25,9 +27,13 @@ export interface BlogServiceInterface {
     managePost(postId: number, values: { status: PostStatus }): Promise<any>,
     getUsers(): Promise<[UserModel[], number]>,
     updateUser(userId: number, values: UserFormValues): Promise<any>,
-    test(): void
+    createComment(values: CommentsFormValuesInterface): Promise<any>,
+    updateComment(id: number, content: string): Promise<any>,
+    test(): void,
+    getComments(commentableId: string | number, commentabletype: string, page?: number, perPage?: number): Promise<EntityWithTotal<CommentModel>>,
+    getAllComments(): Promise<any>,
+    deleteComment(id: number): Promise<any>,
 }
-
 export interface AuthServiceInterface {
     signup(credentials: SignupFormValues): Promise<any>
     login(credentials: LoginFormValues): Promise<any>

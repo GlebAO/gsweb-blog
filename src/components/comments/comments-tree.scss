@@ -1,0 +1,12 @@
+.comment-tree-collapse-btn > span{
+    width: 20px;
+    display: inline-block;
+}
+.comment-tree-collapse {
+    cursor: pointer;
+    color: var(--bs-gray);
+}
+.comment-tree-collapse:hover {
+    color: var(--bs-gray-dark);
+    background-color: var(--bs-light);
+}

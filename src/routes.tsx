@@ -22,6 +22,9 @@ const PostsManagement = React.lazy(
 const UsersManagement = React.lazy(
   () => import("./pages/backend/users-management")
 );
+const CommentsManagement = React.lazy(
+  () => import("./pages/backend/comments-management")
+);
 const OwnPosts = React.lazy(
   () => import("./pages/backend/own-posts")
 )
@@ -56,6 +59,7 @@ const Routes = () => {
         <AdminRoute path="/backend" exact component={Dashboard} />
         <AdminRoute path="/backend/admin-posts" exact component={PostsManagement} />
         <AdminRoute path="/backend/admin-users" exact component={UsersManagement} />
+        <AdminRoute path="/backend/admin-comments" exact component={CommentsManagement} />
       
         <Redirect from="/" to="/404" />
       </Switch>

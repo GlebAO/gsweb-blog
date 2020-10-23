@@ -10,7 +10,7 @@ const entityItemsRequested = (entityName: string): EntityItemsRequestedAction =>
     };
 };
 
-const entityItemsLoaded = <T extends {}>(entityName: string, entityItemsList: [T[], number]): EntityItemsLoadedAction<T> => {
+export const entityItemsLoaded = <T extends {}>(entityName: string, entityItemsList: [T[], number]): EntityItemsLoadedAction<T> => {
     return {
         entityName,
         type: FETCH_ENTITY_SUCCESS,
@@ -18,7 +18,7 @@ const entityItemsLoaded = <T extends {}>(entityName: string, entityItemsList: [T
     };
 };
 
-const entityItemsError = <T extends {}>(entityName: string, error: Error): EntityItemsErrorAction => {
+const entityItemsError = (entityName: string, error: Error): EntityItemsErrorAction => {
     return {
         entityName,
         type: FETCH_ENTITY_FAILURE,

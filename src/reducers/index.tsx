@@ -68,6 +68,8 @@ const mainReducer: MainReducerInterface = (state, action) => {
 
   const { entityState, detailedEntityState } = mixedEntitiesReducer(entities, detailedEntities, action)
 
+  //const newState = 
+  
   return {
     auth: authReducer(auth, action),
     postContent: postContentReducer(postContent, action),
@@ -76,6 +78,10 @@ const mainReducer: MainReducerInterface = (state, action) => {
     entities: entityReducer(entityState, action),
     detailedEntities: detailedEntityReducer(detailedEntityState, action)
   };
+
+ // console.log(newState)
+
+ // return newState;
 };
 
 const useEnhancedReducer: EnhancedStoreInterface<InitialStateType, AppActionsTypes> = (reducerFn, currentState) => {
