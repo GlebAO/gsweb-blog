@@ -51,10 +51,7 @@ const CommentsTreeItem: React.FC<CommentsTreeItemInterface> = ({ item }) => {
     .then(() => {
       //dispatch(deleteEntity(config.entities.ADMIN_COMMENTS, id));
       dispatch(
-        deleteEntity(
-          config.entities.PUBLIC_COMMENTS_FOR_ENTITY(
-            postId,
-            CommentTypes.POST
+        deleteEntity(config.entities.PUBLIC_COMMENTS_FOR_ENTITY(postId,CommentTypes.POST
           ),
           id
         )
