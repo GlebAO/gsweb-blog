@@ -10,7 +10,7 @@ interface initialStateInterface {
     data: null | {}
 }
 
-export const useRequest = (request: () => Promise<any>, disableFirstUpdate?: React.MutableRefObject<boolean>, successCalback?: (data: Comment) => void): [initialStateInterface, React.Dispatch<React.SetStateAction<initialStateInterface>>] => {
+export const useRequest = (request: () => Promise<any>, disableFirstUpdate?: React.MutableRefObject<boolean>, successCalback?: (data: any) => void): [initialStateInterface, React.Dispatch<React.SetStateAction<initialStateInterface>>] => {
 
     const initialState = useMemo(
         () => ({

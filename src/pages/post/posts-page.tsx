@@ -15,6 +15,9 @@ const Banner = () => {
       <div className="card bg-light">
         <div className="card-body">
           <p className="lead">Блог GSweb</p>
+          <ul className="list-unstyled">
+            <li>Telegram: <a href="tg://resolve?domain=gs_web">GSweb</a></li>
+          </ul>
         </div>
       </div>
     </div>

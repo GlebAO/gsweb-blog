@@ -3,8 +3,8 @@ import ReactMarkdown from "react-markdown";
 import MdEditor from "react-markdown-editor-lite";
 import { useField } from "formik";
 // import style manually
-import "react-markdown-editor-lite/lib/index.css";
 import FormError from "./form-error";
+import "react-markdown-editor-lite/lib/index.css";
 
 interface HandleEditorChangeInterface {
     html: string;
