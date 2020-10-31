@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import PostModel from "../../../types/PostModel";
-import DOMpurify from "dompurify";
+//import DOMpurify from "dompurify";
 import { AppContext } from "../../../reducers";
 import Prism from "prismjs";
 import ReactMarkdown from "react-markdown/with-html";
@@ -9,6 +9,7 @@ import PostManageToolbar from "../post-manage-toolbar";
 import { CommentsContainer } from "../../../containers";
 import { CommentTypes } from "../../../types/CommentModel";
 import PublishMeta from "../../common/publish-meta";
+import { Helmet } from "react-helmet";
 
 import "./post-view.scss";
 import "../../../assets/css/prism.css";
@@ -41,7 +42,10 @@ const PostView: React.FC<PostViewProps> = ({ post }) => {
       //     dangerouslySetInnerHTML={{ __html: content }}
       //   />
       // )
-      const CodeSnippet:React.FC<{content:any, language:string}> = ({content, language}) => {
+      const CodeSnippet: React.FC<{ content: any; language: string }> = ({
+        content,
+        language,
+      }) => {
         return (
           <pre className={`language-${language}`}>
             <code
@@ -85,6 +89,13 @@ const PostView: React.FC<PostViewProps> = ({ post }) => {
 
   return (
     <>
+      <Helmet>
+        <title>{title}</title>
+        <meta
+          name="description"
+          content={`Статьи о веб-разработке в блоге GSweb. ${user && 'Автор' + user.name + '.'} ${title}`}
+        />
+      </Helmet>
       <div className="card post-view mb-3">
         <div className="position-relative">
           {isPostAuthor(userId) && (

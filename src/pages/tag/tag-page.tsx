@@ -7,6 +7,7 @@ import { EntitiesContainer } from "../../containers";
 import PostsListLayout from "../post/posts-list-layout";
 import PostsList from "../../components/post/posts-list";
 import config from "../../config";
+import { Helmet } from "react-helmet";
 //import { entityItemsApplyFilter } from "../../actions/entities/actions";
 
 interface MatchParams {
@@ -14,6 +15,7 @@ interface MatchParams {
 }
 
 const TagPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
+  let tagPageTitle:string|null = null;
   const { state, dispatch } = useAppContext();
   const blogService = useContext(BlogServiceContext);
   const stableDispatch = useCallback(dispatch, []);
@@ -41,17 +43,29 @@ const TagPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
   } = state;
 
   const getTagTitle = () => {
-    let tagTitle = null;
+    if(tagPageTitle) {
+      return tagPageTitle;
+    }
+
+    let tagTitle = slug;
     if (tags) {
       const tag = tags[slug];
       if (tag && tag.item) {
         tagTitle = tag.item.title;
       }
     }
-    return tagTitle;
+    return tagTitle[0].toUpperCase() + tagTitle.slice(1);
   };
 
   return (
+    <>
+    <Helmet>
+  <title>{getTagTitle()} в блоге GSweb - полезные примеры кода и обсуждения в статьях с тэгом {getTagTitle()}.</title>
+        <meta
+          name="description"
+          content={`Статьи с тегом ${getTagTitle()} - полезные примеры кода с подробным описанием и обсуждением.`}
+        />
+      </Helmet>
     <div className="tag-page">
       <h1>{getTagTitle()}</h1>
       <PostsListLayout
@@ -68,6 +82,7 @@ const TagPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
         right={null}
       />
     </div>
+    </>
   );
 };
 

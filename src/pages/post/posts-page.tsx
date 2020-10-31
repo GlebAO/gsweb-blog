@@ -5,6 +5,7 @@ import PostsListLayout from "./posts-list-layout";
 import { BlogServiceContext } from "../../context";
 import config from "../../config";
 import PostsList from "../../components/post/posts-list";
+import { Helmet } from "react-helmet";
 
 const Banner = () => {
   return (
@@ -16,7 +17,9 @@ const Banner = () => {
         <div className="card-body">
           <p className="lead">Блог GSweb</p>
           <ul className="list-unstyled">
-            <li>Telegram: <a href="tg://resolve?domain=gs_web">GSweb</a></li>
+            <li>
+              Telegram: <a href="tg://resolve?domain=gs_web">GSweb</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -27,21 +30,30 @@ const Banner = () => {
 const PostsPage = () => {
   const blogService = useContext(BlogServiceContext);
   return (
-    <PostsListLayout
-      left={<TagsListContainer />}
-      center={
-        <>
-        <strong className="mb-2 d-block">Записи:</strong>
-        <EntitiesContainer
-          entityKey={config.entities.PUBLIC_POSTS}
-          endpoint={blogService!.getPosts}
-        >
-          {(items) => <PostsList posts={items} />}
-        </EntitiesContainer>
-        </>
-      }
-      right={<Banner />}
-    />
+    <>
+      <Helmet>
+        <title>GSweb - блог о веб-разработке c интересными материалами и обсуждениями о Javascript, Typescript, React, Koa, Serverless и многое другое. </title>
+        <meta
+          name="description"
+          content='Полезные примеры кода с подробным описанием на популярные темы в среде веб-разработчиков. Статьи о JavaScript, TypeScript, React, Koa, Frontend, Backend.'
+        />
+      </Helmet>
+      <PostsListLayout
+        left={<TagsListContainer />}
+        center={
+          <>
+            <strong className="mb-2 d-block">Записи:</strong>
+            <EntitiesContainer
+              entityKey={config.entities.PUBLIC_POSTS}
+              endpoint={blogService!.getPosts}
+            >
+              {(items) => <PostsList posts={items} />}
+            </EntitiesContainer>
+          </>
+        }
+        right={<Banner />}
+      />
+    </>
   );
 };
 
