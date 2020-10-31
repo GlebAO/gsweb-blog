@@ -90,7 +90,7 @@ const PostView: React.FC<PostViewProps> = ({ post }) => {
   return (
     <>
       <Helmet>
-        <title>{title}</title>
+        <title>{title} - блог о веб разоаботке GSweb</title>
         <meta
           name="description"
           content={`Статьи о веб-разработке в блоге GSweb. ${user && 'Автор' + user.name + '.'} ${title}`}
