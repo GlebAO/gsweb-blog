@@ -147,7 +147,10 @@ export default class BlogService implements BlogServiceInterface {
     return res.data
   }
 
-  
+  async updateSitemap() {
+    const res = await authFetch.get('/sitemap');
+    return res.data
+  }
 
   test() {
     console.log("testing...");

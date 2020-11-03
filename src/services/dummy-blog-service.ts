@@ -332,6 +332,12 @@ export default class DummyBlogService implements BlogServiceInterface {
         });
     }
 
+    updateSitemap() {
+        return new Promise(function(resolve, reject){
+            resolve('ok');
+        })
+    }
+
     test() {
         console.log('testing...');
     }

@@ -33,6 +33,7 @@ export interface BlogServiceInterface {
     getComments(commentableId: string | number, commentabletype: string, page?: number, perPage?: number): Promise<EntityWithTotal<CommentModel>>,
     getAllComments(): Promise<any>,
     deleteComment(id: number): Promise<any>,
+    updateSitemap(): Promise<any>
 }
 export interface AuthServiceInterface {
     signup(credentials: SignupFormValues): Promise<any>
