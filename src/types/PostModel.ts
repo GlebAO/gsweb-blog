@@ -25,6 +25,6 @@ export default interface PostModel {
 export const postStatuses = [
     { val: PostStatus.ACTIVE, label: "Активен", classes: "text-success" },
     { val: PostStatus.PENDING, label: "На модерации", classes: "text-warning" },
-    { val: PostStatus.DRAFT, label: "Черновик", classes: "text-danger" },
+    { val: PostStatus.DRAFT, label: "Черновик", classes: "text-muted" },
     { val: PostStatus.ARCHIVED, label: "Архивирован", classes: "text-muted" },
 ]

@@ -1,5 +1,7 @@
 import React from "react";
+import { useAppContext } from "../../../reducers";
 import PostModel from "../../../types/PostModel";
+import { getFormattedDateTime } from "../../../utils/date-utils";
 import PostStatusDropdown from "./post-status-dropdown";
 
 interface PostsTableInterface {
@@ -7,17 +9,29 @@ interface PostsTableInterface {
 }
 
 const PostsTableRow: React.FC<{ item: PostModel }> = ({ item }) => {
-  const { title, user, status, createdAt, updatedAt, tags } = item;
+  const { title, user, status, userId, createdAt, updatedAt, tags } = item;
+  const { getUserInfo } = useAppContext();
+  const { sub: currentUserId } = getUserInfo();
+
+  const isOwner = userId === currentUserId;
+
   return (
     <>
-      <td>{title}</td>
+      <td>
+        <strong>{title}</strong>{" "}
+        {isOwner && (
+          <p className="p-0 m-0">
+            <span className="text-success text-sm">Ваш пост</span>
+          </p>
+        )}
+      </td>
       <td>{user && user.name}</td>
-      <td>{tags && tags.map(tag=>tag.title).join(', ')}</td>
+      <td>{tags && tags.map((tag) => tag.title).join(", ")}</td>
       <td>
         <PostStatusDropdown currentStatus={status} post={item} />
       </td>
-      <td>{updatedAt}</td>
-      <td>{createdAt}</td>
+      <td>{getFormattedDateTime(updatedAt)}</td>
+      <td>{getFormattedDateTime(createdAt)}</td>
     </>
   );
 };

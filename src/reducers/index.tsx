@@ -132,7 +132,8 @@ const AppProvider: React.FC = ({ children }) => {
     }
 
     return data;
-  };
+    
+  }
 
   const isAdmin = () => {
     const userInfo = getUserInfo();

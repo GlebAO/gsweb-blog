@@ -31,3 +31,6 @@ body {
 .mt-n1 {
   margin-top: calc(var(--g1) * -1);
 }
+.text-sm {
+  font-size: var(--fs-sm) !important;
+}

@@ -1,17 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import PostModel, { PostStatus, postStatuses } from "../../../types/PostModel";
 import ActiveDropdown from "../../common/active-dropdown";
 import { useDetailedEntity } from "../../../utils/hook-utils";
 import { BlogServiceContext } from "../../../context";
 import { fetchPost } from "../../../actions/postForm/actions";
 import config from "../../../config";
-
+import { useAppContext } from "../../../reducers";
 
 const PostStatusDropdown: React.FC<{
   currentStatus: PostStatus;
   post: PostModel;
 }> = ({ currentStatus, post }) => {
   const blogServiceContext = useContext(BlogServiceContext);
+  const { getUserInfo } = useAppContext();
+  const { sub: userId } = getUserInfo();
 
   //const [status, setStatus] = useState(currentStatus);
 
@@ -35,7 +37,7 @@ const PostStatusDropdown: React.FC<{
   );
 
   let initialState: {
-    initial?: boolean,
+    initial?: boolean;
     item: PostModel | null;
     loading: boolean;
     error: Error | null;
@@ -113,11 +115,25 @@ const PostStatusDropdown: React.FC<{
     }
   };
 
+  //remove Status PENDING for own posts
+  const statusArray = useMemo(
+   () => {
+      if (userId === post.userId) {
+        return postStatuses.filter(
+          (status) => status.val !== PostStatus.PENDING
+        );
+      }
+      return postStatuses;
+    },
+    [post.userId, userId]
+  );
+
+
   return (
     <>
       <ActiveDropdown
         disabled={loading}
-        items={postStatuses}
+        items={statusArray}
         selected={status}
         onChange={handleStatusDropdownChange}
         classes={getStatusColor(status)}
