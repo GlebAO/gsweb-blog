@@ -8,7 +8,8 @@ export default {
         OWN_POSTS: 'ownPosts',
         ADMIN_POSTS: 'adminPosts',
         ADMIN_USERS: 'adminUsers',
-        ADMIN_COMMENTS: 'adminComments'
+        ADMIN_COMMENTS: 'adminComments',
+        ADMIN_TAGS: 'adminTags'
     },
     detailedEntities: {
         POSTS: 'posts',

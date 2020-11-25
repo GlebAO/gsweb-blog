@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { Route, Redirect, useLocation } from "react-router-dom";
+import { Route, Redirect, useLocation, RouteProps } from "react-router-dom";
 import { AppContext } from "../../reducers/index";
 import { RouteComponentProps } from "@reach/router";
 
 interface AuthRouteProps {
     exact?: boolean;
     path: string;
-    children: JSX.Element & RouteComponentProps;
+    children: JSX.Element & RouteProps;
   }
 
 const AuthRoute: React.FunctionComponent<AuthRouteProps & RouteComponentProps > = ({ children, ...rest }) => {

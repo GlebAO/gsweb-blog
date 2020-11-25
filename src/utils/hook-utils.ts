@@ -80,3 +80,21 @@ export const useQueryString = () => {
     const { search } = useLocation();
     return search;
 }
+
+interface IChangeEvent {
+    target: HTMLInputElement
+}
+
+export function useFormFields<T>(initialState:T): [T, (e: IChangeEvent)=>void] {
+    const [fields, setValues] = useState(initialState);
+  
+    return [
+      fields,
+      function(e: IChangeEvent) {
+        setValues({
+          ...fields,
+          [e.target.name]: e.target.value
+        });
+      }
+    ];
+  }

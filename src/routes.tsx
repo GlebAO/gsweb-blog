@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { Spinner } from "./components/common/spinner";
 import { AuthenticatedRoute, AdminRoute } from "./components/route-with-roles";
+import TagsManagement from "./pages/backend/tags-management";
 
 const PostsPage = React.lazy(() => import("./pages/post/posts-page"));
 const PostPage = React.lazy(() => import("./pages/post/post-page"));
@@ -56,10 +57,12 @@ const Routes = () => {
           component={ProfileManagement}
         />
         <AuthenticatedRoute path="/backend/posts" exact component={OwnPosts} />
+
         <AdminRoute path="/backend" exact component={Dashboard} />
         <AdminRoute path="/backend/admin-posts" exact component={PostsManagement} />
         <AdminRoute path="/backend/admin-users" exact component={UsersManagement} />
         <AdminRoute path="/backend/admin-comments" exact component={CommentsManagement} />
+        <AdminRoute path="/backend/admin-tags" exact component={TagsManagement} />
       
         <Redirect from="/" to="/404" />
       </Switch>

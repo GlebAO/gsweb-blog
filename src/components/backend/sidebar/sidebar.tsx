@@ -11,6 +11,7 @@ import {
   IconDefinition,
   faCogs,
   faCommentAlt,
+  faHashtag,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BrandLogoWhite from "../../common/brand-logo-white";
@@ -59,6 +60,12 @@ const navItems: NavItemType[] = [
     label: "Упр. комментариями",
     path: "/backend/admin-comments",
     icon: faCommentAlt,
+    allowedRoles: ["admin"],
+  },
+  {
+    label: "Упр. тэгами",
+    path: "/backend/admin-tags",
+    icon: faHashtag,
     allowedRoles: ["admin"],
   },
   {

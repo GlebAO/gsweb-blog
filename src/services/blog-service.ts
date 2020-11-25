@@ -24,6 +24,7 @@ export default class BlogService implements BlogServiceInterface {
 
   protected getResource = async (url: string) => {
     const res = await fetch(`${this._apiBase}${url}`);
+    
     if (!res.ok && res.status >= 500) {
       throw new ResponseError("Возникли проблемы на стороне сервера. Повторите запрос позже.", res.status);
     }
@@ -65,6 +66,11 @@ export default class BlogService implements BlogServiceInterface {
   getTagBySlug = async (slug: string) => {
     const res = await this.getResource(`/tags/${slug}`);
     return res.tag;
+  }
+
+  updateTag = async (tag: TagModel) => {
+    const res = await authFetch.patch(`/tags/${tag.id}`, tag);
+    return res.data.tag
   }
 
   getAllPosts = async (page = 1, perPage = config.PER_PAGE): Promise<EntityWithTotal<PostModel>> => {

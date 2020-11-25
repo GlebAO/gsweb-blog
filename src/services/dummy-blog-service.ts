@@ -271,6 +271,18 @@ export default class DummyBlogService implements BlogServiceInterface {
         });
     }
 
+    updateTag(tag: TagModel) {
+        return new Promise<TagModel>((resolve, reject) => {
+            setTimeout(() => {
+                if (Math.random() > 0.75) {
+                    reject(new Error('Something bad happened'));
+                } else {
+                    resolve(this._tags[0]);
+                }
+            }, 700);
+        });
+    }
+
     createPost(values: PostFormValues) {
         return new Promise<PostModel>((resolve, reject) => {
             setTimeout(() => {

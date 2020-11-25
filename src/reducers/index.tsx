@@ -131,8 +131,7 @@ const AppProvider: React.FC = ({ children }) => {
       data.role = userInfo.role;
     }
 
-    return data;
-    
+    return data;  
   }
 
   const isAdmin = () => {
