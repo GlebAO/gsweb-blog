@@ -1,0 +1,1 @@
+export const DEFAULT_DATA_URL_KEY = 'dataURL';

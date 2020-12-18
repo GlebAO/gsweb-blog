@@ -23,7 +23,7 @@ const PostStatusIndicator: React.FC<{ status: PostStatus }> = ({ status }) => {
   }
 
   return (
-    <div>
+    <div className="mb-2">
       {status === PostStatus.ACTIVE &&
         renderSpan("text-success", "Виден всем", faInfoCircle, "Опубликовано")}
       {status === PostStatus.DRAFT &&

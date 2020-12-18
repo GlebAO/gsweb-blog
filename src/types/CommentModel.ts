@@ -11,6 +11,7 @@ export default interface CommentModel {
     updatedAt: string
     author: {
         name: string
+        imageUrl: string
     }
     parentId?: number
     children?: CommentModel[]

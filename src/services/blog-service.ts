@@ -73,6 +73,11 @@ export default class BlogService implements BlogServiceInterface {
     return res.data.tag
   }
 
+  updateTagLogo = async (formData: FormData, tagId:number) => {
+    const res = await authFetch.patch(`/tags/${tagId}/logo`, formData);
+    return res.data.tag
+  }
+
   getAllPosts = async (page = 1, perPage = config.PER_PAGE): Promise<EntityWithTotal<PostModel>> => {
     const res = await authFetch.get(`/backend/posts?page=${page}`);
     return res.data.posts;

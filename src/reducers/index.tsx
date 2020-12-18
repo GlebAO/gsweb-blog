@@ -53,7 +53,7 @@ const AppContext = React.createContext<AppContextType>({
   isAuthenticated: () => false,
   isAdmin: () => false,
   isPostAuthor: () => false,
-  getUserInfo: () => ({ sub: null, name: "", email: "", role: UserRole.GUEST }),
+  getUserInfo: () => ({ sub: null, name: "", email: "", imageUrl: null, role: UserRole.GUEST }),
 });
 
 const mainReducer: MainReducerInterface = (state, action) => {
@@ -113,6 +113,7 @@ const AppProvider: React.FC = ({ children }) => {
 
     const data: UserInfoType = {
       sub: null,
+      imageUrl: null,
       name: "",
       email: "",
       role: UserRole.GUEST,
@@ -129,6 +130,9 @@ const AppProvider: React.FC = ({ children }) => {
     }
     if ("role" in userInfo) {
       data.role = userInfo.role;
+    }
+    if ("imageUrl" in userInfo) {
+      data.imageUrl = userInfo.imageUrl;
     }
 
     return data;  

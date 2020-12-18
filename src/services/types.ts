@@ -6,6 +6,7 @@ import { LoginFormValues } from "../pages/auth/login";
 import { PostFormValues } from "../components/post/post-form/post-form"
 import { CommentsFormValuesInterface } from "../components/comments/comments-form";
 import CommentModel from "../types/CommentModel";
+import { ImageListType } from "../components/common/image-upload/typings";
 
 export interface UserFormValues {
     role?: UserRole
@@ -35,6 +36,7 @@ export interface BlogServiceInterface {
     deleteComment(id: number): Promise<any>,
     updateSitemap(): Promise<any>,
     updateTag(tag:TagModel): Promise<any>
+    updateTagLogo(formData: FormData, tagId: number): Promise<any>
 }
 export interface AuthServiceInterface {
     signup(credentials: SignupFormValues): Promise<any>

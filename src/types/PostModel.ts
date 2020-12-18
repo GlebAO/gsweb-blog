@@ -17,7 +17,8 @@ export default interface PostModel {
     updatedAt: string
     status: PostStatus
     user: {
-        name: string
+        name: string,
+        imageUrl: string
     }
     tags?: TagModel[]
 }

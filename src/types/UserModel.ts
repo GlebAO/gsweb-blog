@@ -2,6 +2,7 @@ export default interface UserModel {
     id: number,
     name: string,
     email: string,
+    imageUrl: string,
     role: UserRole,
     createdAt: string,
     status: UserStatus,
@@ -36,5 +37,6 @@ export interface UserInfoType {
     sub: number | null,
     name: string,
     email: string,
+    imageUrl: string | null,
     role: UserRole,
 }

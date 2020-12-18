@@ -13,8 +13,7 @@ authFetch.interceptors.response.use(
     return response;
   },
   error => {
-    const code =
-      error && error.response ? error.response.status : 0;
+    const code = error && error.response ? error.response.status : 0;
     if (code === 401 || code === 403) {
       console.log('error code', code);
     }

@@ -7,7 +7,7 @@ interface TagsTableInterface {
   items: TagModel[];
 }
 
-const TagsTableItem: React.FC<{ item: TagModel }> = ({ item}) => {
+const TagsTableItem: React.FC<{ item: TagModel }> = ({ item }) => {
   const [isModalOpened, setModalOpened] = useState(false);
   const { title, slug, score } = item;
 
@@ -20,17 +20,27 @@ const TagsTableItem: React.FC<{ item: TagModel }> = ({ item}) => {
   }
 
   function handleUpdateTable() {
-      setModalOpened(false);
+    setModalOpened(false);
   }
 
   return (
     <>
       <tr>
+        <td>
+          {/*logo && <img
+            width={100}
+            alt=""
+            src={process.env.PUBLIC_URL + `/uploads/${logo}`}
+          />*/}
+        </td>
         <td>{title}</td>
         <td>{slug}</td>
         <td>{score}</td>
         <td>
-          <button className="btn btn-outline-primary" onClick={handleEditItemClick}>
+          <button
+            className="btn btn-outline-primary"
+            onClick={handleEditItemClick}
+          >
             Редактировать
           </button>
         </td>
@@ -38,7 +48,7 @@ const TagsTableItem: React.FC<{ item: TagModel }> = ({ item}) => {
       {isModalOpened && (
         <Modal
           title={`Редактирование тэга: ${title}`}
-          content={<TagsForm tagItem={item} successClbk={handleUpdateTable}/>}
+          content={<TagsForm tagItem={item} successClbk={handleUpdateTable} />}
           onClose={handleModalClose}
         />
       )}
@@ -51,6 +61,7 @@ const TagsTable: React.FC<TagsTableInterface> = ({ items }) => {
     <table className="table table-responsive table-hover">
       <thead>
         <tr>
+          <th scope="col">Лого</th>
           <th scope="col">Название</th>
           <th scope="col">Url</th>
           <th scope="col">Популярность</th>

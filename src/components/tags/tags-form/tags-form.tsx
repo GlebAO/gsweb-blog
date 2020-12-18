@@ -2,6 +2,8 @@ import React, { FormEvent, useContext, useState } from "react";
 import { BlogServiceContext } from "../../../context";
 import TagModel from "../../../types/TagModel";
 import { useFormFields } from "../../../utils/hook-utils";
+import ImageUpload from "../../common/image-upload";
+import { ImageListType } from "../../common/image-upload/typings";
 import { FormAlert } from "../../form";
 
 interface ITagsForm {
@@ -33,21 +35,22 @@ const TagsForm: React.FC<ITagsForm> = ({ tagItem, successClbk }) => {
   );
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const blogServiceContext = useContext(BlogServiceContext);
+  const [logo, setLogo] = useState<ImageListType>([]);
+  const blogService = useContext(BlogServiceContext);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setSending(true);
     if (tagItem) {
       try {
-        const updatedTag = await blogServiceContext?.updateTag({
+        const updatedTag = await blogService?.updateTag({
           id: tagItem.id,
           title: fields.tagTitle || tagItem.title,
           slug: fields.tagSlug || tagItem.slug,
           score: Number(fields.tagScore) || tagItem.score,
         });
-        if(updatedTag) {
-            successClbk();
+        if (updatedTag) {
+          successClbk();
         }
       } catch (e) {
         setError(e.message);
@@ -61,9 +64,60 @@ const TagsForm: React.FC<ITagsForm> = ({ tagItem, successClbk }) => {
     setFieldValue(event);
   }
 
+  async function handleLogoChange(imageList: ImageListType) {
+    // only works when updating tag
+    if (!tagItem) return;
+    
+
+    try{
+      const formData = new FormData();
+
+      for (let image of imageList) {
+        if(!image.file) continue;
+        formData.append("logo", image.file);
+      }
+
+      //await blogService?.updateTagLogo(formData, tagItem.id);
+      setLogo(imageList);
+
+    } catch(err) {
+      console.log(err)
+      setError(err.message)
+    }    
+  }
+
+  function renderImageThumbs(imageList: ImageListType) {
+    if (imageList.length === 0) return null;
+    return (
+      <ul className="list-unstyled">
+        {imageList.map((image, index) => (
+          <li key={index}>
+            <img src={image.dataURL} alt="" width="100" />
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
   return (
     <>
       {error && <FormAlert success={false} text={error} />}
+      <div className="mb-3">
+          <ImageUpload name="tagimage" value={logo} onChange={handleLogoChange}>
+            {({ imageList, onImageUpload }) => (
+              <div>
+                {renderImageThumbs(imageList)}
+                <button
+                  type="button"
+                  onClick={onImageUpload}
+                  className="btn btn-secondary"
+                >
+                  Добавить логотип
+                </button>
+              </div>
+            )}
+          </ImageUpload>
+        </div>
       <form onSubmit={handleSubmit} className="tags-form">
         <div className="mb-3">
           <label htmlFor="tagTitle" className="form-label">
