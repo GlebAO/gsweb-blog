@@ -18,7 +18,7 @@ const Banner = () => {
           <p className="lead">Блог GSweb</p>
           <ul className="list-unstyled">
             <li>
-              Telegram: <a href="tg://resolve?domain=gs_web">GSweb</a>
+              Telegram: <a href="tg://resolve?domain=glebao">GlebAO</a>
             </li>
           </ul>
         </div>
